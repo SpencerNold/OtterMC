@@ -12,7 +12,7 @@ public class KeyboardSetting extends Setting<Integer> {
 	}
 	
 	public String getKeyName() {
-		return Keyboard.getKeyName(value);
+		return value == -1 ? "" : Keyboard.getKeyName(value);
 	}
 
 	@Override

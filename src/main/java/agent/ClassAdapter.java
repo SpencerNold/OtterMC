@@ -7,6 +7,7 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
@@ -84,20 +85,24 @@ public class ClassAdapter implements ClassFileTransformer {
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
 			public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-				TMethodObj tmethod = tclass.getInjector(name + descriptor);
-				if (tmethod == null)
+				LinkedList<TMethodObj> tmethods = tclass.getInjector(name + descriptor);
+				if (tmethods == null)
 					return super.visitMethod(access, name, descriptor, signature, exceptions);
 				MethodVisitor mv = new MethodVisitor(Opcodes.ASM9, cv.visitMethod(access, name, descriptor, signature, exceptions)) {
 					public void visitInsn(int opcode) {
 						if (opcode == Opcodes.RETURN || opcode == Opcodes.ARETURN || opcode == Opcodes.IRETURN || opcode == Opcodes.LRETURN || opcode == Opcodes.FRETURN || opcode == Opcodes.DRETURN) {
-							if (tmethod.getTarget() == Target.TAIL)
-								injectInto(tmethod, this, true);
+							for (TMethodObj tmethod : tmethods) {
+								if (tmethod.getTarget() == Target.TAIL)
+									injectInto(tmethod, this, true);
+							}
 						}
 						super.visitInsn(opcode);
 					}
 				};
-				if (tmethod.getTarget() == Target.HEAD)
-					injectInto(tmethod, mv, false);
+				for (TMethodObj tmethod : tmethods) {
+					if (tmethod.getTarget() == Target.HEAD)
+						injectInto(tmethod, mv, false);
+				}
 				return mv;
 			}
 			

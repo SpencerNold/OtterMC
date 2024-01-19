@@ -28,6 +28,10 @@ public class DrawableHelper {
 		GlStateManager.loadIdentity();
 		GlStateManager.translate(0.0F, 0.0F, -2000.0F);
 	}
+	
+	public boolean isFontCharSupported(char c) {
+		return fontRenderer.isCharacterSupported(c);
+	}
 
 	public void drawString(String text, int x, int y, float scale, int color) {
 		float ratio = this.scale * 0.25f * scale;

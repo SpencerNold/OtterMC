@@ -36,6 +36,10 @@ public class Charset {
 		}
 	}
 	
+	public boolean isCharacterSupported(char c) {
+		return data.containsKey(c);
+	}
+	
 	public int[] getData(char c) {
 		return data.get(c);
 	}

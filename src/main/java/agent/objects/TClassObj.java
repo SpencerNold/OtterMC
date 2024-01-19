@@ -1,11 +1,12 @@
 package agent.objects;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class TClassObj {
 
-	private final Map<String, TMethodObj> injectors = new HashMap<>();
+	private final Map<String, LinkedList<TMethodObj>> injectors = new HashMap<>();
 	
 	private final Class<?> transformer;
 	
@@ -14,10 +15,15 @@ public class TClassObj {
 	}
 	
 	public void addInjector(String name, TMethodObj injector) {
-		injectors.put(name, injector);
+		if (!injectors.containsKey(name))
+			injectors.put(name, new LinkedList<TMethodObj>());
+		LinkedList<TMethodObj> methods = injectors.get(name);
+		methods.add(injector);
 	}
 	
-	public TMethodObj getInjector(String name) {
+	public LinkedList<TMethodObj> getInjector(String name) {
+		if (!injectors.containsKey(name))
+			return null;
 		return injectors.get(name);
 	}
 	

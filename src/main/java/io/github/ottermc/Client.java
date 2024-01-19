@@ -34,6 +34,7 @@ import io.github.ottermc.modules.visual.BlockOutline;
 import io.github.ottermc.modules.visual.ColorTheme;
 import io.github.ottermc.modules.visual.DamageColor;
 import io.github.ottermc.modules.visual.EnchantmentGlint;
+import io.github.ottermc.modules.visual.LargeItems;
 import io.github.ottermc.modules.visual.OldAnimation;
 import io.github.ottermc.screen.hud.ClientDisplay;
 import io.github.ottermc.screen.hud.GameDisplay;
@@ -47,6 +48,7 @@ import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.ItemRendererTransformer;
 import io.github.ottermc.transformers.LayerArmorBaseTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
+import io.github.ottermc.transformers.RenderEntityItemTransformer;
 import io.github.ottermc.transformers.RenderGlobalTransformer;
 import io.github.ottermc.transformers.RenderItemTransformer;
 import io.github.ottermc.transformers.RendererLivingEntityTransformer;
@@ -72,7 +74,6 @@ public class Client implements PostInitializeListener {
 	private final ClientStorage storage;
 	
 	public Client(File file, ClassAdapter adapter) {
-		System.out.println("(?<rank>\\.get(.+) )?(?<player>\\S{1,16}): (?<message>.*)");
 		instance = this;
 		this.clientDirectory = file;
 		adapter.register(EntityPlayerSPTransformer.class);
@@ -82,6 +83,7 @@ public class Client implements PostInitializeListener {
 		adapter.register(ItemRendererTransformer.class);
 		adapter.register(LayerArmorBaseTransformer.class);
 		adapter.register(MinecraftTransformer.class);
+		adapter.register(RenderEntityItemTransformer.class);
 		adapter.register(RenderGlobalTransformer.class);
 		adapter.register(RenderItemTransformer.class);
 		storage = new ClientStorage(new File(file, "profile.data"));
@@ -154,6 +156,7 @@ public class Client implements PostInitializeListener {
 		modManager.register(new ColorTheme());
 		modManager.register(new DamageColor());
 		modManager.register(new EnchantmentGlint());
+		modManager.register(new LargeItems());
 		modManager.register(new OldAnimation());
 		
 		// Hypixel

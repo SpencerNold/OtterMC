@@ -90,4 +90,8 @@ public class FontRenderer {
 		GL11.glVertex2d((x + width), y);
 		GL11.glEnd();
 	}
+	
+	public boolean isCharacterSupported(char c) {
+		return charset.isCharacterSupported(c);
+	}
 }
