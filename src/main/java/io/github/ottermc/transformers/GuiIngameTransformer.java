@@ -8,7 +8,7 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RenderGameOverlayListener.RenderGameOverlayEvent;
 import net.minecraft.client.gui.GuiIngame;
 
-@Transformer(className = "net/minecraft/client/gui/GuiIngame")
+@Transformer(name = "net/minecraft/client/gui/GuiIngame")
 public class GuiIngameTransformer {
 
 	@Injector(target = Target.HEAD, name = "renderGameOverlay(F)V")

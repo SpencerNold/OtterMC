@@ -11,7 +11,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-@Transformer(className =  "net/minecraft/client/entity/EntityPlayerSP")
+@Transformer(name =  "net/minecraft/client/entity/EntityPlayerSP")
 public class EntityPlayerSPTransformer {
 
 	@Injector(name = "addChatMessage(Lnet/minecraft/util/IChatComponent;)V", target = Target.HEAD)

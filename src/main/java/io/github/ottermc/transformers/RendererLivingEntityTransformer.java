@@ -8,7 +8,7 @@ import io.github.ottermc.transformers.wrapper.RendererLivingEntityWrapper;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;
 
-@Transformer(className = "net/minecraft/client/renderer/entity/RendererLivingEntity")
+@Transformer(name = "net/minecraft/client/renderer/entity/RendererLivingEntity")
 public class RendererLivingEntityTransformer {
 
 	@Injector(name = "setBrightness(Lnet/minecraft/entity/EntityLivingBase;FZ)Z", target = Target.HEAD)

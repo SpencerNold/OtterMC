@@ -27,6 +27,7 @@ import io.github.ottermc.screen.AbstractScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.DrawableHelper;
 import io.github.ottermc.screen.render.Icon;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 
 public class SettingScreen extends AbstractScreen {
@@ -35,16 +36,18 @@ public class SettingScreen extends AbstractScreen {
 	
 	private final float scale = 2.0f;
 	
+	private final AbstractScreen parentScreen;
 	private final Module module;
 	
-	public SettingScreen(Module module) {
+	public SettingScreen(AbstractScreen parentScreen, Module module) {
+		this.parentScreen = parentScreen;
 		this.module = module;
 	}
 
 	@Override
 	public void onScreenOpen() {
 		getDrawable().setScale(scale);
-		BlurShaderProgram.setActive(true);
+		BlurShaderProgram.setActive(true, true);
 		components.clear();
 		Writable<ByteBuf>[] writables = module.getWritables();
 		if (writables != null) {
@@ -82,7 +85,7 @@ public class SettingScreen extends AbstractScreen {
 
 	@Override
 	public void onScreenClose() {
-		BlurShaderProgram.setActive(false);
+		BlurShaderProgram.setActive(false, false);
 		components.forEach(SettingComponent::saveToSetting);
 		try {
 			Client.getClientStorage().write();
@@ -93,11 +96,12 @@ public class SettingScreen extends AbstractScreen {
 	
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
+		DrawableHelper drawable = getDrawable();
 		if (!Display.isFullscreen()) {
 			String text = "Please activate fullscreen to use this menu...";
-			int x = getDrawable().middle(getDisplayWidth(), getDrawable().getStringWidth(text));
-			int y = getDrawable().middle(getDisplayHeight(), getDrawable().getStringHeight());
-			getDrawable().drawString(text, x, y, -1);
+			int x = drawable.middle(getDisplayWidth(), drawable.getStringWidth(text));
+			int y = drawable.middle(getDisplayHeight(), drawable.getStringHeight());
+			drawable.drawString(text, x, y, -1);
 			return;
 		}
 		
@@ -105,16 +109,35 @@ public class SettingScreen extends AbstractScreen {
 		
 		int width = (int) (getDisplayWidth() * 0.625f);
 		int height = (int) (getDisplayHeight() * 0.625f);
-		int centerX = getDrawable().middle(getDisplayWidth(), width);
-		int centerY = getDrawable().middle(getDisplayHeight(), height);
+		int centerX = drawable.middle(getDisplayWidth(), width);
+		int centerY = drawable.middle(getDisplayHeight(), height);
 		
-		getDrawable().fillRoundedRectangle(centerX, centerY, width, height, 8, backgroundColor);
+		drawable.fillRoundedRectangle(centerX, centerY, width, height, 8, backgroundColor);
 		
 		int height2 = (int) (height * 0.1f);
-		getDrawable().fillTopRoundedRectangle(centerX, centerY, width, height2, 8, backgroundColor);
-		getDrawable().drawString(module.getName(), centerX + 4, centerY + (height2 / 2) - 6, -1);
+		drawable.fillTopRoundedRectangle(centerX, centerY, width, height2, 8, backgroundColor);
+		drawable.drawString(module.getName(), centerX + 4, centerY + (height2 / 2) - 6, -1);
 		
 		components.forEach(c -> c.draw(this, color));
+		
+		if (components.size() == 0) {
+			String text = module.getDescription();
+			text = text == null ? "Open the HUD edit menu to modify this mod." : text;
+			int x = centerX + 5;
+			int y = centerY + height2 + 5;
+			int offset = 0;
+			int line = 0;
+			String[] words = text.split(" ");
+			for (String str : words) {
+				int sw = drawable.getStringWidth(str) + 4;
+				if ((x + offset + sw) > (centerX + width - 10)) {
+					offset = 0;
+					line++;
+				}
+				drawable.drawString(str, x + offset, y + (line * 16), -1);
+				offset += sw;
+			}
+		}
 	}
 	
 	@Override
@@ -123,8 +146,11 @@ public class SettingScreen extends AbstractScreen {
 	}
 	
 	@Override
-	public void onKeyPressed(char c, int key) {
+	public boolean onKeyPressed(char c, int key) {
 		components.forEach(m -> m.keyPressed(this, c, key));
+		if (key == Keyboard.KEY_ESCAPE)
+			Minecraft.getMinecraft().displayGuiScreen(parentScreen);
+		return false;
 	}
 	
 	@Override
@@ -197,8 +223,8 @@ public class SettingScreen extends AbstractScreen {
 		@Override
 		protected int draw(AbstractScreen screen, int color) {
 			String name = setting.getName();
-			int nw = screen.getDrawable().getStringWidth(name);
-			screen.getDrawable().drawString(name, x, y, -1);
+			int nw = screen.getDrawable().getStringWidth(name, 0.75f);
+			screen.getDrawable().drawString(name, x, y, 0.75f, -1);
 			screen.getDrawable().fillRoundedRectangle(x + nw + 8, y, 128, 20, 6, screen.getBackgroundColor());
 			screen.getDrawable().drawRoundedRectangle(x + nw + 8, y, 128, 20, 6, selected ? color : 0xFFC6C6C6);
 			screen.getDrawable().drawString(formatDisplayString(), x + nw + 12, y + 3, 0.75f, colorText.length() != 8 ? 0xFFC6C6C6 : -1);
@@ -399,12 +425,15 @@ public class SettingScreen extends AbstractScreen {
 			this.screen = screen;
 			DrawableHelper drawable = screen.getDrawable();
 			int height = getHeight();
-			drawable.fillRoundedRectangle(x, y, 156, height, 8, screen.getBackgroundColor());
-			drawable.drawRoundedRectangle(x, y, 156, height, 8, selected ? color : 0xFFC6C6C6);
+			String name = setting.getName();
+			drawable.drawString(name, x, y + (height / 2) - (drawable.getStringHeight(0.75f) / 2), 0.75f, -1);
+			int sw = drawable.getStringWidth(name, 0.75f) + 8;
+			drawable.fillRoundedRectangle(x + sw, y, 156, height, 8, screen.getBackgroundColor());
+			drawable.drawRoundedRectangle(x + sw, y, 156, height, 8, selected ? color : 0xFFC6C6C6);
 			String[] lines = getLines();
 			for (int i = 0; i < lines.length; i++)
-				drawable.drawString(lines[i] + (i == (lines.length - 1) && selected ? "_" : ""), x + 2, y + 2 + (i * (drawable.getStringHeight() + 2)), 0.75f, selected ? -1 : 0xFFC6C6C6);
-			return 256;
+				drawable.drawString(lines[i] + (i == (lines.length - 1) && selected ? "_" : ""), x + sw + 2, y + 3 + (i * (drawable.getStringHeight() + 2)), 0.75f, selected ? -1 : 0xFFC6C6C6);
+			return 256 + sw;
 		}
 		
 		@Override
@@ -435,7 +464,7 @@ public class SettingScreen extends AbstractScreen {
 
 		@Override
 		protected int getHeight() {
-			 return screen == null ? 0 : (screen.getDrawable().getStringHeight(0.75f) + 2) * setting.getLines() + 2;
+			 return screen == null ? 0 : (screen.getDrawable().getStringHeight(0.75f) + 2) * setting.getLines() + 6;
 		}
 		
 		private String[] getLines() {

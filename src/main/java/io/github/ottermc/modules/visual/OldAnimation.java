@@ -232,4 +232,9 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 	public Icon getIcon() {
 		return ICON;
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Changes the sword attack rendering to be that of 1.7.10 with the old block-hitting animations.";
+	}
 }

@@ -8,7 +8,7 @@ import io.github.ottermc.transformers.wrapper.RenderEntityItemWrapper;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.entity.item.EntityItem;
 
-@Transformer(className = "net/minecraft/client/renderer/entity/RenderEntityItem")
+@Transformer(name = "net/minecraft/client/renderer/entity/RenderEntityItem")
 public class RenderEntityItemTransformer {
 	
 	@Injector(target = Target.HEAD, name = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V")

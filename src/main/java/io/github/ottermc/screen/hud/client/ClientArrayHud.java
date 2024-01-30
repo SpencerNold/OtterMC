@@ -1,5 +1,7 @@
 package io.github.ottermc.screen.hud.client;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.modules.hud.Array;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.hud.Component;
@@ -16,6 +18,8 @@ public class ClientArrayHud extends Component implements Movable {
 	
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		Color color = Array.getColor();
 		boolean ttf = Array.shouldUseClientFont();
 		String[] lines = Array.getText().split("\n");
@@ -60,5 +64,10 @@ public class ClientArrayHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "ARRAY_COMPONENT".hashCode();
 	}
 }

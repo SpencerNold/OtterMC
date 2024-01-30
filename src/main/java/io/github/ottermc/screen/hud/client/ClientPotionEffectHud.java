@@ -2,6 +2,8 @@ package io.github.ottermc.screen.hud.client;
 
 import java.util.ArrayList;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
 import net.minecraft.client.Minecraft;
@@ -26,6 +28,8 @@ public class ClientPotionEffectHud extends Component implements Movable {
 
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		if (mc.getRenderViewEntity() instanceof EntityPlayer) {
 			EntityLivingBase player = (EntityLivingBase) mc.getRenderViewEntity();
 			ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>(player.getActivePotionEffects());
@@ -86,5 +90,10 @@ public class ClientPotionEffectHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "POTION_EFFECT_COMPONENT".hashCode();
 	}
 }

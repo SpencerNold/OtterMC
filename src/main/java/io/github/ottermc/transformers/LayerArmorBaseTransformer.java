@@ -9,7 +9,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 
-@Transformer(className = "net/minecraft/client/renderer/entity/layers/LayerArmorBase")
+@Transformer(name = "net/minecraft/client/renderer/entity/layers/LayerArmorBase")
 public class LayerArmorBaseTransformer {
 
 	@Injector(target = Target.HEAD, name = "func_177183_a(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/model/ModelBase;FFFFFFF)V")

@@ -1,5 +1,7 @@
 package io.github.ottermc.screen.hud.client;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.modules.hud.Coordinate;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
@@ -19,6 +21,8 @@ public class ClientCoordinateHud extends Component implements Movable {
 
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		Entity player = mc.thePlayer;
 		String text = String.format("X: %.1f, Y: %.1f, Z: %.1f (%s)", player.posX, player.posY, player.posZ, EnumFacing.fromAngle(player.rotationYaw).getName());
 		boolean ttf = Coordinate.shouldUseClientFont();
@@ -62,5 +66,10 @@ public class ClientCoordinateHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "COORDINATE_COMPONENT".hashCode();
 	}
 }

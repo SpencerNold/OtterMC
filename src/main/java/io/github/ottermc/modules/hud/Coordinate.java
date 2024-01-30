@@ -17,7 +17,7 @@ public class Coordinate extends Module {
 	private static Coordinate instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting ttf = new BooleanSetting("TrueType Font", false);
 
 	public Coordinate() {

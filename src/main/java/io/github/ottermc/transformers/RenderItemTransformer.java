@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 
-@Transformer(className = "net/minecraft/client/renderer/entity/RenderItem")
+@Transformer(name = "net/minecraft/client/renderer/entity/RenderItem")
 public class RenderItemTransformer {
 
 	@Injector(target = Target.HEAD, name = "renderEffect(Lnet/minecraft/client/resources/model/IBakedModel;)V")

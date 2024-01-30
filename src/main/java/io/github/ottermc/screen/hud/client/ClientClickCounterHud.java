@@ -3,6 +3,8 @@ package io.github.ottermc.screen.hud.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
 import io.github.ottermc.screen.render.DrawableHelper;
@@ -32,6 +34,8 @@ public class ClientClickCounterHud extends Component implements Movable {
 	
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		int color = io.github.ottermc.modules.hud.ClickCounter.getColor().getValue();
 		LEFT.update();
 		LEFT.draw(mc, drawable, getX(), getY(), 28, getRawHeight(), color);
@@ -67,6 +71,11 @@ public class ClientClickCounterHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "CLICK_COUNTER_COMPONENT".hashCode();
 	}
 	
 	private static class ClickCounter {

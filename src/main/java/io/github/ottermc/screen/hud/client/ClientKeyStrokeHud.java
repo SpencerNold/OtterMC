@@ -1,6 +1,7 @@
 package io.github.ottermc.screen.hud.client;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 import io.github.ottermc.modules.hud.KeyStroke;
 import io.github.ottermc.screen.hud.Component;
@@ -21,6 +22,8 @@ public class ClientKeyStrokeHud extends Component implements Movable {
 	
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		int color = KeyStroke.getColor().getValue();
 		int key;
 		String text;
@@ -78,5 +81,10 @@ public class ClientKeyStrokeHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "KEYSTROKE_COMPONENT".hashCode();
 	}
 }

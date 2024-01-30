@@ -2,6 +2,7 @@ package io.github.ottermc.screen;
 
 import java.io.IOException;
 
+import io.github.ottermc.Client;
 import io.github.ottermc.screen.render.DrawableHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,6 +35,8 @@ public abstract class AbstractScreen extends GuiScreen {
 	public final void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		getDrawable().setupOverlayRendering();
 		renderScreen(mouseX, mouseY, partialTicks);
+		String text = String.format("%s %s", Client.NAME, Client.VERSION);
+		getDrawable().drawString(text, getDisplayWidth() - getDrawable().getStringWidth(text) - 4, getDisplayHeight() - getDrawable().getStringHeight() - 4, -1);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 	
@@ -57,8 +60,9 @@ public abstract class AbstractScreen extends GuiScreen {
 	
 	@Override
 	public final void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
-		onKeyPressed(typedChar, keyCode);
+		boolean b = onKeyPressed(typedChar, keyCode);
+		if (b)
+			super.keyTyped(typedChar, keyCode);
 	}
 	
 	@Override
@@ -85,7 +89,7 @@ public abstract class AbstractScreen extends GuiScreen {
 	public void onClick(int mouseX, int mouseY, int button) {}
 	public void onRelease(int mouseX, int mouseY, int button) {}
 	public void onClickMove(int mouseX, int mouseY, int button, long dt) {}
-	public void onKeyPressed(char c, int key) {}
+	public boolean onKeyPressed(char c, int key) { return true; }
 	public void onUpdate() {}
 	public void onHandleMouseInput() {}
 	

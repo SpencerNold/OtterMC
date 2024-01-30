@@ -16,6 +16,9 @@ public class Icon extends GenericImageObject {
 	public static final Icon MOVE = Icon.getIconIgnoreException("move_icon.png");
 	public static final Icon HAT = Icon.getIconIgnoreException("hat_icon.png");
 	public static final Icon GEAR = Icon.getIconIgnoreException("gear_icon.png");
+	public static final Icon DROPDOWN = Icon.getIconIgnoreException("dropdown_icon.png");
+	public static final Icon ADD = Icon.getIconIgnoreException("add_icon.png");
+	public static final Icon CLOSE = Icon.getIconIgnoreException("close_icon.png");
 	
 	public static final Icon CIRCLE = Icon.getIconIgnoreException("circle_icon.png");
 

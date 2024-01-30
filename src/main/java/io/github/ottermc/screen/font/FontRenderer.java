@@ -58,7 +58,6 @@ public class FontRenderer {
 			width += renderCharacter(c, x + width, y) - 10.0f;
 		}
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-		GlStateManager.disableTexture2D();
 		GlStateManager.disableBlend();
 		GlStateManager.disableAlpha();
 		GlStateManager.popMatrix();

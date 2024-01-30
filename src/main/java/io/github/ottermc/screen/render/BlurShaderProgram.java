@@ -16,7 +16,7 @@ public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayList
 	private static BlurShaderProgram instance;
 	
 	private ShaderGroup shader;
-	private boolean active;
+	private boolean active, hideHud;
 	
 	public BlurShaderProgram() {
 		instance = this;
@@ -33,6 +33,7 @@ public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayList
 		GlStateManager.loadIdentity();
 		shader.loadShaderGroup(event.getPartialTicks());
 		GlStateManager.popMatrix();
+		GlStateManager.enableDepth(); // disabled in preLoadShader function
 	}
 	
 	@Override
@@ -59,11 +60,20 @@ public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayList
 		shader = null;
 	}
 	
-	public static void setActive(boolean active) {
+	public static void setActive(boolean active, boolean hideHud) {
 		instance.active = active;
+		instance.hideHud = hideHud;
+	}
+	
+	public static void setActive(boolean active) {
+		setActive(active, false);
 	}
 	
 	public static boolean isActive() {
 		return instance.active;
+	}
+	
+	public static boolean shouldHideHud() {
+		return instance.hideHud;
 	}
 }

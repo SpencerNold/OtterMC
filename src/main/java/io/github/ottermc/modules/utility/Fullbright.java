@@ -40,4 +40,9 @@ public class Fullbright extends Module {
 	public Storable<?>[] getWritables() {
 		return new Storable<?>[] { gamma };
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Increases the game brightness to see as if there were no shadows or darkness.";
+	}
 }

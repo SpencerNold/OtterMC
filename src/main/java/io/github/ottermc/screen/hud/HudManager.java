@@ -36,7 +36,7 @@ public class HudManager implements RenderGameOverlayListener {
 	@Override
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
 		event.setCanceled(true);
-		if (BlurShaderProgram.isActive())
+		if (BlurShaderProgram.shouldHideHud())
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		mc.entityRenderer.setupOverlayRendering();

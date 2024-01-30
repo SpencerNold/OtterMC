@@ -1,5 +1,7 @@
 package io.github.ottermc.screen.hud.client;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
 import net.minecraft.client.Minecraft;
@@ -29,6 +31,8 @@ public class ClientArmorStatusHud extends Component implements Movable {
 
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		if (mc.getRenderViewEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 			GlStateManager.enableTexture2D();
@@ -73,7 +77,7 @@ public class ClientArmorStatusHud extends Component implements Movable {
 
 	@Override
 	public int getX() {
-		return x == -1 ? x = 0 : x;
+		return x == -1 ? x = 2 : x;
 	}
 
 	@Override
@@ -89,5 +93,10 @@ public class ClientArmorStatusHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "ARMOR_STATUS_COMPONENT".hashCode();
 	}
 }

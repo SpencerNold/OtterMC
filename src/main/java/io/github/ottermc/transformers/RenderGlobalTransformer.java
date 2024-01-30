@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 
-@Transformer(className = "net/minecraft/client/renderer/RenderGlobal")
+@Transformer(name = "net/minecraft/client/renderer/RenderGlobal")
 public class RenderGlobalTransformer {
 
 	@Injector(name = "drawSelectionBox(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/MovingObjectPosition;IF)V", target = Target.HEAD)

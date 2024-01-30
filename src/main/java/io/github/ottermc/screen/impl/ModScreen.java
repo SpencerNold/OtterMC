@@ -26,12 +26,12 @@ public class ModScreen extends AbstractScreen {
 	@Override
 	public void onScreenOpen() {
 		getDrawable().setScale(scale);
-		BlurShaderProgram.setActive(true);
+		BlurShaderProgram.setActive(true, true);
 	}
 
 	@Override
 	public void onScreenClose() {
-		BlurShaderProgram.setActive(false);
+		BlurShaderProgram.setActive(false, false);
 		try {
 			Client.getClientStorage().write();
 		} catch (IOException e) {
@@ -107,9 +107,6 @@ public class ModScreen extends AbstractScreen {
 			}
 			counter++;
 		}
-		
-		String text = String.format("%s %s", Client.NAME, Client.VERSION);
-		getDrawable().drawString(text, getDisplayWidth() - getDrawable().getStringWidth(text) - 4, getDisplayHeight() - getDrawable().getStringHeight() - 4, -1);
 	}
 	
 	@Override
@@ -136,12 +133,12 @@ public class ModScreen extends AbstractScreen {
 			int counter = (int) ((mouseY - centerY - height * 0.1f - 4) / (mlen + 4));
 			int index = counter * 5 + i;
 			List<Module> modules = Client.getModManager().getByCategory(Category.values()[selectedCategoryIndex]).collect(Collectors.toList());
-			if (index <= modules.size()) {
+			if (index < modules.size()) {
 				Module mod = modules.get(index);
 				if (button == 0)
 					mod.toggle();
 				else if (button == 1)
-					Minecraft.getMinecraft().displayGuiScreen(new SettingScreen(mod));
+					Minecraft.getMinecraft().displayGuiScreen(new SettingScreen(this, mod));
 			}
 		}
 	}

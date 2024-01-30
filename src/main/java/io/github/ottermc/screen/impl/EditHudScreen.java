@@ -38,12 +38,12 @@ public class EditHudScreen extends AbstractScreen {
 	@Override
 	public void onScreenOpen() {
 		getDrawable().setScale(scale);
-		BlurShaderProgram.setActive(true);
+		BlurShaderProgram.setActive(true, true);
 	}
 
 	@Override
 	public void onScreenClose() {
-		BlurShaderProgram.setActive(false);
+		BlurShaderProgram.setActive(false, false);
 		try {
 			Client.getClientStorage().write();
 		} catch (IOException e) {
@@ -123,9 +123,6 @@ public class EditHudScreen extends AbstractScreen {
 			}
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);
 		}
-
-		String text = String.format("%s %s", Client.NAME, Client.VERSION);
-		getDrawable().drawString(text, getDisplayWidth() - getDrawable().getStringWidth(text) - 4, getDisplayHeight() - getDrawable().getStringHeight() - 4, -1);
 		if (tex2d)
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		else

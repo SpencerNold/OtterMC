@@ -7,15 +7,13 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.AddChatMessageListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.Category;
-import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.Storable;
 import io.github.ottermc.modules.settings.Writable;
 import io.github.ottermc.modules.settings.setting.StringSetting;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 
-public class AutoGG extends Module implements RunTickListener, AddChatMessageListener {
+public class AutoGG extends HypixelModule implements RunTickListener, AddChatMessageListener {
 
 	private static final Icon ICON = Icon.getIconIgnoreException("module/handshake_icon.png");
 
@@ -33,7 +31,7 @@ public class AutoGG extends Module implements RunTickListener, AddChatMessageLis
 	private int timer;
 
 	public AutoGG() {
-		super("Auto GG", Category.HYPIXEL);
+		super("Auto GG");
 	}
 
 	@Override
@@ -48,6 +46,8 @@ public class AutoGG extends Module implements RunTickListener, AddChatMessageLis
 
 	@Override
 	public void onRunTick(RunTickEvent event) {
+		if (!isConnectedToHypixel())
+			return;
 		if (timer > 0)
 			timer--;
 		else {

@@ -18,7 +18,7 @@ public class Array extends Module {
 	private static Array instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting ttf = new BooleanSetting("TrueType Font", false);
 	private final StringSetting text = new StringSetting("Text", "", 6);
 	

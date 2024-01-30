@@ -17,7 +17,7 @@ public class PotionEffect extends Module {
 	private static PotionEffect instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 
 	public PotionEffect() {
 		super("Potion Effects", Category.HUD);

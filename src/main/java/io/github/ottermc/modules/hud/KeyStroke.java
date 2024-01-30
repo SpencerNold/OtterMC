@@ -17,7 +17,7 @@ public class KeyStroke extends Module {
 	private static KeyStroke instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 
 	public KeyStroke() {
 		super("Keystrokes", Category.HUD);

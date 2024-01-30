@@ -1,5 +1,7 @@
 package io.github.ottermc.screen.hud.client;
 
+import org.lwjgl.opengl.Display;
+
 import io.github.ottermc.modules.hud.Direction;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.hud.Component;
@@ -23,6 +25,8 @@ public class ClientDirectionHud extends Component implements Movable {
 	
 	@Override
 	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
+		if (!Display.isFullscreen())
+			return;
 		boolean ttf = Direction.shouldUseClientFont();
 		Color color = Direction.getColor();
 		
@@ -91,5 +95,10 @@ public class ClientDirectionHud extends Component implements Movable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	@Override
+	public int getSerialId() {
+		return "DIRECTION_COMPONENT".hashCode();
 	}
 }

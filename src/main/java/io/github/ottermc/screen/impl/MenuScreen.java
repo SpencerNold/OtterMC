@@ -1,6 +1,5 @@
 package io.github.ottermc.screen.impl;
 
-import io.github.ottermc.Client;
 import io.github.ottermc.screen.AbstractScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
@@ -11,12 +10,12 @@ public class MenuScreen extends AbstractScreen {
 	@Override
 	public void onScreenOpen() {
 		getDrawable().setScale(2.0f);
-		BlurShaderProgram.setActive(true);
+		BlurShaderProgram.setActive(true, true);
 	}
 
 	@Override
 	public void onScreenClose() {
-		BlurShaderProgram.setActive(false);
+		BlurShaderProgram.setActive(false, false);
 	}
 	
 	@Override
@@ -45,9 +44,6 @@ public class MenuScreen extends AbstractScreen {
 		getDrawable().fillRoundedRectangle(x, centerY, length, length, 8, hovering ? 0xA00D1A22 : backgroundColor);
 		getDrawable().drawIcon(Icon.MOVE, centerX + 53, centerY + 5, 0.5f, 0xB0C6C6C6); // 0xC6101010?
 		shouldDrawHovering = shouldDrawHovering || hovering;
-		
-		String text = String.format("%s %s", Client.NAME, Client.VERSION);
-		getDrawable().drawString(text, getDisplayWidth() - getDrawable().getStringWidth(text) - 4, getDisplayHeight() - getDrawable().getStringHeight() - 4, -1);
 	}
 	
 	@Override

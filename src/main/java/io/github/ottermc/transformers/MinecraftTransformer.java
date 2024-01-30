@@ -7,13 +7,17 @@ import agent.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener.PostInitializeEvent;
 import io.github.ottermc.events.listeners.RunTickListener.RunTickEvent;
+import io.github.ottermc.events.listeners.SaveGameListener.SaveGameEvent;
 import io.github.ottermc.events.listeners.UpdateDisplayListener.UpdateDisplayEvent;
+import io.github.ottermc.modules.utility.Chat;
+import io.github.ottermc.screen.impl.ChatScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
-@Transformer(className = "net/minecraft/client/Minecraft")
+@Transformer(name = "net/minecraft/client/Minecraft")
 public class MinecraftTransformer {
 
 	@Injector(target = Target.HEAD, name = "runTick()V")
@@ -36,10 +40,22 @@ public class MinecraftTransformer {
 	
 	@Injector(target = Target.HEAD, name = "displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V")
 	public void onDisplayGuiScreen(Minecraft mc, GuiScreen gui, Callback callback) {
-		// Replace the GuiMainMenu with my own wrapped class
+		// Replaces screens with wrapped classes of screens
 		if ((gui == null && mc.theWorld == null) || (gui != null && gui.getClass() == GuiMainMenu.class)) {
 			mc.displayGuiScreen(new MainMenuScreen());
 			callback.setCanceled(true);
+		}
+		if (gui != null && gui.getClass() == GuiChat.class && Chat.isModActive()) {
+			mc.displayGuiScreen(new ChatScreen(mc));
+			callback.setCanceled(true);
+		}
+	}
+	
+	@Injector(target = Target.HEAD, name = "displayInGameMenu()V")
+	public void onDisplayInGameMenu(Minecraft mc, Callback callback) {
+		if (mc.currentScreen == null) {
+			SaveGameEvent event = new SaveGameEvent();
+			EventBus.fire(event);
 		}
 	}
 }

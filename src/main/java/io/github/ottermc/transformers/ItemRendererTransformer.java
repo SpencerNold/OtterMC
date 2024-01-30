@@ -8,7 +8,7 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RenderItemInFirstPersonListener.RenderItemInFirstPersonEvent;
 import net.minecraft.client.renderer.ItemRenderer;
 
-@Transformer(className = "net/minecraft/client/renderer/ItemRenderer")
+@Transformer(name = "net/minecraft/client/renderer/ItemRenderer")
 public class ItemRendererTransformer {
 
 	@Injector(target = Target.HEAD, name = "renderItemInFirstPerson(F)V")

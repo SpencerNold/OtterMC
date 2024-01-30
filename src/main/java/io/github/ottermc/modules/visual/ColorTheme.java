@@ -14,10 +14,11 @@ public class ColorTheme extends Module {
 	
 	private static ColorTheme instance;
 	
-	private final EnumSetting<Theme> theme = new EnumSetting<>("Theme", Theme.class, Theme.RAINBOW);
+	private final EnumSetting<Theme> theme = new EnumSetting<>("Theme", Theme.class, Theme.DARK_AQUA);
 	
 	public ColorTheme() {
 		super("Color Theme", Category.VISUAL);
+		setActive(true);
 		instance = this;
 	}
 	
@@ -50,7 +51,7 @@ public class ColorTheme extends Module {
 	
 	public enum Theme {
 		
-		DARK_PURPLE(Color.DEFAULT), AQUA(new Color(0xFF4BADAB)), DARK_AQUA(new Color(0xFF05696B, true)), RAINBOW(null);
+		RED(new Color(0xFF8B0000, true)), PINK(new Color(0xFFFFC0CB)), DARK_PURPLE(Color.DEFAULT), AQUA(new Color(0xFF4BADAB)), BLUE(new Color(0xFF00008B, true)), DARK_AQUA(new Color(0xFF05696B, true)), GREEN(new Color(0xFF008B00, true)), RAINBOW(null);
 		
 		private final Color color;
 		

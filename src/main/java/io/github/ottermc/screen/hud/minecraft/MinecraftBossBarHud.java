@@ -75,4 +75,9 @@ public class MinecraftBossBarHud extends Component implements Movable {
 	public boolean isVisible() {
 		return super.isVisible() && BossStatus.healthScale > 0;
 	}
+	
+	@Override
+	public int getSerialId() {
+		return "BOSSBAR_COMPONENT".hashCode();
+	}
 }

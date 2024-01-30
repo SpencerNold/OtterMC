@@ -17,7 +17,7 @@ public class ClickCounter extends Module {
 	private static ClickCounter instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 
 	public ClickCounter() {
 		super("CPS", Category.HUD);

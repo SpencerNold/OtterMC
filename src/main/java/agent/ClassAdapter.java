@@ -38,9 +38,9 @@ public class ClassAdapter implements ClassFileTransformer {
 		if (!clazz.isAnnotationPresent(Transformer.class))
 			throw new RuntimeException(clazz.getName() + " is missing the @Transformer annotation");
 		Transformer transformer = clazz.getAnnotation(Transformer.class);
-		if (!Mapping.contains(transformer.className()))
-			throw new RuntimeException(transformer.className() + " is not a Minecraft class");
-		Mapping.Class mclass = Mapping.get(transformer.className());
+		if (!Mapping.contains(transformer.name()))
+			throw new RuntimeException(transformer.name() + " is not a Minecraft class");
+		Mapping.Class mclass = Mapping.get(transformer.name());
 		Class<?> mcClass = null;
 		try {
 			mcClass = Class.forName(mclass.getName1());
@@ -137,7 +137,8 @@ public class ClassAdapter implements ClassFileTransformer {
 			}
 			
 		}, 0);
-		return writer.toByteArray();
+		byte[] bytes = writer.toByteArray();
+		return bytes;
 	}
 	
 	public static ClassAdapter getInstance() {

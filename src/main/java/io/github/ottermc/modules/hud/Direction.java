@@ -17,7 +17,7 @@ public class Direction extends Module {
 	private static Direction instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", false);
+	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting ttf = new BooleanSetting("TrueType Font", true);
 
 	public Direction() {

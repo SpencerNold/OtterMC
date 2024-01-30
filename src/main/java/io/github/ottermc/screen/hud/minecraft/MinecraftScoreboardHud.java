@@ -120,4 +120,9 @@ public class MinecraftScoreboardHud extends Component implements Movable {
 	public boolean isVisible() {
 		return super.isVisible() && width != 0 && height != 0;
 	}
+	
+	@Override
+	public int getSerialId() {
+		return "SCOREBOARD_COMPONENT".hashCode();
+	}
 }

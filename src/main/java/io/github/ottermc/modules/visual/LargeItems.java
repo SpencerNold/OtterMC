@@ -16,6 +16,7 @@ public class LargeItems extends Module implements GetItemScaleListener {
 
 	private static final Icon ICON = Icon.getIconIgnoreException("module/size_icon.png");
 	
+	// This is what is probably wanted for UHC, but I mean, who plays that anymore? *make this customizable*
 	private final List<Item> items = Arrays.asList(Items.gold_nugget, Items.gold_ingot, Items.golden_apple, Items.skull);
 	
 	public LargeItems() {

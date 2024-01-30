@@ -8,7 +8,7 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RenderWorldListener.RenderWorldEvent;
 import net.minecraft.client.renderer.EntityRenderer;
 
-@Transformer(className = "net/minecraft/client/renderer/EntityRenderer")
+@Transformer(name = "net/minecraft/client/renderer/EntityRenderer")
 public class EntityRendererTransformer {
 
 	@Injector(target = Target.TAIL, name = "renderWorld(FJ)V")

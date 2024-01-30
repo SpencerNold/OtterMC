@@ -11,6 +11,9 @@ import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.settings.Storable;
 import io.github.ottermc.modules.settings.Writable;
+import io.github.ottermc.screen.hud.Component;
+import io.github.ottermc.screen.hud.HudManager;
+import io.github.ottermc.screen.hud.Movable;
 
 public class ClientStorage {
 	
@@ -21,6 +24,7 @@ public class ClientStorage {
 	private byte[] clientId = Secure.random(16);
 	private final Map<Integer, Module> modules = new HashMap<>();
 	private final Map<Integer, Storable<?>> storables = new HashMap<>();
+	private final Map<Integer, Component> components = new HashMap<>();
 	
 	private boolean initialized;
 	
@@ -43,6 +47,10 @@ public class ClientStorage {
 				storables.put(storable.getSerialId() + id, storable);
 			}
 		});
+		HudManager hudManager = Client.getHudManager();
+		hudManager.filter(component -> component instanceof Movable).forEach(component -> {
+			components.put(((Movable) component).getSerialId(), component);
+		});
 		initialized = true;
 	}
 	
@@ -60,12 +68,20 @@ public class ClientStorage {
 		for (i = 0; i < n; i++) {
 			int id = buf.readInt();
 			boolean active = buf.readBoolean();
-			modules.get(id).setActive(active);
+			if (modules.containsKey(id))
+				modules.get(id).setActive(active);
 		}
 		n = buf.readShort();
 		for (i = 0; i < n; i++) {
 			int id = buf.readInt();
-			storables.get(id).read(buf);
+			if (storables.containsKey(id))
+				storables.get(id).read(buf);
+		}
+		n = buf.readShort();
+		for (i = 0; i < n; i++) {
+			int id = buf.readInt();
+			if (components.containsKey(id))
+				((Movable) components.get(id)).read(buf);
 		}
 	}
 	
@@ -87,6 +103,15 @@ public class ClientStorage {
 			buf.writeInt(id);
 			storable.write(buf);
 		});
+		buf.writeShort((short) components.size());
+		components.forEach((id, component) -> {
+			buf.writeInt(id);
+			((Movable) component).write(buf);
+		});
 		Files.write(file.toPath(), buf.getDataBuffer());
+	}
+	
+	public byte[] getClientId() {
+		return clientId;
 	}
 }

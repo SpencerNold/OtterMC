@@ -17,7 +17,7 @@ public class DrawableHelper {
 	private final FontRenderer fontRenderer = FontRenderer.OMC_TTF_RENDERER;
 
 	private float scale = 1.0f;
-
+	
 	public void setupOverlayRendering() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 		GlStateManager.clear(256);
@@ -181,6 +181,8 @@ public class DrawableHelper {
 		GlStateManager.bindTexture(icon.getTextureId());
 		GlStateManager.scale(scale, scale, scale);
 		float sinv = 1.0f / scale;
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		Gui.drawModalRectWithCustomSizedTexture(x * (int) sinv, y * (int) sinv, 0, 0, 64, 64, 64, 64);
 		GlStateManager.scale(sinv, sinv, sinv);
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
