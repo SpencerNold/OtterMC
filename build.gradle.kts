@@ -1,5 +1,6 @@
-import remap.Compile
-import launcher.Launch
+import ottermc.Remapper
+import ottermc.Compiler
+import ottermc.Launcher
 
 plugins {
 	eclipse
@@ -30,10 +31,18 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+tasks.register("remap") {
+	doLast {
+		Remapper.remap();
+	}
+	group = "client"
+	description = "Prepares the game jar for the gradle build."
+}
+
 tasks.register("runClient") {
 	doLast {
 		val client = file("build/libs/OtterMC-remapped.jar")
-		Launch.launch(client)
+		Launcher.launch(client)
 	}
 	group = "client"
 	description = "Runs the modified game client."
@@ -43,7 +52,7 @@ tasks.register("runClient") {
 tasks.named("build") {
 	doLast {
 		val client = file("build/libs/OtterMC.jar")
-		Compile.execute(client)
+		Compiler.compile(client)
 	}
 	group = "client"
 }

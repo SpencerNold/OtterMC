@@ -1,4 +1,4 @@
-package remap;
+package ottermc;
 
 import java.util.ArrayList;
 import java.util.Arrays;

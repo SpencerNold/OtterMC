@@ -1,4 +1,4 @@
-package remap;
+package ottermc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,19 +7,18 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-public class Compile {
+import org.gradle.api.GradleScriptException;
 
-    public static boolean execute(File file) {
+public class Compiler {
+
+    public static void compile(File file) {
     	try {
     		if (!file.exists())
-    			return false;
+    			return;
     		File output = new File(file.getParentFile(), "OtterMC-remapped.jar");
     		if (output.exists())
     			output.delete();
@@ -45,9 +44,8 @@ public class Compile {
     		}
     		jar.close();
     		target.close();
-    		return true;
     	} catch (Exception e) {
-    		return false;
+			throw new GradleScriptException("client build failed during remap", e);
     	}
     }
     

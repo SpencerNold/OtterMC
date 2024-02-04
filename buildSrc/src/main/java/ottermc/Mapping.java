@@ -1,4 +1,4 @@
-package remap;
+package ottermc;
 
 import java.io.IOException;
 import java.util.ArrayList;
