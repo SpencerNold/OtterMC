@@ -1,5 +1,6 @@
 package io.github.ottermc.transformers.wrapper;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -54,7 +55,9 @@ public class RendererLivingEntityWrapper {
 			GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA, GL11.GL_REPLACE);
 			GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA, OpenGlHelper.GL_PREVIOUS);
 			GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA, GL11.GL_SRC_ALPHA);
-			brightnessBuffer.position(0);
+
+			// Older Java vs newer Java impl issues
+			((Buffer) brightnessBuffer).position(0);
 
 			if (flag1) {
 				SetEntityDamageBrightnessEvent event = new SetEntityDamageBrightnessEvent();
@@ -74,8 +77,8 @@ public class RendererLivingEntityWrapper {
 				brightnessBuffer.put(1.0F - f1);
 			}
 
-			brightnessBuffer.flip();
-			GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, (FloatBuffer) brightnessBuffer);
+			((Buffer) brightnessBuffer).flip();
+			GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, (FloatBuffer) ((Buffer) brightnessBuffer));
 			GlStateManager.setActiveTexture(OpenGlHelper.GL_TEXTURE2);
 			GlStateManager.enableTexture2D();
 			GlStateManager.bindTexture(getField_177096_e(renderer).getGlTextureId());
@@ -96,7 +99,6 @@ public class RendererLivingEntityWrapper {
 	private static AbstractTexture getField_177096_e(RendererLivingEntity<?> renderer) {
 		return (DynamicTexture) Reflection.getMinecraftField("net/minecraft/client/renderer/entity/RendererLivingEntity", "field_177096_e", renderer);
 	}
-
 	private static FloatBuffer getBrightnessBuffer(RendererLivingEntity<?> renderer) {
 		return (FloatBuffer) Reflection.getMinecraftField("net/minecraft/client/renderer/entity/RendererLivingEntity", "brightnessBuffer", renderer);
 	}

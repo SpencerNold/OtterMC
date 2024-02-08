@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.lang.instrument.UnmodifiableClassException;
 import java.nio.ByteBuffer;
 
+import agent.Agent;
+import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.screen.impl.MainMenuScreen;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -57,7 +60,7 @@ import io.github.ottermc.transformers.RenderItemTransformer;
 import io.github.ottermc.transformers.RendererLivingEntityTransformer;
 import net.minecraft.client.Minecraft;
 
-public class Client implements PostInitializeListener {
+public class Client {
 
 	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1";
 
@@ -70,7 +73,7 @@ public class Client implements PostInitializeListener {
 	private final File clientDirectory;
 	private final ClientStorage storage;
 	private final AnalyticalAPI analyticalAPI;
-	
+
 	public Client(File file, ClassAdapter adapter) {
 		instance = this;
 		this.clientDirectory = file;
@@ -96,30 +99,8 @@ public class Client implements PostInitializeListener {
 		registerKeybinds();
 	}
 
-	@Override
-	public void onPostInitializeListener(PostInitializeEvent event) {
-		Display.setTitle(NAME + " " + VERSION);
-		Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
-		registerModules();
-		registerHuds();
-		storage.init();
-		try {
-			storage.read();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Any classes whose static initializers use OpenGL
-		ClassAdapter adapter = ClassAdapter.getInstance();
-		adapter.register(RendererLivingEntityTransformer.class);
-		try {
-			adapter.execute();
-		} catch (UnmodifiableClassException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void registerEvents() {
-		EventBus.add(this);
+		EventBus.add(new InitializationManager(this));
 		EventBus.add(keyManager);
 		EventBus.add(new BlurShaderProgram());
 		EventBus.add(hudManager);
@@ -140,7 +121,7 @@ public class Client implements PostInitializeListener {
 		});
 	}
 
-	private void registerModules() {
+	void registerModules() {
 		// HUD
 		modManager.register(new ArmorStatus());
 		modManager.register(new Array());
@@ -172,7 +153,7 @@ public class Client implements PostInitializeListener {
 		modManager.register(new Analytical());
 	}
 
-	private void registerHuds() {
+	void registerHuds() {
 		// Default Minecraft HUD
 		hudManager.register(GameDisplay.PUMPKIN_OVERLAY);
 		hudManager.register(GameDisplay.NAUSEA_EFFECT);

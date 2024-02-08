@@ -44,7 +44,7 @@ public class Launcher {
 					JsonObject artifact = downloads.getAsJsonObject("artifact");
 					String path = artifact.get("path").getAsString();
 					String url = artifact.get("url").getAsString();
-					File lfile = new File(libDir, path.replaceAll("/", File.separator));
+					File lfile = new File(libDir, path.replace("/", File.separator));
 					lfile.getParentFile().mkdirs();
 					downloadTo(url, new FileOutputStream(lfile));
 					classPath.add(lfile.getAbsolutePath());
@@ -89,7 +89,8 @@ public class Launcher {
 			}
 		} catch (Exception e) {
 			// TODO Clean here?
-			throw new GradleScriptException("client launch failed", e);
+			e.printStackTrace();
+			throw new GradleScriptException("client launch failed: " + e.getClass().getName(), e);
 		}
 	}
 	
@@ -114,7 +115,7 @@ public class Launcher {
 		Enumeration<JarEntry> entries = jar.entries();
 		while (entries.hasMoreElements()) {
 			JarEntry entry = entries.nextElement();
-			File f = new File(file.getParentFile(), entry.getName().replaceAll("/", File.separator));
+			File f = new File(file.getParentFile(), entry.getName().replace("/", File.separator));
 			if (entry.isDirectory()) {
 				f.mkdirs();
 				continue;

@@ -23,12 +23,12 @@ public class AutoGG extends HypixelModule implements RunTickListener, AddChatMes
 			"1st Killer - ", "1st Place - ", "Winner: ",
 			" - Damage Dealt - ", "Winning Team - ", "1st - ", "Winners: ", "Winner: ", "Winning Team: ",
 			" won the game!", "Top Seeker: ", "1st Place: ", "Last team standing!", "Winner #1 (", "Top Survivors",
-			"Winners - "
+			"Winners - ", "WINNER!"
 	};
 
 	private final StringSetting gameEndMessage = new StringSetting("Message", "gg", 1);
 
-	private int timer;
+	private int timer = -1;
 
 	public AutoGG() {
 		super("Auto GG");
@@ -50,7 +50,7 @@ public class AutoGG extends HypixelModule implements RunTickListener, AddChatMes
 			return;
 		if (timer > 0)
 			timer--;
-		else {
+		if (timer == 0) {
 			timer = -1;
 			Minecraft mc = Minecraft.getMinecraft();
 			mc.thePlayer.sendChatMessage("/ac " + gameEndMessage.getValue());
@@ -60,9 +60,11 @@ public class AutoGG extends HypixelModule implements RunTickListener, AddChatMes
 	@Override
 	public void onAddChatMessage(AddChatMessageEvent event) {
 		String message = event.getMessage();
+		System.out.println("A" + message);
 		Matcher matcher = REGULAR_CHAT_PATTERN.matcher(message);
 		if (matcher.find())
 			return;
+		System.out.println("B" + message);
 		for (String str : gameEndStrings) {
 			if (message.contains(str))
 				timer = 20;

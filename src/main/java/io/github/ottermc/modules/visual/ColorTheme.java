@@ -33,6 +33,8 @@ public class ColorTheme extends Module {
 	}
 
 	public static Color getColorTheme() {
+		if (instance == null)
+			return Color.DEFAULT;
 		Color color = instance.theme.getEnumValue().color;
 		if (color == null) {
 			float x = System.currentTimeMillis() % 2000 / 1000.0f;
@@ -46,7 +48,7 @@ public class ColorTheme extends Module {
 	}
 	
 	public static boolean isModActive() {
-		return instance.isActive();
+		return instance != null && instance.isActive();
 	}
 	
 	public enum Theme {

@@ -27,8 +27,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+	setSourceCompatibility(JavaVersion.VERSION_1_8)
+	setTargetCompatibility(JavaVersion.VERSION_1_8)
 }
 
 tasks.register("remap") {
@@ -59,6 +59,8 @@ tasks.named("build") {
 
 tasks.withType<Jar> {
 	manifest {
+		attributes["Main-Class"] = "Loader"
+		attributes["Agent-Class"] = "agent.Agent"
 		attributes["Premain-Class"] = "agent.Agent"
 		attributes["Can-Retransform-Classes"] = true
 	}

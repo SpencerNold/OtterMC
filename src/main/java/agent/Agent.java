@@ -6,10 +6,23 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.net.URISyntaxException;
 
 import io.github.ottermc.Client;
+import io.github.ottermc.events.EventBus;
+import io.github.ottermc.events.listeners.PostInitializeListener;
 
 public class Agent {
 
+	private static boolean injectionLoad = false;
+
 	public static void premain(String args, Instrumentation instrumentation) {
+		launch(args, instrumentation);
+	}
+
+	public static void agentmain(String args, Instrumentation instrumentation) {
+		injectionLoad = true;
+		launch(args, instrumentation);
+	}
+
+	private static void launch(String args, Instrumentation instrumentation) {
 		File file = getJarFileDirectory();
 		Dependency.loadAll(new File(file, "libs"), instrumentation);
 		ClassAdapter adapter = new ClassAdapter(instrumentation);
@@ -30,5 +43,9 @@ public class Agent {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static boolean isInjectionLoad() {
+		return injectionLoad;
 	}
 }
