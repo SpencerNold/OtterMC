@@ -1,19 +1,11 @@
 package io.github.ottermc;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.instrument.UnmodifiableClassException;
-import java.nio.ByteBuffer;
 
-import agent.Agent;
-import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.screen.impl.MainMenuScreen;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
-import agent.ClassAdapter;
+import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.io.ClientStorage;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
@@ -43,7 +35,6 @@ import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.impl.GameMacroScreen;
 import io.github.ottermc.screen.impl.MenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
-import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformers.EntityPlayerSPTransformer;
 import io.github.ottermc.transformers.EntityRendererTransformer;
 import io.github.ottermc.transformers.EntityTransformer;
@@ -57,7 +48,6 @@ import io.github.ottermc.transformers.PlayerControllerMPTransformer;
 import io.github.ottermc.transformers.RenderEntityItemTransformer;
 import io.github.ottermc.transformers.RenderGlobalTransformer;
 import io.github.ottermc.transformers.RenderItemTransformer;
-import io.github.ottermc.transformers.RendererLivingEntityTransformer;
 import net.minecraft.client.Minecraft;
 
 public class Client {

@@ -5,9 +5,8 @@ import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.net.URISyntaxException;
 
+import agent.transformation.ClassAdapter;
 import io.github.ottermc.Client;
-import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.PostInitializeListener;
 
 public class Agent {
 

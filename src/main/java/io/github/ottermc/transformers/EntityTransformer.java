@@ -1,9 +1,9 @@
 package io.github.ottermc.transformers;
 
-import agent.Callback;
-import agent.Injector;
-import agent.Target;
-import agent.Transformer;
+import agent.transformation.Callback;
+import agent.transformation.Injector;
+import agent.transformation.Target;
+import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.SetVelocityListener.SetVelocityEvent;
 import net.minecraft.entity.Entity;

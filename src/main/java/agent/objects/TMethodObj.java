@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import agent.Target;
+import agent.transformation.Target;
 import structures.Pair;
 
 public class TMethodObj {

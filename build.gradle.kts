@@ -13,14 +13,17 @@ repositories {
 }
 
 dependencies {
+	// Minecraft Dependencies
 	implementation("com.google.code.gson:gson:2.2.4")
 	implementation("com.google.guava:guava:17.0")
 	implementation("org.lwjgl.lwjgl:lwjgl:2.9.2")
 	implementation("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
 	
-	
+	/* DEPRECATED! */
 	implementation("org.ow2.asm:asm:9.6")
-	
+
+	// https://github.com/SpencerNold/jasm
+	implementation(files("libs/interpreter.jar"))
 	// mc-clean.jar is a the 1.8.9 Minecraft client jar
 	// deobfuscated with the 1.8.9 MCP mappings
 	implementation(files("libs/mc-clean.jar"))

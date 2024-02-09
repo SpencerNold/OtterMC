@@ -1,4 +1,10 @@
-package agent;
+package agent.transformation;
+
+import agent.Mapping;
+import agent.objects.TClassObj;
+import agent.objects.TMethodObj;
+import org.objectweb.asm.*;
+import structures.Pair;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -9,17 +15,6 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import agent.objects.TClassObj;
-import agent.objects.TMethodObj;
-import structures.Pair;
 
 public class ClassAdapter implements ClassFileTransformer {
 	
@@ -55,7 +50,7 @@ public class ClassAdapter implements ClassFileTransformer {
 				continue;
 			Injector injector = method.getAnnotation(Injector.class);
 			Mapping.Method mmethod = mclass.getMethod(injector.name());
-			TMethodObj tmethod = null;
+			TMethodObj tmethod;
 			if (mmethod != null)
 				tmethod = new TMethodObj(mmethod.getName1(), mmethod.getDesc1(), method, injector.target());
 			else
@@ -65,7 +60,7 @@ public class ClassAdapter implements ClassFileTransformer {
 	}
 	
 	public void execute() throws UnmodifiableClassException {
-		if (transformers.size() == 0)
+		if (transformers.isEmpty())
 			return;
 		instrumentation.addTransformer(this, true);
 		instrumentation.retransformClasses(transformers.keySet().toArray(new Class<?>[0]));

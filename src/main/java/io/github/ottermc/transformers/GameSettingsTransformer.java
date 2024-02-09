@@ -2,11 +2,11 @@ package io.github.ottermc.transformers;
 
 import java.io.File;
 
-import agent.Callback;
-import agent.Injector;
+import agent.transformation.Callback;
+import agent.transformation.Injector;
 import agent.Reflection;
-import agent.Target;
-import agent.Transformer;
+import agent.transformation.Target;
+import agent.transformation.Transformer;
 import io.github.ottermc.Client;
 import net.minecraft.client.settings.GameSettings;
 

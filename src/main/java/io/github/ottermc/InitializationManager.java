@@ -1,6 +1,6 @@
 package io.github.ottermc;
 
-import agent.ClassAdapter;
+import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.events.listeners.RunTickListener;

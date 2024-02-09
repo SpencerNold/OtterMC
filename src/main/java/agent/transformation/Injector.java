@@ -1,4 +1,4 @@
-package agent;
+package agent.transformation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Injector {
-	agent.Target target();
+	agent.transformation.Target target();
 	String name();
 	
 	/*
