@@ -1,6 +1,6 @@
-import ottermc.Remapper
 import ottermc.Compiler
 import ottermc.Launcher
+import ottermc.Remapper
 
 plugins {
 	eclipse
@@ -22,8 +22,6 @@ dependencies {
 	/* DEPRECATED! */
 	implementation("org.ow2.asm:asm:9.6")
 
-	// https://github.com/SpencerNold/jasm
-	implementation(files("libs/interpreter.jar"))
 	// mc-clean.jar is a the 1.8.9 Minecraft client jar
 	// deobfuscated with the 1.8.9 MCP mappings
 	implementation(files("libs/mc-clean.jar"))
@@ -42,7 +40,7 @@ tasks.register("remap") {
 	description = "Prepares the game jar for the gradle build."
 }
 
-tasks.register("runClient") {
+tasks.register("run") {
 	doLast {
 		val client = file("build/libs/OtterMC-remapped.jar")
 		Launcher.launch(client)

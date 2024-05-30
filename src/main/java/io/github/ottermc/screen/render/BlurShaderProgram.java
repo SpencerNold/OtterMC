@@ -2,6 +2,7 @@ package io.github.ottermc.screen.render;
 
 import java.io.IOException;
 
+import io.github.ottermc.ClientLogger;
 import io.github.ottermc.events.listeners.RenderWorldListener;
 import io.github.ottermc.events.listeners.UpdateDisplayListener;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,7 @@ public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayList
 			shader = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), RESOURCE);
 			shader.createBindFramebuffers(mc.displayWidth, mc.displayHeight);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 		}
 	}
 

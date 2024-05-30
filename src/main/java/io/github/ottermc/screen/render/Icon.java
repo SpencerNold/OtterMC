@@ -1,14 +1,14 @@
 package io.github.ottermc.screen.render;
 
+import io.github.ottermc.ClientLogger;
+import io.github.ottermc.render.GenericImageObject;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
-
-import javax.imageio.ImageIO;
-
-import io.github.ottermc.render.GenericImageObject;
 
 public class Icon extends GenericImageObject {
 
@@ -39,6 +39,8 @@ public class Icon extends GenericImageObject {
 	public static ByteBuffer readIconToBuffer(String name) {
 		InputStream input = Icon.class.getResourceAsStream("/icons/" + name);
 		try {
+			if (input == null)
+				return null;
 			BufferedImage image = ImageIO.read(input);
 			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 			ByteBuffer buf = ByteBuffer.allocate(4 * pixels.length);
@@ -47,7 +49,7 @@ public class Icon extends GenericImageObject {
 			((Buffer) buf).flip();
 			return buf;
 		} catch (IOException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 			return null;
 		}
 	}

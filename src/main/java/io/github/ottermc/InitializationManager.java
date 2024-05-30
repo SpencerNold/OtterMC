@@ -55,7 +55,7 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
         try {
             Client.getClientStorage().read();
         } catch (IOException e) {
-            e.printStackTrace();
+            ClientLogger.display(e);
         }
         // Any classes whose static initializers use OpenGL
         ClassAdapter adapter = ClassAdapter.getInstance();
@@ -63,11 +63,12 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
         try {
             adapter.execute();
         } catch (UnmodifiableClassException e) {
-            e.printStackTrace();
+            ClientLogger.display(e);
         }
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
             mc.displayGuiScreen(new MainMenuScreen());
+        Client.getErrorManager().postInit();
         hasPostInitialized = true;
     }
 }

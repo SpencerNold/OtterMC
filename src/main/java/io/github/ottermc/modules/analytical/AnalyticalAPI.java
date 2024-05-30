@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.github.ottermc.Client;
+import io.github.ottermc.ClientLogger;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.io.http.HttpClient;
 import io.github.ottermc.io.http.Method;
@@ -62,7 +63,7 @@ public class AnalyticalAPI {
 				}
 				return 0;
 			} catch (IOException e) {
-				e.printStackTrace();
+				ClientLogger.display(e);
 				return 1;
 			}
 		}, service);
@@ -83,7 +84,7 @@ public class AnalyticalAPI {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			return digest.digest(buf.getDataBuffer());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 			return new byte[32];
 		}
 	}

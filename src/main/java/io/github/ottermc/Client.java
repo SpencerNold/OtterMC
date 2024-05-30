@@ -1,9 +1,5 @@
 package io.github.ottermc;
 
-import java.io.File;
-
-import org.lwjgl.input.Keyboard;
-
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.ClientStorage;
@@ -11,44 +7,23 @@ import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.analytical.Analytical;
 import io.github.ottermc.modules.analytical.AnalyticalAPI;
-import io.github.ottermc.modules.hud.ArmorStatus;
-import io.github.ottermc.modules.hud.Array;
-import io.github.ottermc.modules.hud.ClickCounter;
-import io.github.ottermc.modules.hud.Coordinate;
-import io.github.ottermc.modules.hud.Direction;
-import io.github.ottermc.modules.hud.GuiBlur;
-import io.github.ottermc.modules.hud.KeyStroke;
-import io.github.ottermc.modules.hud.PotionEffect;
+import io.github.ottermc.modules.hud.*;
 import io.github.ottermc.modules.hypixel.AutoGG;
 import io.github.ottermc.modules.hypixel.GameMacro;
 import io.github.ottermc.modules.utility.Fullbright;
 import io.github.ottermc.modules.utility.Zoom;
-import io.github.ottermc.modules.visual.BlockOutline;
-import io.github.ottermc.modules.visual.ColorTheme;
-import io.github.ottermc.modules.visual.DamageColor;
-import io.github.ottermc.modules.visual.EnchantmentGlint;
-import io.github.ottermc.modules.visual.LargeItems;
-import io.github.ottermc.modules.visual.OldAnimation;
+import io.github.ottermc.modules.visual.*;
 import io.github.ottermc.screen.hud.ClientDisplay;
 import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.impl.GameMacroScreen;
 import io.github.ottermc.screen.impl.MenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
-import io.github.ottermc.transformers.EntityPlayerSPTransformer;
-import io.github.ottermc.transformers.EntityRendererTransformer;
-import io.github.ottermc.transformers.EntityTransformer;
-import io.github.ottermc.transformers.GameSettingsTransformer;
-import io.github.ottermc.transformers.GuiIngameTransformer;
-import io.github.ottermc.transformers.GuiScreenTransformer;
-import io.github.ottermc.transformers.ItemRendererTransformer;
-import io.github.ottermc.transformers.LayerArmorBaseTransformer;
-import io.github.ottermc.transformers.MinecraftTransformer;
-import io.github.ottermc.transformers.PlayerControllerMPTransformer;
-import io.github.ottermc.transformers.RenderEntityItemTransformer;
-import io.github.ottermc.transformers.RenderGlobalTransformer;
-import io.github.ottermc.transformers.RenderItemTransformer;
+import io.github.ottermc.transformers.*;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
+
+import java.io.File;
 
 public class Client {
 
@@ -59,6 +34,7 @@ public class Client {
 	private final KeybindManager keyManager = new KeybindManager();
 	private final ModuleManager modManager = new ModuleManager();
 	private final HudManager hudManager = new HudManager();
+	private final ClientLogger errorManager = new ClientLogger();
 
 	private final File clientDirectory;
 	private final ClientStorage storage;
@@ -165,6 +141,8 @@ public class Client {
 		hudManager.register(ClientDisplay.DIRECTION);
 		hudManager.register(ClientDisplay.KEYSTROKE);
 		hudManager.register(ClientDisplay.POTION_EFFECT);
+
+		ClientLogger.display(ClientLogger.Severity.ERROR, "Test");
 	}
 
 	public static KeybindManager getKeyManager() {
@@ -189,5 +167,9 @@ public class Client {
 	
 	public static AnalyticalAPI getAnalyticalAPI() {
 		return instance.analyticalAPI;
+	}
+
+	public static ClientLogger getErrorManager() {
+		return instance.errorManager;
 	}
 }

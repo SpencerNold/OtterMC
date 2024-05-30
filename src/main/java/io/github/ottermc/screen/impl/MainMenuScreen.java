@@ -1,9 +1,9 @@
 package io.github.ottermc.screen.impl;
 
-import java.io.IOException;
-
 import agent.Reflection;
 import io.github.ottermc.Client;
+import io.github.ottermc.events.EventBus;
+import io.github.ottermc.events.listeners.DrawMainMenuScreenListener;
 import io.github.ottermc.modules.visual.ColorTheme;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.DrawableHelper;
@@ -16,6 +16,8 @@ import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
 
 public class MainMenuScreen extends GuiMainMenu {
 
@@ -85,6 +87,9 @@ public class MainMenuScreen extends GuiMainMenu {
 		hovering = drawable.intersects(x, y, 150, 20, mouseX, mouseY);
 		drawable.outlineRectangle(x, y, 150, 20, 0x50000000, hovering ? clientColor : 0xFFC6C6C6);
 		drawable.drawString(text, x + drawable.middle(150, drawable.getStringWidth(text)), y + 5, hovering ? clientColor : -1);
+
+		DrawMainMenuScreenListener.DrawMainMenuScreenEvent event = new DrawMainMenuScreenListener.DrawMainMenuScreenEvent();
+		EventBus.fire(event);
 	}
 	
 	@Override

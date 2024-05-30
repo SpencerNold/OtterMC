@@ -1,14 +1,15 @@
 package structures;
 
-public class MutableReference<T> {
+public class MutRef<T> {
 
 	private T t;
 	
-	public MutableReference(T t) {
+	public MutRef(T t) {
 		this.t = t;
 	}
 	
-	public MutableReference() {
+	public MutRef() {
+		this.t = null;
 	}
 	
 	public T get() {

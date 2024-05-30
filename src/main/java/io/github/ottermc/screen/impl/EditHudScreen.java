@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import io.github.ottermc.ClientLogger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +20,7 @@ import io.github.ottermc.screen.render.BlurShaderProgram;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import structures.MutableReference;
+import structures.MutRef;
 
 public class EditHudScreen extends AbstractScreen {
 
@@ -47,7 +48,7 @@ public class EditHudScreen extends AbstractScreen {
 		try {
 			Client.getClientStorage().write();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 		}
 	}
 
@@ -92,7 +93,7 @@ public class EditHudScreen extends AbstractScreen {
 			((Movable) component).clamp((int) (getDisplayWidth() * inv), (int) (getDisplayHeight() * inv));
 		}
 		Stream<Component> components = getMoveable();
-		MutableReference<Boolean> isEmpty = new MutableReference<>(true);
+		MutRef<Boolean> isEmpty = new MutRef<>(true);
 		components.forEach(c -> {
 			if (isEmpty.get())
 				isEmpty.set(false);

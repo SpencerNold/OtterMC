@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.ottermc.ClientLogger;
 import org.lwjgl.opengl.Display;
 
 import io.github.ottermc.Client;
@@ -35,7 +36,7 @@ public class ModScreen extends AbstractScreen {
 		try {
 			Client.getClientStorage().write();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 		}
 	}
 	

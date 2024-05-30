@@ -72,7 +72,7 @@ public class Launcher {
 			String agent = "-javaagent:" + file.getAbsolutePath();
 			String nativePath = "-Djava.library.path=" + binDir.getAbsolutePath();
 			String assetsDir = getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
-			
+
 			String[] arguments = new String[] { getJava8Path(), agent, nativePath, "-cp", String.join(File.pathSeparator, classPath), "net.minecraft.client.main.Main", "--version", "OtterMC", "--accessToken", "0", "--assetsDir", assetsDir, "--assetIndex", "1.8", "--userProperties", "{}" };
 			Process process = new ProcessBuilder(arguments).directory(mcDir).start();
 			new Thread(() -> {

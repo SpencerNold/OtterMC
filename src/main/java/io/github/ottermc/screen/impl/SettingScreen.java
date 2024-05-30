@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.ottermc.ClientLogger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -90,7 +91,7 @@ public class SettingScreen extends AbstractScreen {
 		try {
 			Client.getClientStorage().write();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ClientLogger.display(e);
 		}
 	}
 	
