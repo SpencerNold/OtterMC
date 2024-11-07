@@ -15,7 +15,7 @@ import org.gradle.api.GradleScriptException;
 
 public class Compiler {
 
-    public static void compile(File file) {
+    public static void compile(File file, int version) {
     	try {
     		if (!file.exists())
     			return;
@@ -37,7 +37,7 @@ public class Compiler {
     			byte[] bytes = input.readAllBytes();
     			input.close();
     			if (entry.getName().endsWith(".class"))
-    				bytes = remap(bytes);
+    				bytes = remap(bytes, version);
     			target.putNextEntry(entry);
     			target.write(bytes, 0, bytes.length);
     			target.closeEntry();
@@ -49,10 +49,10 @@ public class Compiler {
     	}
     }
     
-    private static byte[] remap(byte[] bytes) {
+    private static byte[] remap(byte[] bytes, int version) {
 		ClassReader reader = new ClassReader(bytes);
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-		reader.accept(new TClassVisitor(writer), 0);
+		reader.accept(new TClassVisitor(writer, version), 0);
 		return writer.toByteArray();
     }
 }

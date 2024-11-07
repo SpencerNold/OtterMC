@@ -1,6 +1,7 @@
 package ottermc;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,29 +12,33 @@ import java.util.regex.Pattern;
 
 public class Mapping {
 	
-	private static final Pattern PATTERN = Pattern.compile("\\s([^\\s]+?)(?=\\s|$)");
-	
-	private static Map<String, Class> map;
-	
+	private static final Pattern PATTERN = Pattern.compile("\\s(\\S+?)(?=\\s|$)");
+
+	private static final Map<Integer, Map<String, Class>> mappings = new HashMap<>();
+
 	static {
 		try {
-			map = read();
+			mappings.put(Constants.VERSION_1_8_9, read(Constants.VERSION_1_8_9));
+			mappings.put(Constants.VERSION_LATEST, read(Constants.VERSION_LATEST));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	
-	public static Class get(String className) {
-		return map.get(className);
+	public static Class get(String className, int version) {
+		return mappings.get(version).get(className);
 	}
 	
-	public static boolean contains(String className) {
-		return map.containsKey(className);
+	public static boolean contains(String className, int version) {
+		return mappings.get(version).containsKey(className);
 	}
 	
-	private static Map<String, Class> read() throws Exception {
+	private static Map<String, Class> read(int version) throws Exception {
 		Map<String, Class> map = new HashMap<>();
-		Scanner scanner = new Scanner(Mapping.class.getResourceAsStream("/mapping.txt"));
+		InputStream input = Mapping.class.getResourceAsStream(String.format("/mapping-%s.txt", VersionRegistry.NAMES.get(version)));
+		if (input == null)
+			return map;
+		Scanner scanner = new Scanner(input);
 		Class current = null;
 		while (scanner.hasNext()) {
 			String line = scanner.nextLine();

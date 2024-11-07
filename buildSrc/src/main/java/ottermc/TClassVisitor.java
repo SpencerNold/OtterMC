@@ -13,30 +13,32 @@ import org.objectweb.asm.Opcodes;
 public class TClassVisitor extends ClassVisitor {
 
 	private final List<String> transformOverrideMethods = new ArrayList<>();
+	private final int version;
 	
-	public TClassVisitor(ClassVisitor visitor) {
+	public TClassVisitor(ClassVisitor visitor, int version) {
 		super(Opcodes.ASM9, visitor);
+		this.version = version;
 	}
 	
 	@Override
-	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+	public void visit(int v, int access, String name, String signature, String superName, String[] interfaces) {
 		transformOverrideMethods.add(superName);
 		transformOverrideMethods.addAll(Arrays.asList(interfaces));
-		if (Mapping.contains(superName))
-			superName = Mapping.get(superName).getName1();
+		if (Mapping.contains(superName, version))
+			superName = Mapping.get(superName, version).getName1();
 		for (int i = 0; i < interfaces.length; i++) {
 			String iname = interfaces[i];
-			if (Mapping.contains(iname))
-				interfaces[i] = Mapping.get(iname).getName1();
+			if (Mapping.contains(iname, version))
+				interfaces[i] = Mapping.get(iname, version).getName1();
 		}
-		super.visit(version, access, name, signature, superName, interfaces);
+		super.visit(v, access, name, signature, superName, interfaces);
 	}
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
 		for (String tom : transformOverrideMethods) {
-			if (Mapping.contains(tom)) {
-				Mapping.Class mclass = Mapping.get(tom);
+			if (Mapping.contains(tom, version)) {
+				Mapping.Class mclass = Mapping.get(tom, version);
 				if (mclass.containsMethod(name, descriptor)) {
 					Mapping.Method mmethod = mclass.getMethod(name, descriptor);
 					name = mmethod.getName1();
@@ -46,23 +48,23 @@ public class TClassVisitor extends ClassVisitor {
 		}
 		if (exceptions != null) {
 			for (int i = 0; i < exceptions.length; i++) {
-				if (Mapping.contains(exceptions[i]))
-					exceptions[i] = Mapping.get(exceptions[i]).getName1();
+				if (Mapping.contains(exceptions[i], version))
+					exceptions[i] = Mapping.get(exceptions[i], version).getName1();
 			}
 		}
-		descriptor = RemapVisitor.sanitizeDescriptor(descriptor);
-		return new RemapVisitor(super.visitMethod(access, name, descriptor, signature, exceptions));
+		descriptor = RemapVisitor.sanitizeDescriptor(descriptor, version);
+		return new RemapVisitor(super.visitMethod(access, name, descriptor, signature, exceptions), version);
 	}
 
 	@Override
 	public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-		descriptor = RemapVisitor.sanitizeDescriptor(descriptor);
+		descriptor = RemapVisitor.sanitizeDescriptor(descriptor, version);
 		return super.visitField(access, name, descriptor, signature, value);
 	}
 	
 	@Override
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		descriptor = RemapVisitor.sanitizeDescriptor(descriptor);
+		descriptor = RemapVisitor.sanitizeDescriptor(descriptor, version);
 		return super.visitAnnotation(descriptor, visible);
 	}
 	

@@ -13,28 +13,31 @@ public class RemapVisitor extends MethodVisitor {
 
 	private static final Pattern DESCRIPTOR_PATTERN = Pattern.compile("L(.*?);");
 
-	RemapVisitor(MethodVisitor visitor) {
+	private final int version;
+
+	RemapVisitor(MethodVisitor visitor, int version) {
 		super(Opcodes.ASM9, visitor);
+		this.version = version;
 	}
 	
 	@Override
 	public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
-		if (Mapping.contains(owner)) {
-			Mapping.Class clazz = Mapping.get(owner);
+		if (Mapping.contains(owner, version)) {
+			Mapping.Class clazz = Mapping.get(owner, version);
 			owner = clazz.getName1();
 			if (clazz.containsField(name)) {
 				Mapping.Field field = clazz.getField(name);
 				name = field.getName1();
 			}
 		}
-		descriptor = sanitizeDescriptor(descriptor);
+		descriptor = sanitizeDescriptor(descriptor, version);
 		super.visitFieldInsn(opcode, owner, name, descriptor);
 	}
 
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-		if (Mapping.contains(owner)) {
-			Mapping.Class clazz = Mapping.get(owner);
+		if (Mapping.contains(owner, version)) {
+			Mapping.Class clazz = Mapping.get(owner, version);
 			owner = clazz.getName1();
 			if (clazz.containsMethod(name, descriptor)) {
 				Mapping.Method method = clazz.getMethod(name, descriptor);
@@ -42,7 +45,7 @@ public class RemapVisitor extends MethodVisitor {
 				descriptor = method.getDesc1();
 			}
 		}
-		descriptor = sanitizeDescriptor(descriptor);
+		descriptor = sanitizeDescriptor(descriptor, version);
 		super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
 	}
 
@@ -51,8 +54,8 @@ public class RemapVisitor extends MethodVisitor {
 		if (value instanceof Type) {
 			if (((Type) value).getSort() == Type.OBJECT) {
 				String name = ((Type) value).getInternalName();
-				if (Mapping.contains(name)) {
-					Mapping.Class clazz = Mapping.get(name);
+				if (Mapping.contains(name, version)) {
+					Mapping.Class clazz = Mapping.get(name, version);
 					value = Type.getObjectType(clazz.getName1());
 				}
 			}
@@ -62,8 +65,8 @@ public class RemapVisitor extends MethodVisitor {
 
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
-		if (Mapping.contains(type)) {
-			Mapping.Class clazz = Mapping.get(type);
+		if (Mapping.contains(type, version)) {
+			Mapping.Class clazz = Mapping.get(type, version);
 			type = clazz.getName1();
 		}
 		super.visitTypeInsn(opcode, type);
@@ -71,17 +74,17 @@ public class RemapVisitor extends MethodVisitor {
 	
 	@Override
 	public void visitInvokeDynamicInsn(String name, String descriptor, Handle bootstrapMethodHandle, Object... bootstrapMethodArguments) {
-		descriptor = sanitizeDescriptor(descriptor);
+		descriptor = sanitizeDescriptor(descriptor, version);
 		for (int i = 0; i < bootstrapMethodArguments.length; i++) {
 			Object obj = bootstrapMethodArguments[i];
 			if (obj instanceof Type) {
 				Type type = (Type) obj;
-				String desc = sanitizeDescriptor(type.getDescriptor());
+				String desc = sanitizeDescriptor(type.getDescriptor(), version);
 				type = Type.getType(desc);
 				bootstrapMethodArguments[i] = type;
 			} else if (obj instanceof Handle) {
 				Handle handle = (Handle) obj;
-				String desc = sanitizeDescriptor(handle.getDesc());
+				String desc = sanitizeDescriptor(handle.getDesc(), version);
 				handle = new Handle(handle.getTag(), handle.getOwner(), handle.getName(), desc, handle.isInterface());
 				bootstrapMethodArguments[i] = handle;
 			}
@@ -91,16 +94,16 @@ public class RemapVisitor extends MethodVisitor {
 	
 	@Override
 	public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end, int index) {
-		super.visitLocalVariable(name, sanitizeDescriptor(descriptor), signature, start, end, index);
+		super.visitLocalVariable(name, sanitizeDescriptor(descriptor, version), signature, start, end, index);
 	}
 
-	public static String sanitizeDescriptor(String descriptor) {
+	public static String sanitizeDescriptor(String descriptor, int version) {
 		Matcher matcher = DESCRIPTOR_PATTERN.matcher(descriptor);
 		String descCopy = descriptor;
 		while (matcher.find()) {
 			String desc0 = matcher.group(1);
-			if (Mapping.contains(desc0))
-				descCopy = descCopy.replace(desc0, Mapping.get(desc0).getName1());
+			if (Mapping.contains(desc0, version))
+				descCopy = descCopy.replace(desc0, Mapping.get(desc0, version).getName1());
 		}
 		return descCopy;
 	}

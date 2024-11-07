@@ -13,7 +13,7 @@ import org.gradle.api.GradleScriptException;
 
 public class Launcher {
 
-	public static void launch(File file) {
+	public static void launch(File file, int version) {
 		File libDir = new File(file.getParentFile(), "libraries");
 		boolean libDirExists = libDir.exists();
 		File binDir = new File(file.getParentFile(), "bin");
@@ -21,8 +21,8 @@ public class Launcher {
 		File gameJar = new File(file.getParentFile(), "game.jar");
 		try {
 			File mcDir = getMinecraftDirectory();
-
-			File versionJsonFile = new File(getJoinedWithSeparator(mcDir.getAbsolutePath(), "versions", "1.8.9", "1.8.9.json"));
+			String versionName = VersionRegistry.translateVersionToNameString(version);
+			File versionJsonFile = new File(getJoinedWithSeparator(mcDir.getAbsolutePath(), "versions", versionName, versionName + ".json"));
 			if (!versionJsonFile.exists())
 				throw new GradleScriptException("missing version json file", new FileNotFoundException(versionJsonFile.getAbsolutePath()));
 			JsonElement element = new Gson().fromJson(new FileReader(versionJsonFile), JsonElement.class);
@@ -32,6 +32,43 @@ public class Launcher {
 				JsonObject client = element.getAsJsonObject().getAsJsonObject("downloads").getAsJsonObject("client");
 				String url = client.get("url").getAsString();
 				downloadTo(url, new FileOutputStream(gameJar));
+			}
+			String assetIndex = element.getAsJsonObject().get("assets").getAsString();
+			List<String> argList = new ArrayList<>();
+			if (element.getAsJsonObject().has("arguments")) {
+				// Clean this up as more versions are added
+				JsonArray cliArgs = element.getAsJsonObject().get("arguments").getAsJsonObject().get("jvm").getAsJsonArray();
+				for (JsonElement e : cliArgs) {
+					if (e.isJsonObject() && e.getAsJsonObject().has("rules")) {
+						JsonArray rulesArray = e.getAsJsonObject().get("rules").getAsJsonArray();
+						JsonObject rules = rulesArray.size() > 1 ? rulesArray.get(1).getAsJsonObject() : rulesArray.get(0).getAsJsonObject();
+						if (rules.has("os")) {
+							JsonObject os = rules.get("os").getAsJsonObject();
+							boolean add = false;
+							if (os.has("name")) {
+								String osName = os.get("name").getAsString();
+								if (osName.equals("osx") && isMacOS())
+									add = true;
+								else if (osName.equals("windows") && isWindows())
+									add = true;
+							}
+							if (os.has("arch")) {
+								String archName = os.get("arch").getAsString();
+								if (archName.equals("x86") && is32Bit())
+									add = true;
+							}
+							if (add) {
+								JsonElement value = e.getAsJsonObject().get("value");
+								if (value.isJsonArray()) {
+									for (JsonElement e1 : value.getAsJsonArray())
+										argList.add(e1.getAsString());
+								} else if (value.isJsonPrimitive()) {
+									argList.add(value.getAsString());
+								}
+							}
+						}
+					}
+				}
 			}
 			JsonArray libraries = element.getAsJsonObject().get("libraries").getAsJsonArray();
 			List<String> classPath = new ArrayList<>();
@@ -72,8 +109,13 @@ public class Launcher {
 			String agent = "-javaagent:" + file.getAbsolutePath();
 			String nativePath = "-Djava.library.path=" + binDir.getAbsolutePath();
 			String assetsDir = getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
+			System.out.println(assetsDir);
 
-			String[] arguments = new String[] { getJava8Path(), agent, nativePath, "-cp", String.join(File.pathSeparator, classPath), "net.minecraft.client.main.Main", "--version", "OtterMC", "--accessToken", "0", "--assetsDir", assetsDir, "--assetIndex", "1.8", "--userProperties", "{}" };
+            List<String> arguments = new ArrayList<>(Arrays.asList(getJava8Path(version), agent, nativePath));
+			arguments.addAll(argList);
+			arguments.addAll(Arrays.asList("-cp", String.join(File.pathSeparator, classPath), "net.minecraft.client.main.Main"));
+			arguments.addAll(Arrays.asList("--version", "OtterMC", "--accessToken", "0", "--assetsDir", assetsDir, "--assetIndex", assetIndex, "--userProperties", "{}"));
+
 			Process process = new ProcessBuilder(arguments).directory(mcDir).start();
 			new Thread(() -> {
 				Scanner scanner = new Scanner(process.getErrorStream());
@@ -151,12 +193,30 @@ public class Launcher {
 			return "natives-linux";
 	}
 
-	private static String getJava8Path() {
+	private static boolean is32Bit() {
+		return !System.getProperty("os.arch").contains("64");
+	}
+
+	private static boolean isWindows() {
 		String os = System.getProperty("os.name").toUpperCase();
-		if (os.contains("WIN"))
+		return os.contains("WIN");
+	}
+
+	private static boolean isMacOS() {
+		String os = System.getProperty("os.name").toUpperCase();
+		return os.contains("MAC");
+	}
+
+	private static boolean isLinux() {
+		String os = System.getProperty("os.name").toUpperCase();
+		return !isWindows() && !isMacOS(); // Meh
+	}
+
+	private static String getJava8Path(int version) {
+		if (isWindows())
 			return getJava8PathWIN();
-		else if (os.contains("MAC"))
-			return getJava8PathOSX();
+		else if (isMacOS())
+			return getJava8PathOSX(version);
 		return getJava8PathUNIX();
 	}
 
@@ -164,9 +224,9 @@ public class Launcher {
 		return "java"; // Does not seem to matter if java8 or java17 on windows?
 	}
 
-	private static String getJava8PathOSX() {
+	private static String getJava8PathOSX(int version) {
         try {
-            Process process = Runtime.getRuntime().exec("/usr/libexec/java_home -v 1.8");
+            Process process = Runtime.getRuntime().exec("/usr/libexec/java_home -v " + VersionRegistry.JVMS.get(version));
 			Scanner scanner = new Scanner(process.getInputStream());
 			String path = scanner.hasNextLine() ? (scanner.nextLine() + "/bin/java") : "java";
 			scanner.close();
@@ -181,10 +241,9 @@ public class Launcher {
 	}
 
 	private static File getMinecraftDirectory() {
-		String os = System.getProperty("os.name").toUpperCase();
-		if (os.contains("WIN"))
+		if (isWindows())
 			return getMinecraftDirectoryWIN();
-		else if (os.contains("MAC"))
+		else if (isMacOS())
 			return getMinecraftDirectoryOSX();
 		return getMinecraftDirectoryUNIX();
 	}
