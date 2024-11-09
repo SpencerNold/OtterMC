@@ -5,7 +5,6 @@ import io.github.ottermc.events.listeners.DrawMainMenuScreenListener;
 import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.DrawableHelper;
-import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;

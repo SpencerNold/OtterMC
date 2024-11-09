@@ -35,7 +35,7 @@ public class LargeItems extends Module implements GetItemScaleListener {
 	
 	@Override
 	public void onGetItemScale(GetItemScaleEvent event) {
-		EntityItem entity = event.getEntityItemParameter();
+		EntityItem entity = (EntityItem) event.getEntityItemParameter();
 		if (items.contains(entity.getEntityItem().getItem()))
 			event.setScale(event.getX() * 2.5f, event.getY() * 2.5f, event.getZ() * 2.5f);
 	}

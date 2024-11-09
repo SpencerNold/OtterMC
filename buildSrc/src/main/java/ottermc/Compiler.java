@@ -2,8 +2,12 @@ package ottermc;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -15,35 +19,36 @@ import org.gradle.api.GradleScriptException;
 
 public class Compiler {
 
-    public static void compile(File file, int version) {
+    public static File compile(File file, int version) {
     	try {
     		if (!file.exists())
-    			return;
-    		File output = new File(file.getParentFile(), "OtterMC-remapped.jar");
+    			return null;
+    		File output = new File(file.getParentFile(), file.getName().replace(".jar", "-remapped.jar"));
     		if (output.exists())
     			output.delete();
     		JarOutputStream target = new JarOutputStream(new FileOutputStream(output));
     		
     		JarFile jar = new JarFile(file);
     		Enumeration<JarEntry> entries = jar.entries();
-    		while (entries.hasMoreElements()) {
-    			JarEntry entry = entries.nextElement();
-    			if (entry.isDirectory()) {
-    				target.putNextEntry(entry);
-    				target.closeEntry();
-    				continue;
-    			}
-    			InputStream input = jar.getInputStream(entry);
-    			byte[] bytes = input.readAllBytes();
-    			input.close();
-    			if (entry.getName().endsWith(".class"))
-    				bytes = remap(bytes, version);
-    			target.putNextEntry(entry);
-    			target.write(bytes, 0, bytes.length);
-    			target.closeEntry();
-    		}
+			while (entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				if (entry.isDirectory()) {
+					target.putNextEntry(entry);
+					target.closeEntry();
+					continue;
+				}
+				InputStream input = jar.getInputStream(entry);
+				byte[] bytes = input.readAllBytes();
+				input.close();
+				if (entry.getName().endsWith(".class"))
+					bytes = remap(bytes, version);
+				target.putNextEntry(entry);
+				target.write(bytes, 0, bytes.length);
+				target.closeEntry();
+			}
     		jar.close();
     		target.close();
+			return output;
     	} catch (Exception e) {
 			throw new GradleScriptException("client build failed during remap", e);
     	}

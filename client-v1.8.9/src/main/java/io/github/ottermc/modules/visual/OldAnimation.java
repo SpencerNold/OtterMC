@@ -67,7 +67,7 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 
 	@Override
 	public void onRenderItemInFirstPerson(RenderItemInFirstPersonEvent event) {
-		ItemRenderer renderer = event.getRenderer();
+		ItemRenderer renderer = (ItemRenderer) event.getRenderer();
 		ItemStack itemToRender = getItemToRender(renderer);
 		if (itemToRender != null) {
 			float partialTicks = event.getPartialTicks();

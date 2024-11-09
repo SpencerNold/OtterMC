@@ -109,7 +109,6 @@ public class Launcher {
 			String agent = "-javaagent:" + file.getAbsolutePath();
 			String nativePath = "-Djava.library.path=" + binDir.getAbsolutePath();
 			String assetsDir = getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
-			System.out.println(assetsDir);
 
             List<String> arguments = new ArrayList<>(Arrays.asList(getJava8Path(version), agent, nativePath));
 			arguments.addAll(argList);

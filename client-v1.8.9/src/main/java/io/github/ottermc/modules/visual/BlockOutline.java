@@ -46,7 +46,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 
 	@Override
 	public void onDrawSelectionBox(DrawSelectionBoxEvent event) {
-		MovingObjectPosition target = event.getTarget();
+		MovingObjectPosition target = (MovingObjectPosition) event.getTarget();
 		if (event.getType() != 0 || target.typeOfHit != MovingObjectType.BLOCK)
 			return;
 		event.setCanceled(true);

@@ -27,7 +27,7 @@ import java.io.File;
 
 public class Client {
 
-	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1";
+	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.8.9)";
 
 	private static Client instance;
 

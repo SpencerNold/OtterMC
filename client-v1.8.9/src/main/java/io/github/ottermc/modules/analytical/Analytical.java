@@ -63,11 +63,11 @@ public class Analytical extends Module implements AttackEntityListener, SetVeloc
 	
 	@Override
 	public void onAttackEntity(AttackEntityEvent event) {
-		PlayerControllerMP controller = event.getController();
+		PlayerControllerMP controller = (PlayerControllerMP) event.getController();
 		if (controller.extendedReach())
 			return;
-		EntityPlayer player = event.getPlayer();
-		Entity entity = event.getEntity();
+		EntityPlayer player = (EntityPlayer) event.getPlayer();
+		Entity entity = (Entity) event.getEntity();
 		float distance = ((Entity) player).getDistanceToEntity(entity);
 		helpers[1].add(distance);
 		if (distance > 3.0f) {

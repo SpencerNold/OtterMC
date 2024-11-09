@@ -1,49 +1,40 @@
 import ottermc.Compiler
 import ottermc.Launcher
-import ottermc.Remapper
+import ottermc.Joiner
 import ottermc.Constants
 
 plugins {
-	eclipse
-	idea
 	java
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
 repositories {
 	mavenCentral()
 }
 
+val universal: Configuration by configurations.creating
+
 dependencies {
-	// Minecraft Dependencies
+	// Game Dependencies
 	implementation("com.google.code.gson:gson:2.2.4")
 	implementation("com.google.guava:guava:17.0")
 	implementation("org.lwjgl.lwjgl:lwjgl:2.9.2")
 	implementation("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
-	
-	/* DEPRECATED! */
+
+	// Client dependencies
+	universal(project(":universal"))
+	for (depend in universal.dependencies)
+		implementation(depend)
 	implementation("org.ow2.asm:asm:9.6")
-
-	// mc-clean.jar is the 1.8.9 Minecraft client jar
-	// deobfuscated with the 1.8.9 MCP mappings
 	implementation(files("libs/mc-clean.jar"))
-}
-
-java {
-	setSourceCompatibility(JavaVersion.VERSION_1_8)
-	setTargetCompatibility(JavaVersion.VERSION_1_8)
-}
-
-tasks.register("remap") {
-	doLast {
-		Remapper.remap();
-	}
-	group = "client"
-	description = "Prepares the game jar for the gradle build."
 }
 
 tasks.register("run") {
 	doLast {
-		val client = file("build/libs/OtterMC-remapped.jar")
+		val client = file("build/libs/client-v1.8.9-remapped-joined.jar")
 		Launcher.launch(client, Constants.VERSION_1_8_9)
 	}
 	group = "client"
@@ -54,7 +45,8 @@ tasks.register("run") {
 tasks.named("build") {
 	doLast {
 		val client = file("build/libs/client-v1.8.9.jar")
-		Compiler.compile(client, Constants.VERSION_1_8_9)
+		val mapped = Compiler.compile(client, Constants.VERSION_1_8_9)
+		Joiner.joinJars(mapped, universal.asPath.split(File.pathSeparator))
 	}
 	group = "client"
 }

@@ -19,6 +19,6 @@ out/
 
 # General
 bin
-/libs
+libs
 *.bat
 *.sh

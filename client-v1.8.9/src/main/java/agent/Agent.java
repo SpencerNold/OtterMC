@@ -1,7 +1,5 @@
 package agent;
 
-import agent.dependencies.Dependency;
-import agent.dependencies.DependencyLoader;
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.Client;
 
@@ -25,8 +23,6 @@ public class Agent {
 
 	private static void launch(String args, Instrumentation instrumentation) {
 		File file = getJarFileDirectory();
-		DependencyLoader loader = new DependencyLoader(new File(file, "libs"), instrumentation);
-		loader.add(Dependency.getURLDependency("asm-9.6", "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar"));
 		ClassAdapter adapter = new ClassAdapter(instrumentation);
 		Client client = new Client(file, adapter);
 		try {

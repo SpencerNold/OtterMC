@@ -9,6 +9,7 @@ import io.github.ottermc.modules.Module;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackgroundListener {
@@ -39,7 +40,7 @@ public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackg
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen != null) {
 			BlurShaderProgram.setActive(true);
-			GuiScreen gui = event.getGui();
+			GuiScreen gui = (GuiScreen) event.getGui();
 			drawGradientRect(gui, 0, 0, gui.width, gui.height, 0x70101010, 0x80101010);
 		}
 		event.setCanceled(true);

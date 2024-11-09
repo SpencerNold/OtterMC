@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import net.minecraft.client.gui.GuiIngame;
 import org.lwjgl.opengl.GL11;
 
 import io.github.ottermc.events.listeners.RenderGameOverlayListener;
@@ -42,7 +43,7 @@ public class HudManager implements RenderGameOverlayListener {
 		mc.entityRenderer.setupOverlayRendering();
 		boolean tex2d = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		components.forEach(c -> c.drawComponent(mc, event.getGuiIngame(), new ScaledResolution(mc), event.getPartialTicks()));
+		components.forEach(c -> c.drawComponent(mc, (GuiIngame) event.getGuiIngame(), new ScaledResolution(mc), event.getPartialTicks()));
 		if (tex2d)
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		else
