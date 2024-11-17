@@ -1,7 +1,6 @@
 package agent;
 
 import agent.transformation.ClassAdapter;
-import io.github.ottermc.Client;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 
@@ -9,28 +8,44 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 
 public class Agent {
 
+    public static final Map<Plugin, Implementation> PLUGINS = new HashMap<>();
+
     private static boolean injectionLoad = false;
 
     public static void premain(String args, Instrumentation instrumentation) {
-        launch(args, instrumentation);
+        try {
+            launch(args, instrumentation);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void agentmain(String args, Instrumentation instrumentation) {
         injectionLoad = true;
-        launch(args, instrumentation);
+        try {
+            launch(args, instrumentation);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private static void launch(String args, Instrumentation instrumentation) {
+    private static void launch(String args, Instrumentation instrumentation) throws Exception {
         File file = getJarFileDirectory();
         ClassAdapter adapter = new ClassAdapter(instrumentation);
-        Client client = new Client(file, adapter);
+        Class<?> main = Class.forName("io.github.ottermc.Client");
+        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassAdapter.class);
+        Object client = constructor.newInstance(file, adapter);
         File plugins = new File("plugins");
         List<Implementation> registeredPluginClasses = new ArrayList<>();
         if (plugins.exists() && plugins.isDirectory()) {
@@ -55,6 +70,7 @@ public class Agent {
                             // the reflection utility
                             Implementation implementation = (Implementation) clazz.newInstance();
                             registeredPluginClasses.add(implementation);
+                            PLUGINS.put(plugin, implementation);
                         } catch (Exception ignored) {
                             System.err.printf("failed to initialize plugin: %s (%s)\n", plugin.name(), plugin.version());
                         }
@@ -70,7 +86,8 @@ public class Agent {
             throw new RuntimeException(e);
         }
         adapter.clear();
-        client.start();
+        Method method = main.getDeclaredMethod("start");
+        method.invoke(client);
         for (Implementation implementation : registeredPluginClasses)
             implementation.onEnable();
     }

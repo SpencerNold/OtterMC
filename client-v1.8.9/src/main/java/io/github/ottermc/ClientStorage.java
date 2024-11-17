@@ -1,4 +1,4 @@
-package io.github.ottermc.io;
+package io.github.ottermc;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,8 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.ottermc.Client;
+import io.github.ottermc.io.ByteBuf;
+import io.github.ottermc.io.Secure;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.settings.Storable;

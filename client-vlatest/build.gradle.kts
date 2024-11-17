@@ -4,7 +4,7 @@ import ottermc.Constants
 import ottermc.Joiner
 
 plugins {
-    java
+    `java-library`
 }
 
 repositories {
@@ -19,9 +19,19 @@ dependencies {
     // Client dependencies
     universal(project(":universal"))
     for (depend in universal.dependencies)
-        implementation(depend)
+        api(depend)
     implementation("org.ow2.asm:asm:9.7.1")
     implementation(files("libs/mc-clean.jar"))
+}
+
+tasks.register("attach") {
+    doLast {
+        val client = file("build/libs/client-vlatest-remapped-joined.jar")
+        Launcher.attach(client, Constants.VERSION_LATEST)
+    }
+    group = "client"
+    description = "Attaches the client to a running game client."
+    dependsOn("build")
 }
 
 tasks.register("run") {

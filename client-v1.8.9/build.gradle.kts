@@ -1,10 +1,11 @@
 import ottermc.Compiler
 import ottermc.Launcher
 import ottermc.Joiner
+import ottermc.Installer
 import ottermc.Constants
 
 plugins {
-	java
+	`java-library`
 }
 
 java {
@@ -27,9 +28,19 @@ dependencies {
 	// Client dependencies
 	universal(project(":universal"))
 	for (depend in universal.dependencies)
-		implementation(depend)
-	implementation("org.ow2.asm:asm:9.6")
+		api(depend)
+	implementation("org.ow2.asm:asm:9.7.1")
 	implementation(files("libs/mc-clean.jar"))
+}
+
+tasks.register("attach") {
+	doLast {
+		val client = file("build/libs/client-v1.8.9-remapped-joined.jar")
+		Launcher.attach(client, Constants.VERSION_1_8_9)
+	}
+	group = "client"
+	description = "Attaches the client to a running game client."
+	dependsOn("build")
 }
 
 tasks.register("run") {

@@ -36,8 +36,8 @@ public class DrawableHelper {
 	public void drawString(String text, int x, int y, float scale, int color) {
 		float ratio = this.scale * 0.25f * scale;
 		float inv = 1.0f / ratio;
-		x *= inv;
-		y *= inv;
+		x = (int) ((float) x * inv);
+		y = (int) ((float) y * inv);
 		GlStateManager.scale(ratio, ratio, ratio);
 		fontRenderer.renderText(text, x, y, color);
 		GlStateManager.scale(inv, inv, inv);
@@ -97,8 +97,7 @@ public class DrawableHelper {
 				if (dist < radius)
 					fillPixel(posX + width + x - radius, posY + y, color);
 				// Corner 3
-				dx = x;
-				dy = y;
+                dy = y;
 				dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
 				if (dist < radius)
 					fillPixel(posX + width + x - radius, posY + height + y - radius, color);
@@ -150,8 +149,7 @@ public class DrawableHelper {
 				if (dist == radius - 1)
 					fillPixel(posX + width + x - radius, posY + y, color);
 				// Corner 3
-				dx = x;
-				dy = y;
+                dy = y;
 				dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
 				if (dist == radius - 1)
 					fillPixel(posX + width + x - radius, posY + height + y - radius, color);
@@ -198,10 +196,10 @@ public class DrawableHelper {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer renderer = tessellator.getWorldRenderer();
 		renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		renderer.pos((double) (x + 0), (double) (y + height), 100.0).tex((double) ((float) (textureX + 0) * f), (double) ((float) (textureY + height) * f1)).endVertex();
-		renderer.pos((double) (x + width), (double) (y + height), 100.0).tex((double) ((float) (textureX + width) * f), (double) ((float) (textureY + height) * f1)).endVertex();
-		renderer.pos((double) (x + width), (double) (y + 0), 100.0).tex((double) ((float) (textureX + width) * f), (double) ((float) (textureY + 0) * f1)).endVertex();
-		renderer.pos((double) (x + 0), (double) (y + 0), 100.0).tex((double) ((float) (textureX + 0) * f), (double) ((float) (textureY + 0) * f1)).endVertex();
+		renderer.pos(x, y + height, 100.0).tex((float) (textureX) * f, (float) (textureY + height) * f1).endVertex();
+		renderer.pos(x + width, y + height, 100.0).tex((float) (textureX + width) * f, (float) (textureY + height) * f1).endVertex();
+		renderer.pos(x + width, y, 100.0).tex((float) (textureX + width) * f, (float) (textureY) * f1).endVertex();
+		renderer.pos(x, y, 100.0).tex((float) (textureX) * f, (float) (textureY) * f1).endVertex();
 		tessellator.draw();
 	}
 
@@ -219,17 +217,17 @@ public class DrawableHelper {
 
 	public double getWidth() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-		return (double) (res.getScaledWidth_double() * scale);
+		return res.getScaledWidth_double() * scale;
 	}
 
 	public double getHeight() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-		return (double) (res.getScaledHeight_double() * scale);
+		return res.getScaledHeight_double() * scale;
 	}
 
 	public boolean intersects(int x, int y, int width, int height, int mouseX, int mouseY) {
-		mouseX *= scale;
-		mouseY *= scale;
+		mouseX = (int) ((float) mouseX * scale);
+		mouseY = (int) ((float) mouseY * scale);
 		return intersectsRaw(x, y, width, height, mouseX, mouseY);
 	}
 

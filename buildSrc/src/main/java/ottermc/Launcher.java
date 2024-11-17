@@ -13,6 +13,15 @@ import org.gradle.api.GradleScriptException;
 
 public class Launcher {
 
+	public static void attach(File file, int version) {
+		String java = getJava8Path(version);
+		try {
+			Runtime.getRuntime().exec(String.format("%s -jar %s", java, file.getAbsolutePath()));
+		} catch (IOException e) {
+			throw new GradleScriptException("failed to attach jar", e);
+		}
+	}
+
 	public static void launch(File file, int version) {
 		File libDir = new File(file.getParentFile(), "libraries");
 		boolean libDirExists = libDir.exists();
@@ -239,7 +248,7 @@ public class Launcher {
 		return "java"; // ???
 	}
 
-	private static File getMinecraftDirectory() {
+	static File getMinecraftDirectory() {
 		if (isWindows())
 			return getMinecraftDirectoryWIN();
 		else if (isMacOS())

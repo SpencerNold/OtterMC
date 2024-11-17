@@ -20,13 +20,13 @@ import net.minecraft.client.Minecraft;
 
 public class ModScreen extends AbstractScreen {
 	
-	private final float scale = 2.0f;
+	private float scale = 2.0f;
 	
 	private int selectedCategoryIndex = 0;
 
 	@Override
 	public void onScreenOpen() {
-		getDrawable().setScale(scale);
+		updateScale();
 		BlurShaderProgram.setActive(true, true);
 	}
 
@@ -42,14 +42,6 @@ public class ModScreen extends AbstractScreen {
 	
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
-		if (!Display.isFullscreen()) {
-			String text = "Please activate fullscreen to use this menu...";
-			int x = getDrawable().middle(getDisplayWidth(), getDrawable().getStringWidth(text));
-			int y = getDrawable().middle(getDisplayHeight(), getDrawable().getStringHeight());
-			getDrawable().drawString(text, x, y, -1);
-			return;
-		}
-		
 		Color color = ColorTheme.isModActive() ? ColorTheme.getColorTheme() : Color.DEFAULT;
 		
 		int width = (int) (getDisplayWidth() * 0.625f);
@@ -78,10 +70,9 @@ public class ModScreen extends AbstractScreen {
 			String display = category.getDisplayName();
 			getDrawable().drawString(display, catX + 6, ny + 4, -1);
 		}
-		
+
 		int modX = centerX + catWidth + 6;
-		int modY = catY;
-		int modWidth = (int) (width * 0.8f) - 34;
+        int modWidth = (int) (width * 0.8f) - 34;
 		int mlen = modWidth / 5;
 		int counter = 0;
 		Iterator<Module> modules = Client.getModManager().getByCategory(Category.values()[selectedCategoryIndex]).iterator();
@@ -92,19 +83,20 @@ public class ModScreen extends AbstractScreen {
 				Module mod = modules.next();
 				
 				int mx = modX + 4 + (i * (mlen + 4));
-				int my = modY + (counter * (mlen + 4));
+				int my = catY + (counter * (mlen + 4));
 				getDrawable().fillRoundedRectangle(mx, my, mlen, mlen, 8, mod.isActive() ? color.getValue(0x60) : backgroundColor);
 				
 				String mname = mod.getName();
-				getDrawable().drawString(mname, mx + (mlen / 2 - getDrawable().getStringWidth(mname, 0.75f) / 2), my + 4, 0.75f, 0xFFC6C6C6);
-				
+				getDrawable().drawString(mname, mx + (mlen / 2 - getDrawable().getStringWidth(mname, 0.65f) / 2), my + 4, 0.75f, 0xFFC6C6C6);
+
+				int isize = 64;
 				Icon icon = mod.getIcon();
-				int mid = getDrawable().middle(mlen, 64);
+				int mid = getDrawable().middle(mlen, isize);
 				if (icon != null)
 					getDrawable().drawIcon(icon, mx + mid, my + mid, 0xFFC6C6C6);
-				getDrawable().drawRectangle(mx + mid + 24, my + mid + 72, 16, 16, 0xFFC6C6C6);
+				getDrawable().drawRectangle(mx + mid + 24, my + mid + isize + 8, 16, 16, 0xFFC6C6C6);
 				if (mod.isActive())
-					getDrawable().drawIcon(Icon.CHECK, mx + mid + 24, my + mid + 72, 0.25f, 0xFFC6C6C6);
+					getDrawable().drawIcon(Icon.CHECK, mx + mid + 24, my + mid + isize + 8, 0.25f, 0xFFC6C6C6);
 			}
 			counter++;
 		}
@@ -112,8 +104,8 @@ public class ModScreen extends AbstractScreen {
 	
 	@Override
 	public void onClick(int mouseX, int mouseY, int button) {
-		mouseX *= scale;
-		mouseY *= scale;
+		mouseX = (int) ((float) mouseX * scale);
+		mouseY = (int) ((float) mouseY * scale);
 		int width = (int) (getDisplayWidth() * 0.625f);
 		int height = (int) (getDisplayHeight() * 0.625f);
 		int centerX = getDrawable().middle(getDisplayWidth(), width);
@@ -143,12 +135,22 @@ public class ModScreen extends AbstractScreen {
 			}
 		}
 	}
+
+	@Override
+	public void onResize(int sx, int sy) {
+		updateScale();
+	}
+
+	private void updateScale() {
+		float width0 = Display.getDesktopDisplayMode().getWidth();
+		float width1 = Display.getWidth();
+		scale = 2.0f * (width1 / width0);
+		getDrawable().setScale(scale);
+	}
 	
 	private int clamp(int i, int min, int max) {
 		if (i < min)
 			return min;
-		if (i > max)
-			return max;
-		return i;
-	}
+        return Math.min(i, max);
+    }
 }

@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class Loader {
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.err.println("missing argument for the JDK implementation and game version");
+        if (args.length < 1) {
+            System.err.println("missing argument for the game version");
             return;
         }
         Pattern pattern = Pattern.compile("--(.*?) (.*?)(?= |$)");
@@ -22,7 +22,7 @@ public class Loader {
             Map<String, String> arguments = new HashMap<>();
             while (matcher.find())
                 arguments.put(matcher.group(1), matcher.group(2));
-            boolean inject = test(mainClass, args[1], arguments);
+            boolean inject = test(mainClass, args[0], arguments);
             if (inject) {
                 inject(vmd.id(), getJarFile());
                 return;

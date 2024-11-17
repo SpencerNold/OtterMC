@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
 }
 
 java {
@@ -11,6 +11,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.ow2.asm:asm:9.6")
-    implementation(files("libs/tools.jar"))
+    implementation("org.ow2.asm:asm:9.7.1")
+    if (JavaVersion.current().isJava8) {
+        implementation(files("${System.getProperty("java.home")}/lib/tools.jar"))
+    } else {
+        implementation(files("libs/tools.jar"))
+    }
 }

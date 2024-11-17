@@ -2,7 +2,6 @@ package io.github.ottermc;
 
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.io.ClientStorage;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.analytical.Analytical;

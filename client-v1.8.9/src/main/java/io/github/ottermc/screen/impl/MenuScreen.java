@@ -4,6 +4,8 @@ import io.github.ottermc.screen.AbstractScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 public class MenuScreen extends AbstractScreen {
 	

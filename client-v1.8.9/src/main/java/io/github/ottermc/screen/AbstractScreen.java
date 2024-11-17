@@ -29,6 +29,7 @@ public abstract class AbstractScreen extends GuiScreen {
 	@Override
 	public final void onResize(Minecraft mc, int sx, int sy) {
 		super.onResize(mc, sx, sy);
+		onResize(sx, sy);
 	}
 	
 	@Override
@@ -85,7 +86,8 @@ public abstract class AbstractScreen extends GuiScreen {
 	public abstract void onScreenOpen();
 	public abstract void onScreenClose();
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {}
-	
+
+	public void onResize(int sx, int sy) {}
 	public void onClick(int mouseX, int mouseY, int button) {}
 	public void onRelease(int mouseX, int mouseY, int button) {}
 	public void onClickMove(int mouseX, int mouseY, int button, long dt) {}

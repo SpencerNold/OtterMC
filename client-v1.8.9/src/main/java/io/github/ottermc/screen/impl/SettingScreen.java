@@ -7,7 +7,6 @@ import java.util.List;
 
 import io.github.ottermc.ClientLogger;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 import io.github.ottermc.Client;
 import io.github.ottermc.io.ByteBuf;
@@ -98,13 +97,6 @@ public class SettingScreen extends AbstractScreen {
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
 		DrawableHelper drawable = getDrawable();
-		if (!Display.isFullscreen()) {
-			String text = "Please activate fullscreen to use this menu...";
-			int x = drawable.middle(getDisplayWidth(), drawable.getStringWidth(text));
-			int y = drawable.middle(getDisplayHeight(), drawable.getStringHeight());
-			drawable.drawString(text, x, y, -1);
-			return;
-		}
 		
 		int color = ColorTheme.isModActive() ? ColorTheme.getColorTheme().getValue() : -1;
 		
@@ -121,7 +113,7 @@ public class SettingScreen extends AbstractScreen {
 		
 		components.forEach(c -> c.draw(this, color));
 		
-		if (components.size() == 0) {
+		if (components.isEmpty()) {
 			String text = module.getDescription();
 			text = text == null ? "Open the HUD edit menu to modify this mod." : text;
 			int x = centerX + 5;
