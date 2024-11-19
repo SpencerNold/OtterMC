@@ -25,7 +25,7 @@ distributions {
     val list = listOf(
         getProjectOutputPath(":wrapper", "wrapper.jar"),
         getProjectOutputPath(":client-v1.8.9", "client-v1.8.9-remapped-joined.jar"),
-        getProjectOutputPath(":client-vlatest", "client-vlatest-remapped-joined.jar")
+        getProjectOutputPath(":client-v1.21.3", "client-v1.21.3-remapped-joined.jar")
     )
     main {
         contents {
@@ -37,13 +37,13 @@ distributions {
 tasks.named("distTar") {
     mustRunAfter(":wrapper:jar")
     mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-vlatest:build")
+    mustRunAfter(":client-v1.21.3:build")
 }
 
 tasks.named("distZip") {
     mustRunAfter(":wrapper:jar")
     mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-vlatest:build")
+    mustRunAfter(":client-v1.21.3:build")
 }
 
 application {

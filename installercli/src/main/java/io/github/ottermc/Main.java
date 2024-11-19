@@ -147,7 +147,7 @@ public class Main {
 
     private static String getMinecraftDirectory() {
         String os = System.getProperty("os.name").toUpperCase();
-        if (os.contains("DARWIN")) {
+        if (os.contains("MAC")) {
             return getGameDirDarwin();
         } else if (os.contains("WINDOWS")) {
             return getGameDirWindows();
@@ -160,11 +160,11 @@ public class Main {
         return System.getenv("APPDATA") + File.separator + ".minecraft";
     }
 
-    private static String getGameDirLinux() {
+    private static String getGameDirDarwin() {
         return String.join(File.separator, System.getProperty("user.home"), "Library", "Application Support", "minecraft");
     }
 
-    private static String getGameDirDarwin() {
+    private static String getGameDirLinux() {
         return System.getProperty("user.home") + File.separator + ".minecraft";
     }
 }

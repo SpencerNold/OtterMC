@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":client-vlatest"))
+    implementation(project(":client-v1.21.3"))
 }

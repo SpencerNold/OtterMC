@@ -19,7 +19,7 @@ public class Mapping {
 	static {
 		try {
 			mappings.put(Constants.VERSION_1_8_9, read(Constants.VERSION_1_8_9));
-			mappings.put(Constants.VERSION_LATEST, read(Constants.VERSION_LATEST));
+			mappings.put(Constants.VERSION_1_21_3, read(Constants.VERSION_1_21_3));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -1,12 +1,11 @@
 package io.github.ottermc;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Wrapper {
 
@@ -41,6 +40,13 @@ public class Wrapper {
         System.getProperties().forEach((key, value) -> {
             launch.add(String.format("-D%s=%s", key, value));
         });
+        RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+        List<String> jvmArguments = runtimeBean.getInputArguments();
+        launch.addAll(jvmArguments);
+        if (System.getProperty("os.name").toLowerCase().contains("mac") && !version.equals("1.8.9")) {
+            // TODO Find a more elegant solution to this problem
+            launch.add("-XstartOnFirstThread");
+        }
         launch.add("-javaagent:" + agentJar.getAbsolutePath());
         launch.add("-cp");
         launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path")));
@@ -52,21 +58,14 @@ public class Wrapper {
             PrintStream err = System.err;
 
             Process process = new ProcessBuilder(launch).start();
-            ExecutorService service = Executors.newFixedThreadPool(2);
-            service.execute(() -> {
+            new Thread(() -> {
                 Scanner scanner = new Scanner(process.getErrorStream());
                 while (scanner.hasNextLine())
                     err.println(scanner.nextLine());
-            });
-            service.execute(() -> {
-                Scanner scanner = new Scanner(process.getInputStream());
-                while (scanner.hasNextLine())
-                    out.println(scanner.nextLine());
-            });
-            PrintStream stream = new PrintStream(process.getOutputStream());
-            Scanner scanner = new Scanner(System.in);
+            }).start();
+            Scanner scanner = new Scanner(process.getInputStream());
             while (scanner.hasNextLine())
-                stream.println(scanner.nextLine());
+                out.println(scanner.nextLine());
         } catch (IOException e) {
             exit(-1);
         }
