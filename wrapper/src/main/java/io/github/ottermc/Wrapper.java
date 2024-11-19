@@ -1,6 +1,7 @@
 package io.github.ottermc;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
@@ -20,18 +21,18 @@ public class Wrapper {
             i++;
         }
         if (!arguments.containsKey("version") || !arguments.containsKey("gameDir"))
-            System.exit(40);
+            exit(40);
         String version = arguments.get("version");
         if (!version.startsWith("ottermc-"))
-            System.exit(41);
+            exit(41);
         version = version.substring(8);
         File gameDir = new File(arguments.get("gameDir"));
         File versionDir = new File(gameDir, String.join(File.separator, "versions", version));
         if (!versionDir.exists())
-            System.exit(42);
+            exit(42);
         File agentJar = new File(gameDir, String.join(File.separator, "ottermc", String.format("client-v%s.jar", version)));
         if (!agentJar.exists())
-            System.exit(43);
+            exit(43);
 
         String java = String.join(File.separator, System.getProperty("java.home"), "bin", "java");
 
@@ -47,24 +48,31 @@ public class Wrapper {
         launch.addAll(Arrays.asList(args));
 
         try {
+            PrintStream out = System.out;
+            PrintStream err = System.err;
+
             Process process = new ProcessBuilder(launch).start();
             ExecutorService service = Executors.newFixedThreadPool(2);
             service.execute(() -> {
                 Scanner scanner = new Scanner(process.getErrorStream());
                 while (scanner.hasNextLine())
-                    System.err.println(scanner.nextLine());
+                    err.println(scanner.nextLine());
             });
             service.execute(() -> {
                 Scanner scanner = new Scanner(process.getInputStream());
                 while (scanner.hasNextLine())
-                    System.out.println(scanner.nextLine());
+                    out.println(scanner.nextLine());
             });
-            PrintStream out = new PrintStream(process.getOutputStream());
+            PrintStream stream = new PrintStream(process.getOutputStream());
             Scanner scanner = new Scanner(System.in);
             while (scanner.hasNextLine())
-                out.println(scanner.nextLine());
+                stream.println(scanner.nextLine());
         } catch (IOException e) {
-            System.exit(-1);
+            exit(-1);
         }
+    }
+
+    private static void exit(int code) {
+        System.exit(code);
     }
 }

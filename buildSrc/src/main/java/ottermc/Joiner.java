@@ -18,10 +18,10 @@ public class Joiner {
 
     private static final Map<String, Boolean> existingEntries = new HashMap<>();
 
-    public static void joinJars(File src, List<String> paths) {
+    public static File joinJars(File src, List<String> paths) {
         try {
             if (!src.exists())
-                return;
+                return src;
             File dst = new File(src.getParentFile(), src.getName().replace(".jar", "-joined.jar"));
             if (dst.exists())
                 dst.delete();
@@ -33,6 +33,7 @@ public class Joiner {
             }
             output.close();
             existingEntries.clear();
+            return dst;
         } catch (IOException e) {
             throw new GradleScriptException("failed to join jars", e);
         }

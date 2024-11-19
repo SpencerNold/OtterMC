@@ -1,9 +1,6 @@
 package ottermc;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -60,4 +57,17 @@ public class Compiler {
 		reader.accept(new TClassVisitor(writer, version), 0);
 		return writer.toByteArray();
     }
+
+	public static void copy(File src, File dst) throws IOException {
+		if (!dst.exists() && !dst.createNewFile())
+			throw new IOException("failed to create: " + dst.getAbsolutePath());
+		FileInputStream input = new FileInputStream(src);
+		FileOutputStream output = new FileOutputStream(dst);
+		byte[] buffer = new byte[1024];
+		int read;
+		while ((read = input.read(buffer)) != -1)
+			output.write(buffer, 0, read);
+		input.close();
+		output.close();
+	}
 }
