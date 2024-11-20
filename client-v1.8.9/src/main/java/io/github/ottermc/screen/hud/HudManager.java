@@ -23,7 +23,7 @@ public class HudManager implements RenderGameOverlayListener {
 	}
 	
 	public <T extends Component> T getComponent(Class<T> clazz) {
-		return clazz.cast(filter(c -> clazz.isInstance(c)).findAny().orElse(null));
+		return clazz.cast(filter(clazz::isInstance).findAny().orElse(null));
 	}
 	
 	public Stream<Component> filter(Predicate<Component> predicate) {

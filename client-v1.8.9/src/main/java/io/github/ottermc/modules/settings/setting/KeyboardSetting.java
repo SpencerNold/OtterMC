@@ -1,9 +1,9 @@
 package io.github.ottermc.modules.settings.setting;
 
+import io.github.ottermc.modules.settings.Setting;
 import org.lwjgl.input.Keyboard;
 
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.settings.Setting;
 
 public class KeyboardSetting extends Setting<Integer> {
 

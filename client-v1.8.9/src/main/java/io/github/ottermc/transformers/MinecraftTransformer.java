@@ -9,11 +9,8 @@ import io.github.ottermc.events.listeners.PostInitializeListener.PostInitializeE
 import io.github.ottermc.events.listeners.RunTickListener.RunTickEvent;
 import io.github.ottermc.events.listeners.SaveGameListener.SaveGameEvent;
 import io.github.ottermc.events.listeners.UpdateDisplayListener.UpdateDisplayEvent;
-import io.github.ottermc.modules.utility.Chat;
-import io.github.ottermc.screen.impl.ChatScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -43,10 +40,6 @@ public class MinecraftTransformer {
 		// Replaces screens with wrapped classes of screens
 		if ((gui == null && mc.theWorld == null) || (gui != null && gui.getClass() == GuiMainMenu.class)) {
 			mc.displayGuiScreen(new MainMenuScreen());
-			callback.setCanceled(true);
-		}
-		if (gui != null && gui.getClass() == GuiChat.class && Chat.isModActive()) {
-			mc.displayGuiScreen(new ChatScreen(mc));
 			callback.setCanceled(true);
 		}
 	}

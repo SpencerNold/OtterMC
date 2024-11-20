@@ -1,5 +1,6 @@
 package io.github.ottermc;
 
+import agent.Agent;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.DrawMainMenuScreenListener;
 import io.github.ottermc.events.listeners.RenderGameOverlayListener;

@@ -6,14 +6,16 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
     private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.8.9", "1.21.3");
 
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.err.println("usage: <version>");
+        if (args.length < 1) {
+            System.err.println("usage: <version> <plugins...>");
             return;
         }
         String version = args[0];
@@ -21,7 +23,6 @@ public class Main {
             System.err.println("unsupported version");
             return;
         }
-
         String gameDir = getMinecraftDirectory();
         File clientDir = new File(gameDir, "ottermc");
         if (!clientDir.exists() && !clientDir.mkdir()) {
@@ -37,6 +38,29 @@ public class Main {
             File clientDst = new File(clientDir, String.format("client-v%s.jar", version));
             copy(clientSrc, clientDst);
             System.out.println("[OtterMC] installed client");
+
+            File pluginDir = new File(clientDir, "plugins");
+            if (!pluginDir.exists() && !pluginDir.mkdir()) {
+                System.err.println("not able to create plugin directory");
+                return;
+            }
+            Pattern pattern = Pattern.compile("(.+?)-.+?\\.jar");
+            for (int i = 1; i < args.length; i++) {
+                Matcher matcher = pattern.matcher(args[i]);
+                if (!matcher.find()) {
+                    System.err.println("malformed plugin name: " + args[i]);
+                    continue;
+                }
+                String nameFull = matcher.group(0);
+                String name = matcher.group(1);
+                File pluginSrc = new File(jarDir.getParent(), name + "-remapped.jar");
+                if (!pluginSrc.exists()) {
+                    System.err.println("plugin " + name + " does not exist");
+                    continue;
+                }
+                File pluginDst = new File(pluginDir, nameFull);
+                copy(pluginSrc, pluginDst);
+            }
 
             // Install wrapper
             File wrapperSrc = new File(jarDir.getParent(), "wrapper.jar");

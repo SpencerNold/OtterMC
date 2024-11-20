@@ -4,8 +4,7 @@ import agent.Reflection;
 import io.github.ottermc.Client;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.DrawMainMenuScreenListener;
-import io.github.ottermc.modules.visual.ColorTheme;
-import io.github.ottermc.render.Color;
+import io.github.ottermc.screen.ClientTheme;
 import io.github.ottermc.screen.render.DrawableHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -43,7 +42,7 @@ public class MainMenuScreen extends GuiMainMenu {
 		String text1 = "Not affiliated with Microsoft or Mojang; Do Not Distribute!";
 		drawable.drawString(text1, displayWidth - drawable.getStringWidth(text1) - 5, displayHeight - 14, -1);
 
-		int clientColor = (ColorTheme.isModActive() ? ColorTheme.getColorTheme() : Color.DEFAULT).getValue();
+		int clientColor = ClientTheme.getColor().getValue();
 
 		int middleX = drawable.middle(displayWidth, 150);
 		int middleY = drawable.middle(displayHeight, 20);

@@ -56,7 +56,7 @@ public class Wrapper {
         try {
             PrintStream out = System.out;
             PrintStream err = System.err;
-
+            System.getProperties().forEach((key, value) -> out.printf("%s=%s\n", key, value));
             Process process = new ProcessBuilder(launch).start();
             new Thread(() -> {
                 Scanner scanner = new Scanner(process.getErrorStream());

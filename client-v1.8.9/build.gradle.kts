@@ -1,8 +1,7 @@
 import ottermc.Compiler
-import ottermc.Launcher
-import ottermc.Joiner
-import ottermc.Installer
 import ottermc.Constants
+import ottermc.Joiner
+import ottermc.Launcher
 
 plugins {
 	`java-library`
@@ -20,17 +19,17 @@ val universal: Configuration by configurations.creating
 
 dependencies {
 	// Game Dependencies
-	implementation("com.google.code.gson:gson:2.2.4")
-	implementation("com.google.guava:guava:17.0")
-	implementation("org.lwjgl.lwjgl:lwjgl:2.9.2")
-	implementation("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
+	api("com.google.code.gson:gson:2.2.4")
+	api("com.google.guava:guava:17.0")
+	api("org.lwjgl.lwjgl:lwjgl:2.9.2")
+	api("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
 
 	// Client dependencies
 	universal(project(":universal"))
 	for (depend in universal.dependencies)
 		api(depend)
 	implementation("org.ow2.asm:asm:9.7.1")
-	implementation(files("libs/mc-clean.jar"))
+	api(files("libs/mc-clean.jar"))
 }
 
 tasks.register("attach") {

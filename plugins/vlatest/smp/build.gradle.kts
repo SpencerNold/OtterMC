@@ -1,5 +1,20 @@
+import ottermc.Compiler
+import ottermc.Constants
+
 plugins {
     java
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+tasks.named("build") {
+    doLast {
+        val client = file("build/libs/smp.jar")
+        Compiler.compile(client, Constants.VERSION_1_21_3)
+    }
+    group = "plugins"
 }
 
 repositories {

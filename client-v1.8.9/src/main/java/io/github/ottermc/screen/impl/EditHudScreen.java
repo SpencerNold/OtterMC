@@ -1,18 +1,9 @@
 package io.github.ottermc.screen.impl;
 
-import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import io.github.ottermc.ClientLogger;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import io.github.ottermc.Client;
-import io.github.ottermc.modules.visual.ColorTheme;
-import io.github.ottermc.render.Color;
+import io.github.ottermc.ClientLogger;
 import io.github.ottermc.screen.AbstractScreen;
+import io.github.ottermc.screen.ClientTheme;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.hud.Movable;
@@ -20,7 +11,14 @@ import io.github.ottermc.screen.render.BlurShaderProgram;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import structures.MutRef;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class EditHudScreen extends AbstractScreen {
 
@@ -80,7 +78,7 @@ public class EditHudScreen extends AbstractScreen {
 	
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
-		int color = (ColorTheme.isModActive() ? ColorTheme.getColorTheme() : Color.DEFAULT).getValue();
+		int color = ClientTheme.getColor().getValue();
 		
 		Minecraft mc = Minecraft.getMinecraft();
 		boolean tex2d = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);

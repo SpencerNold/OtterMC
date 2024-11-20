@@ -6,7 +6,7 @@ import java.io.File;
 
 public class Client {
 
-    public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.21.3)";
+    public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.21.3)", TARGET = "1.21.3";
 
     public Client(File file, ClassAdapter adapter) {
 

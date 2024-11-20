@@ -1,5 +1,6 @@
 package io.github.ottermc;
 
+import agent.Agent;
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
@@ -17,12 +18,10 @@ import java.nio.ByteBuffer;
 
 public class InitializationManager implements PostInitializeListener, RunTickListener {
 
-    private final Client client;
     private boolean hasPostInitialized;
     private int timer;
 
-    public InitializationManager(Client client) {
-        this.client = client;
+    public InitializationManager() {
         this.hasPostInitialized = false;
         this.timer = 20;
     }
@@ -49,8 +48,9 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
     private void attemptPostInitializeProcess() {
         Display.setTitle(Client.NAME + " " + Client.VERSION);
         Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
-        client.registerModules();
-        client.registerHuds();
+        Agent.PLUGINS.forEach(((plugin, implementation) -> {
+            implementation.onPostInit();
+        }));
         Client.getClientStorage().init();
         try {
             Client.getClientStorage().read();

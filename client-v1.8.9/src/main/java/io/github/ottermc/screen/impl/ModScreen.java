@@ -1,22 +1,21 @@
 package io.github.ottermc.screen.impl;
 
+import io.github.ottermc.Client;
+import io.github.ottermc.ClientLogger;
+import io.github.ottermc.modules.Category;
+import io.github.ottermc.modules.Module;
+import io.github.ottermc.render.Color;
+import io.github.ottermc.screen.AbstractScreen;
+import io.github.ottermc.screen.ClientTheme;
+import io.github.ottermc.screen.render.BlurShaderProgram;
+import io.github.ottermc.screen.render.Icon;
+import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.Display;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import io.github.ottermc.ClientLogger;
-import org.lwjgl.opengl.Display;
-
-import io.github.ottermc.Client;
-import io.github.ottermc.modules.Category;
-import io.github.ottermc.modules.Module;
-import io.github.ottermc.modules.visual.ColorTheme;
-import io.github.ottermc.render.Color;
-import io.github.ottermc.screen.AbstractScreen;
-import io.github.ottermc.screen.render.BlurShaderProgram;
-import io.github.ottermc.screen.render.Icon;
-import net.minecraft.client.Minecraft;
 
 public class ModScreen extends AbstractScreen {
 	
@@ -42,7 +41,7 @@ public class ModScreen extends AbstractScreen {
 	
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
-		Color color = ColorTheme.isModActive() ? ColorTheme.getColorTheme() : Color.DEFAULT;
+		Color color = ClientTheme.getColor();
 		
 		int width = (int) (getDisplayWidth() * 0.625f);
 		int height = (int) (getDisplayHeight() * 0.625f);

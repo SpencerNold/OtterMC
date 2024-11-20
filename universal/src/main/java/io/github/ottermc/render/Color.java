@@ -7,7 +7,8 @@ package io.github.ottermc.render;
 // so just to be safe, yoink!
 public class Color {
 	
-	public static final Color DEFAULT = new Color(0x5A2D81, false);
+	public static final Color DEFAULT = new Color(151, 128, 154, 255);
+    public static final Color WHITE = new Color(-1);
 
 	private int value;
 

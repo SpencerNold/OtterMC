@@ -1,34 +1,27 @@
 package io.github.ottermc.screen.impl;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.github.ottermc.ClientLogger;
-import org.lwjgl.input.Keyboard;
-
 import io.github.ottermc.Client;
+import io.github.ottermc.ClientLogger;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.NumericSetting;
 import io.github.ottermc.modules.settings.Setting;
 import io.github.ottermc.modules.settings.Writable;
-import io.github.ottermc.modules.settings.setting.BooleanSetting;
-import io.github.ottermc.modules.settings.setting.ColorSetting;
-import io.github.ottermc.modules.settings.setting.EnumSetting;
-import io.github.ottermc.modules.settings.setting.FloatSetting;
-import io.github.ottermc.modules.settings.setting.IntSetting;
-import io.github.ottermc.modules.settings.setting.KeyboardSetting;
-import io.github.ottermc.modules.settings.setting.StringSetting;
-import io.github.ottermc.modules.visual.ColorTheme;
+import io.github.ottermc.modules.settings.setting.*;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.AbstractScreen;
+import io.github.ottermc.screen.ClientTheme;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.DrawableHelper;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingScreen extends AbstractScreen {
 	
@@ -98,7 +91,7 @@ public class SettingScreen extends AbstractScreen {
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
 		DrawableHelper drawable = getDrawable();
 		
-		int color = ColorTheme.isModActive() ? ColorTheme.getColorTheme().getValue() : -1;
+		int color = ClientTheme.getColor(Color.WHITE).getValue();
 		
 		int width = (int) (getDisplayWidth() * 0.625f);
 		int height = (int) (getDisplayHeight() * 0.625f);
