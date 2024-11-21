@@ -3,7 +3,7 @@ package io.github.ottermc.pvp.modules.utility;
 import org.lwjgl.input.Keyboard;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.listeners.RunTickListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.Storable;

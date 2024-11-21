@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import agent.Reflection;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RenderItemInFirstPersonListener;
+import io.github.ottermc.pvp.listeners.RenderItemInFirstPersonListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.screen.render.Icon;

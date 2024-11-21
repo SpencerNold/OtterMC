@@ -5,7 +5,7 @@ import agent.transformation.Injector;
 import agent.transformation.Target;
 import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RenderGameOverlayListener.RenderGameOverlayEvent;
+import io.github.ottermc.listeners.RenderGameOverlayListener.RenderGameOverlayEvent;
 import net.minecraft.client.gui.GuiIngame;
 
 @Transformer(name = "net/minecraft/client/gui/GuiIngame")

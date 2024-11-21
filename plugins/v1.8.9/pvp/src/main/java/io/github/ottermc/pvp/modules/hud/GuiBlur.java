@@ -2,14 +2,13 @@ package io.github.ottermc.pvp.modules.hud;
 
 import agent.Reflection;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.DrawDefaultBackgroundListener;
-import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.pvp.listeners.DrawDefaultBackgroundListener;
+import io.github.ottermc.listeners.RunTickListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackgroundListener {

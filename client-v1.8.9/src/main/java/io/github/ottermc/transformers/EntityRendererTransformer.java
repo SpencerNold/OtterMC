@@ -5,7 +5,7 @@ import agent.transformation.Injector;
 import agent.transformation.Target;
 import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RenderWorldListener.RenderWorldEvent;
+import io.github.ottermc.listeners.RenderWorldListener.RenderWorldEvent;
 import net.minecraft.client.renderer.EntityRenderer;
 
 @Transformer(name = "net/minecraft/client/renderer/EntityRenderer")

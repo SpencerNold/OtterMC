@@ -3,8 +3,8 @@ package io.github.ottermc.screen.render;
 import java.io.IOException;
 
 import io.github.ottermc.ClientLogger;
-import io.github.ottermc.events.listeners.RenderWorldListener;
-import io.github.ottermc.events.listeners.UpdateDisplayListener;
+import io.github.ottermc.listeners.RenderWorldListener;
+import io.github.ottermc.listeners.UpdateDisplayListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.ShaderGroup;

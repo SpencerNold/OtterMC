@@ -1,7 +1,7 @@
 package io.github.ottermc.pvp.modules.hypixel;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.listeners.RunTickListener;
 import io.github.ottermc.screen.render.Icon;
 
 public class GameMacro extends HypixelModule implements RunTickListener {

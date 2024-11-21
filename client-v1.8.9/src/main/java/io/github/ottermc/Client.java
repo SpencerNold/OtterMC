@@ -7,7 +7,10 @@ import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.render.BlurShaderProgram;
-import io.github.ottermc.transformers.*;
+import io.github.ottermc.transformers.EntityRendererTransformer;
+import io.github.ottermc.transformers.GameSettingsTransformer;
+import io.github.ottermc.transformers.GuiIngameTransformer;
+import io.github.ottermc.transformers.MinecraftTransformer;
 
 import java.io.File;
 
@@ -28,19 +31,10 @@ public class Client {
 	public Client(File file, ClassAdapter adapter) {
 		instance = this;
 		this.clientDirectory = file;
-		adapter.register(EntityPlayerSPTransformer.class);
 		adapter.register(EntityRendererTransformer.class);
-		adapter.register(EntityTransformer.class);
 		adapter.register(GameSettingsTransformer.class);
 		adapter.register(GuiIngameTransformer.class);
-		adapter.register(GuiScreenTransformer.class);
-		adapter.register(ItemRendererTransformer.class);
-		adapter.register(LayerArmorBaseTransformer.class);
 		adapter.register(MinecraftTransformer.class);
-		adapter.register(PlayerControllerMPTransformer.class);
-		adapter.register(RenderEntityItemTransformer.class);
-		adapter.register(RenderGlobalTransformer.class);
-		adapter.register(RenderItemTransformer.class);
 		storage = new ClientStorage(new File(file, "profile." + Secure.hash(TARGET)));
 	}
 

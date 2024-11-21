@@ -1,14 +1,14 @@
 package io.github.ottermc;
 
-import agent.Agent;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.DrawMainMenuScreenListener;
-import io.github.ottermc.events.listeners.RenderGameOverlayListener;
+import io.github.ottermc.listeners.DrawMainMenuScreenListener;
+import io.github.ottermc.listeners.RenderGameOverlayListener;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.DrawableHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 
 public class ClientLogger implements DrawMainMenuScreenListener, RenderGameOverlayListener {
 
@@ -36,13 +36,38 @@ public class ClientLogger implements DrawMainMenuScreenListener, RenderGameOverl
         if (drawable == null || currentDisplayedBlips.isEmpty())
             return;
         int width = 150;
-        int height = 40;
         int x = (int) (drawable.getWidth() - width - 5);
         int y = 5;
-        for (int i = 0; i < currentDisplayedBlips.size(); i++) {
-            ErrorBlip error = currentDisplayedBlips.get(i);
+        int yOffs = 0;
+        for (ErrorBlip error : currentDisplayedBlips) {
+            String message = error.message;
             Severity severity = error.severity;
-            drawable.outlineRectangle(x, y + (i * (height + 5)), width, height, severity.colorI, severity.colorO);
+
+            LinkedList<String> lines = new LinkedList<>();
+            lines.addLast(message);
+            while (drawable.getStringWidth(lines.getLast()) > width) {
+                String line = lines.getLast();
+                int lastIndex = line.lastIndexOf(' ');
+                while (drawable.getStringWidth(line.substring(0, lastIndex)) > width) {
+                    int index = line.lastIndexOf(' ', lastIndex - 1);
+                    if (lastIndex == index)
+                        break;
+                    lastIndex = index;
+                }
+                lines.removeLast();
+                lines.addLast(line.substring(0, lastIndex));
+                lines.addLast(line.substring(lastIndex + 1));
+            }
+
+            int height = (lines.size() * drawable.getStringHeight()) + 6;
+
+            drawable.outlineRectangle(x, y + yOffs, width, height, severity.colorI, severity.colorO);
+            int i = 0;
+            for (String line : lines) {
+                drawable.drawString(line, x + 3, y + (i * drawable.getStringHeight()) + 3, -1);
+                i++;
+            }
+            yOffs += height;
         }
     }
 
@@ -63,7 +88,7 @@ public class ClientLogger implements DrawMainMenuScreenListener, RenderGameOverl
     }
 
     public static void display(Throwable throwable) {
-        display(Severity.ERROR, "Internal Error");
+        display(Severity.ERROR, throwable.getMessage());
     }
 
     public static void info(String message) {

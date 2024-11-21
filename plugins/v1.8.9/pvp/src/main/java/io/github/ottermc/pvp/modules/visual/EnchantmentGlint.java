@@ -1,8 +1,8 @@
 package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RenderArmorEffectListener;
-import io.github.ottermc.events.listeners.RenderEffectListener;
+import io.github.ottermc.pvp.listeners.RenderArmorEffectListener;
+import io.github.ottermc.pvp.listeners.RenderEffectListener;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;

@@ -1,7 +1,7 @@
 package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.SetEntityDamageBrightnessListener;
+import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.Storable;

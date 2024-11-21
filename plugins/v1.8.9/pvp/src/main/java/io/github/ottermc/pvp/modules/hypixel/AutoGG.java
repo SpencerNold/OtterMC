@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.AddChatMessageListener;
-import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.pvp.listeners.AddChatMessageListener;
+import io.github.ottermc.listeners.RunTickListener;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.settings.Storable;
 import io.github.ottermc.modules.settings.Writable;

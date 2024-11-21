@@ -36,7 +36,7 @@ public class ClassAdapter implements ClassFileTransformer {
 		if (!Mapping.contains(transformer.name()))
 			throw new RuntimeException(transformer.name() + " is not a Minecraft class");
 		Mapping.Class mclass = Mapping.get(transformer.name());
-		Class<?> mcClass = null;
+		Class<?> mcClass;
 		try {
 			mcClass = Class.forName(mclass.getName1());
 		} catch (Exception e) {
@@ -132,8 +132,7 @@ public class ClassAdapter implements ClassFileTransformer {
 			}
 			
 		}, 0);
-		byte[] bytes = writer.toByteArray();
-		return bytes;
+		return writer.toByteArray();
 	}
 	
 	public static ClassAdapter getInstance() {

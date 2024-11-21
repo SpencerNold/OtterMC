@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.RunTickListener;
+import io.github.ottermc.listeners.RunTickListener;
 
 public class KeybindManager implements RunTickListener {
 	

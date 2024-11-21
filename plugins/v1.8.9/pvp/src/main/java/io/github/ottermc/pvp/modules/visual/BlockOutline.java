@@ -3,7 +3,7 @@ package io.github.ottermc.pvp.modules.visual;
 import org.lwjgl.opengl.GL11;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.events.listeners.DrawSelectionBoxListener;
+import io.github.ottermc.pvp.listeners.DrawSelectionBoxListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.Storable;

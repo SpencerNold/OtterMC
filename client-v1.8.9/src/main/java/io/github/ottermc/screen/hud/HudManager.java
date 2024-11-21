@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import net.minecraft.client.gui.GuiIngame;
 import org.lwjgl.opengl.GL11;
 
-import io.github.ottermc.events.listeners.RenderGameOverlayListener;
+import io.github.ottermc.listeners.RenderGameOverlayListener;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
