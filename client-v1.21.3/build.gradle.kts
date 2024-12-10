@@ -8,7 +8,7 @@ plugins {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 repositories {
@@ -19,13 +19,15 @@ val universal: Configuration by configurations.creating
 
 dependencies {
     // Game Dependencies
+    api("org.lwjgl:lwjgl-glfw:3.3.3")
 
     // Client dependencies
     universal(project(":universal"))
     for (depend in universal.dependencies)
         api(depend)
     implementation("org.ow2.asm:asm:9.7.1")
-    implementation(files("libs/mc-clean.jar"))
+    api(files("libs/mc-clean.jar"))
+
 }
 
 tasks.register("attach") {
@@ -63,5 +65,6 @@ tasks.withType<Jar> {
         attributes["Agent-Class"] = "agent.Agent"
         attributes["Premain-Class"] = "agent.Agent"
         attributes["Can-Retransform-Classes"] = true
+        attributes["Can-Redefine-Classes"] = true
     }
 }

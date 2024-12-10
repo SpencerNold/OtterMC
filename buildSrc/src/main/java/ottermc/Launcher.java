@@ -16,7 +16,7 @@ public class Launcher {
 	public static void attach(File file, int version) {
 		String java = getJava8Path(version);
 		try {
-			Runtime.getRuntime().exec(String.format("%s -jar %s", java, file.getAbsolutePath()));
+			Runtime.getRuntime().exec(String.format("%s -jar %s %s", java, file.getAbsolutePath(), VersionRegistry.translateVersionToNameString(version)));
 		} catch (IOException e) {
 			throw new GradleScriptException("failed to attach jar", e);
 		}

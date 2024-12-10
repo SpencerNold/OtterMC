@@ -2,7 +2,7 @@ package io.github.ottermc.pvp.modules.analytical;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.AttackEntityListener;
-import io.github.ottermc.listeners.RunTickListener;
+import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.listeners.SaveGameListener;
 import io.github.ottermc.pvp.listeners.SetVelocityListener;
 import io.github.ottermc.modules.Category;

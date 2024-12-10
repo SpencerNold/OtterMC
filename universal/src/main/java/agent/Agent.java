@@ -6,6 +6,7 @@ import io.github.ottermc.api.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -24,7 +25,7 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -33,16 +34,20 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
-        File file = getJarFileDirectory();
+        File file = getJarFile();
+        if (file == null)
+            return;
+        File dir = file.getParentFile();
+        int version = getCompiledJarMajorVersion();
         ClassAdapter adapter = new ClassAdapter(instrumentation);
         Class<?> main = Class.forName("io.github.ottermc.Client");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassAdapter.class);
-        Object client = constructor.newInstance(file, adapter);
+        Object client = constructor.newInstance(dir, adapter);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
             String target = (String) main.getDeclaredField("TARGET").get(null);
@@ -50,6 +55,8 @@ public class Agent {
             if (files != null) {
                 List<String> classNames = new ArrayList<>();
                 for (File f : files) {
+                    if (!f.getName().endsWith(".jar"))
+                        continue;
                     try {
                         JarFile jar = new JarFile(f);
                         instrumentation.appendToSystemClassLoaderSearch(jar);
@@ -58,6 +65,9 @@ public class Agent {
                             JarEntry entry = entries.nextElement();
                             String name = entry.getName();
                             if (name.endsWith(".class")) {
+                                int ver = getMajorVersion(jar, entry);
+                                if (ver > version)
+                                    continue;
                                 name = name.replace('/', '.').substring(0, name.length() - 6);
                                 classNames.add(name);
                             }
@@ -93,6 +103,28 @@ public class Agent {
             implementation.onEnable();
     }
 
+    private static int getCompiledJarMajorVersion() throws IOException {
+        JarFile jar = new JarFile(getJarFile());
+        Enumeration<JarEntry> entries = jar.entries();
+        int version = -1;
+        if (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            version = getMajorVersion(jar, entry);
+        }
+        jar.close();
+        return version;
+    }
+
+    private static int getMajorVersion(JarFile jar, JarEntry entry) throws IOException {
+        if (entry.getSize() < 8)
+            return -1;
+        InputStream input = jar.getInputStream(entry);
+        byte[] bytes = new byte[8];
+        if (input.read(bytes) != 8)
+            return -1;
+        return (((bytes[6] & 0xFF) << 8) | (bytes[7] & 0xFF));
+    }
+
     private static Object createSafeInstance(Class<?> clazz) {
         try {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
@@ -102,11 +134,12 @@ public class Agent {
         }
     }
 
-    private static File getJarFileDirectory() {
+    private static File getJarFile() {
         try {
-            return new File(Agent.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+            return new File(Agent.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 

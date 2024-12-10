@@ -111,6 +111,14 @@ public class Mapping {
 		public boolean containsMethod(String name) {
 			return methods.containsKey(name);
 		}
+
+		public Map<String, Field> getFields() {
+			return fields;
+		}
+
+		public Map<String, Method> getMethods() {
+			return methods;
+		}
 	}
 	
 	public static class Field {

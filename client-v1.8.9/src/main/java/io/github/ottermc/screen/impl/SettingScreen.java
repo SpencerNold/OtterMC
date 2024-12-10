@@ -6,7 +6,7 @@ import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.settings.NumericSetting;
 import io.github.ottermc.modules.settings.Setting;
-import io.github.ottermc.modules.settings.Writable;
+import io.github.ottermc.modules.Writable;
 import io.github.ottermc.modules.settings.setting.*;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.AbstractScreen;

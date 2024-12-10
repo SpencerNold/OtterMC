@@ -1,6 +1,7 @@
 package io.github.ottermc.modules.settings;
 
 import io.github.ottermc.io.ByteBuf;
+import io.github.ottermc.modules.Writable;
 
 public abstract class Storable<T> implements Writable<ByteBuf> {
 

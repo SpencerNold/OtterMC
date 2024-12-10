@@ -89,7 +89,7 @@ public class ModScreen extends AbstractScreen {
 				getDrawable().drawString(mname, mx + (mlen / 2 - getDrawable().getStringWidth(mname, 0.65f) / 2), my + 4, 0.75f, 0xFFC6C6C6);
 
 				int isize = 64;
-				Icon icon = mod.getIcon();
+				Icon icon = (Icon) mod.getIcon();
 				int mid = getDrawable().middle(mlen, isize);
 				if (icon != null)
 					getDrawable().drawIcon(icon, mx + mid, my + mid, 0xFFC6C6C6);

@@ -1,18 +1,27 @@
 package io.github.ottermc;
 
+import agent.ReflectionRequired;
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.Secure;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
+import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
+import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformers.EntityRendererTransformer;
 import io.github.ottermc.transformers.GameSettingsTransformer;
 import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import org.lwjgl.opengl.Display;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class Client {
 
@@ -38,15 +47,48 @@ public class Client {
 		storage = new ClientStorage(new File(file, "profile." + Secure.hash(TARGET)));
 	}
 
+	@ReflectionRequired
 	public void start() {
 		registerEvents();
 	}
 
+	@ReflectionRequired
+	public void onPostInit() {
+		Display.setTitle(Client.NAME + " " + Client.VERSION);
+		Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
+		registerGameHuds();
+		storage.init();
+		try {
+			storage.read();
+		} catch (IOException e) {
+			ClientLogger.display(e);
+		}
+		Minecraft mc = Minecraft.getMinecraft();
+		if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
+			mc.displayGuiScreen(new MainMenuScreen());
+		errorManager.postInit();
+	}
+
 	private void registerEvents() {
-		EventBus.add(new InitializationManager());
+		EventBus.add(new InitializationManager(this));
 		EventBus.add(keyManager);
 		EventBus.add(new BlurShaderProgram());
 		EventBus.add(hudManager);
+	}
+
+	private void registerGameHuds() {
+		// Default Minecraft HUD
+		hudManager.register(GameDisplay.PUMPKIN_OVERLAY);
+		hudManager.register(GameDisplay.NAUSEA_EFFECT);
+		hudManager.register(GameDisplay.TOOLTIP);
+		hudManager.register(GameDisplay.BOSS_BAR);
+		hudManager.register(GameDisplay.PLAYER_STATS);
+		hudManager.register(GameDisplay.SLEEP_MENU);
+		hudManager.register(GameDisplay.EXP_BAR);
+		hudManager.register(GameDisplay.OVERLAY_TEXT);
+		hudManager.register(GameDisplay.SCOREBOARD);
+		hudManager.register(GameDisplay.TITLE);
+		hudManager.register(GameDisplay.TAB);
 	}
 
 	public static KeybindManager getKeyManager() {
@@ -68,8 +110,12 @@ public class Client {
 	public static File getClientDirectory() {
 		return instance.clientDirectory;
 	}
-	
+
 	public static ClientLogger getErrorManager() {
 		return instance.errorManager;
+	}
+
+	public static Client getInstance() {
+		return instance;
 	}
 }

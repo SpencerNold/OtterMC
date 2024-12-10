@@ -21,10 +21,9 @@ import io.github.ottermc.screen.impl.MenuScreen;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
-import java.io.IOException;
 import java.lang.instrument.UnmodifiableClassException;
 
-@Plugin(name = "OtterMC 1.8.9 Pvp", version = "ALPHA-v1.0.0 (1.8.9)", target = "1.8.9")
+@Plugin(name = "OtterMC 1.8.9 Pvp", version = Client.VERSION, target = "1.8.9")
 public class Main implements Implementation {
 
     @Override

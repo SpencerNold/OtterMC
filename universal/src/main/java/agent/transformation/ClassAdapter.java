@@ -7,7 +7,6 @@ import org.objectweb.asm.*;
 import structures.Pair;
 
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.lang.reflect.Method;
@@ -17,7 +16,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class ClassAdapter implements ClassFileTransformer {
-	
+
+	private static final int ASM_MAX_MAJOR_VERSION = 63;
+
 	private static ClassAdapter instance;
 	
 	private final Instrumentation instrumentation;
@@ -40,7 +41,8 @@ public class ClassAdapter implements ClassFileTransformer {
 		try {
 			mcClass = Class.forName(mclass.getName1());
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			return;
 		}
 		if (!transformers.containsKey(mcClass))
 			transformers.put(mcClass, new TClassObj(clazz));
@@ -72,13 +74,15 @@ public class ClassAdapter implements ClassFileTransformer {
 	}
 
 	@Override
-	public byte[] transform(ClassLoader loader, String className, Class<?> clazz, ProtectionDomain domain, byte[] buffer) throws IllegalClassFormatException {
+	public byte[] transform(ClassLoader loader, String className, Class<?> clazz, ProtectionDomain domain, byte[] buffer) {
 		TClassObj tclass = transformers.get(clazz);
 		if (tclass == null)
 			return buffer;
+		int version = getMajorVersion(buffer);
+		clampMajorVersion(buffer, 0, ASM_MAX_MAJOR_VERSION);
 		ClassReader reader = new ClassReader(buffer);
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+        reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
 			public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
 				LinkedList<TMethodObj> tmethods = tclass.getInjector(name + descriptor);
 				if (tmethods == null)
@@ -132,9 +136,34 @@ public class ClassAdapter implements ClassFileTransformer {
 			}
 			
 		}, 0);
-		return writer.toByteArray();
+		buffer = writer.toByteArray();
+		setMajorVersion(buffer, version);
+        return buffer;
 	}
-	
+
+	private static void clampMajorVersion(byte[] buffer, int min, int max) {
+		// Minecraft uses major version 65, and loads ASM 9.3 which only supports up to 63
+		// this does some evil magic to change the class file's version and change it back
+		// so that asm can read the class, but hopefully have the class still function as
+		// originally intended.
+		// !!! May run into issues from new Java 20+ features changing bytecode !!!
+		int version = getMajorVersion(buffer);
+		if (version > max)
+			version = max;
+		else if (version < min)
+			version = min;
+		setMajorVersion(buffer, version);
+	}
+
+	private static int getMajorVersion(byte[] buffer) {
+		return (((buffer[6] & 0xFF) << 8) | (buffer[7] & 0xFF));
+	}
+
+	private static void setMajorVersion(byte[] buffer, int version) {
+		buffer[6] = (byte) ((version >> 8) & 0xFF);
+		buffer[7] = (byte) (version & 0xFF);
+	}
+
 	public static ClassAdapter getInstance() {
 		return instance; // For POST-Initialization
 	}

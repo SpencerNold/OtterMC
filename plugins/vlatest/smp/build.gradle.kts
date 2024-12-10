@@ -6,7 +6,7 @@ plugins {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 tasks.named("build") {

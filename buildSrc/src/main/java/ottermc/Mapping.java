@@ -1,12 +1,10 @@
 package ottermc;
 
+import org.gradle.api.GradleScriptException;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,10 +19,11 @@ public class Mapping {
 			mappings.put(Constants.VERSION_1_8_9, read(Constants.VERSION_1_8_9));
 			mappings.put(Constants.VERSION_1_21_3, read(Constants.VERSION_1_21_3));
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			throw new GradleScriptException("failed to read mapping", e);
 		}
 	}
-	
+
 	public static Class get(String className, int version) {
 		return mappings.get(version).get(className);
 	}
@@ -113,49 +112,49 @@ public class Mapping {
 			return methods.containsKey(name + desc);
 		}
 	}
-	
+
 	public static class Field {
-		
+
 		private final String name0, name1;
-		
+
 		public Field(String name0, String name1) {
 			this.name0 = name0;
 			this.name1 = name1;
 		}
-		
+
 		public String getName0() {
 			return name0;
 		}
-		
+
 		public String getName1() {
 			return name1;
 		}
 	}
-	
+
 	public static class Method {
-		
+
 		private final String name0, desc0;
 		private final String name1, desc1;
-		
+
 		public Method(String name0, String desc0, String name1, String desc1) {
 			this.name0 = name0;
 			this.desc0 = desc0;
 			this.name1 = name1;
 			this.desc1 = desc1;
 		}
-		
+
 		public String getName0() {
 			return name0;
 		}
-		
+
 		public String getDesc0() {
 			return desc0;
 		}
-		
+
 		public String getName1() {
 			return name1;
 		}
-		
+
 		public String getDesc1() {
 			return desc1;
 		}
