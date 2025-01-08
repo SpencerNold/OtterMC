@@ -3,6 +3,7 @@ package agent;
 import agent.transformation.ClassAdapter;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
+import io.github.ottermc.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getLoggerErrorStream());
         }
     }
 
@@ -34,7 +35,7 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getLoggerErrorStream());
         }
     }
 
@@ -74,11 +75,13 @@ public class Agent {
                         }
                         jar.close();
                     } catch (IOException ignored) {
-                        System.err.println("failed to load plugin: " + f.getName());
+                        Logger.error("failed to load plugin: " + f.getName());
                     }
                 }
                 for (String name : classNames) {
-                    Class<?> clazz = Class.forName(name, false, ClassLoader.getSystemClassLoader());
+                    Class<?> clazz = findClassOrNullUnloaded(name);
+                    if (clazz == null)
+                        continue;
                     if (clazz.isAnnotationPresent(Plugin.class)) {
                         Plugin plugin = clazz.getAnnotation(Plugin.class);
                         if (!plugin.target().equals(target))
@@ -86,13 +89,16 @@ public class Agent {
                         try {
                             Implementation implementation = (Implementation) createSafeInstance(clazz);
                             PLUGINS.put(plugin, implementation);
+                            Logger.log("loading plugin: " + plugin.name());
                         } catch (Exception ignored) {
-                            System.err.printf("failed to initialize plugin: %s (%s)\n", plugin.name(), plugin.version());
+                            Logger.errorf("failed to initialize plugin: %s (%s)\n", plugin.name(), plugin.version());
                         }
                     }
                 }
             }
         }
+        if (PLUGINS.isEmpty())
+            Logger.log("Running vanilla client version, no plugins are installed!");
         for (Implementation implementation : PLUGINS.values())
             implementation.onPreInit(adapter);
         adapter.execute();
@@ -104,12 +110,18 @@ public class Agent {
     }
 
     private static int getCompiledJarMajorVersion() throws IOException {
-        JarFile jar = new JarFile(getJarFile());
+        File file = getJarFile();
+        if (file == null)
+            throw new IOException();
+        JarFile jar = new JarFile(file);
         Enumeration<JarEntry> entries = jar.entries();
         int version = -1;
-        if (entries.hasMoreElements()) {
+        while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
-            version = getMajorVersion(jar, entry);
+            if (entry.getName().endsWith(".class")) {
+                version = getMajorVersion(jar, entry);
+                break;
+            }
         }
         jar.close();
         return version;
@@ -125,6 +137,14 @@ public class Agent {
         return (((bytes[6] & 0xFF) << 8) | (bytes[7] & 0xFF));
     }
 
+    private static Class<?> findClassOrNullUnloaded(String name) {
+        try {
+            return Class.forName(name, false, ClassLoader.getSystemClassLoader());
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            return null;
+        }
+    }
+
     private static Object createSafeInstance(Class<?> clazz) {
         try {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
@@ -138,7 +158,7 @@ public class Agent {
         try {
             return new File(Agent.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            e.printStackTrace(Logger.getLoggerErrorStream());
             return null;
         }
     }

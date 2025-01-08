@@ -142,8 +142,8 @@ public class ClassAdapter implements ClassFileTransformer {
 	}
 
 	private static void clampMajorVersion(byte[] buffer, int min, int max) {
-		// Minecraft uses major version 65, and loads ASM 9.3 which only supports up to 63
-		// this does some evil magic to change the class file's version and change it back
+		// Jar uses major version 65, and loads ASM 9.3 which only supports up to 63
+		// this function does some evil magic to change the class file's version and change it back
 		// so that asm can read the class, but hopefully have the class still function as
 		// originally intended.
 		// !!! May run into issues from new Java 20+ features changing bytecode !!!

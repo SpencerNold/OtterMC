@@ -1,6 +1,6 @@
 package agent.transformation;
 
-public class Callback{
+public class Callback {
 
 	private boolean cancel;
 	

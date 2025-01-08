@@ -28,7 +28,7 @@ class InstallWindow extends StatelessWidget {
           child: Center(
             child: ElevatedButton(
               onPressed: () async {
-                Version version = await showDialog(
+                Version? version = await showDialog(
                     context: context,
                     builder: (context) {
                       Version version = Version.version189;
@@ -76,6 +76,7 @@ class InstallWindow extends StatelessWidget {
                         ],
                       );
                     });
+                if (version == null) return;
                 showDialog(
                     // ignore: use_build_context_synchronously
                     context: context,

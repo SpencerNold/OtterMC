@@ -14,7 +14,6 @@ public class MinecraftClientTransformer {
 
     @Injector(target = Target.HEAD, name = "tick()V")
     public void onTick(MinecraftClient client, Callback callback) {
-        System.out.println("Tick!");
         RunTickListener.RunTickEvent event = new RunTickListener.RunTickEvent(client);
         EventBus.fire(event);
     }

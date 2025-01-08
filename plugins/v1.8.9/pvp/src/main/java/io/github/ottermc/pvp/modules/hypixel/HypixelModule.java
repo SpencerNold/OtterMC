@@ -14,7 +14,7 @@ public abstract class HypixelModule extends Module {
 	// Some sort of win counter
 	
 	public HypixelModule(String name) {
-		super(name, Category.HYPIXEL);
+		super(name, Category.ONLINE);
 	}
 
 	public final boolean isConnectedToHypixel() {

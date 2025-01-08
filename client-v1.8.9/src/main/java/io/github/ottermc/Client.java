@@ -25,7 +25,9 @@ import java.nio.ByteBuffer;
 
 public class Client {
 
-	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.8.9)", TARGET = "1.8.9";
+	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.8.9)";
+	@ReflectionRequired
+	public static final String TARGET = "1.8.9";
 
 	private static Client instance;
 

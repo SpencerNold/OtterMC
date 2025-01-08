@@ -20,5 +20,3 @@ out/
 # General
 bin
 libs
-*.bat
-*.sh

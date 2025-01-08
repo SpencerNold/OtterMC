@@ -47,7 +47,7 @@ tasks.register("run") {
     }
     group = "client"
     description = "Runs the modified game client."
-    dependsOn("build")
+    dependsOn(":install")
 }
 
 tasks.named("build") {

@@ -92,38 +92,3 @@ class _AppState extends State<App> {
     );
   }
 }
-
-/*
-
-{
-    "assetIndex": {
-      "id": "1.8"
-    },
-    "assets": "1.8",
-    "complianceLevel": 0,
-    "id": "tester",
-    "javaVersion": {
-      "component": "jre-legacy",
-      "majorVersion": 8
-    },
-    "libraries": [
-      {
-        "name": "io.github.ottermc:wrapper:1.0.0"
-      }
-    ],
-    "logging": {
-      "client": {
-        "argument": "-Dlog4j.configurationFile=${path}",
-        "file": {
-          "id": "client-1.7.xml"
-        },
-        "type": "log4j2-xml"
-      }
-    },
-    "mainClass": "io.github.ottermc.Wrapper",
-    "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userProperties ${user_properties} --userType ${user_type}",
-    "minimumLauncherVersion": 14,
-    "type": "release"
-  }
-
-*/
