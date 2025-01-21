@@ -41,7 +41,7 @@ tasks.named("distTar") {
     mustRunAfter(":client-v1.8.9:build")
     mustRunAfter(":client-v1.21.3:build")
     mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:vlatest:smp:build")
+    mustRunAfter(":plugins:v1.21.3:smp:build")
 }
 
 tasks.named("distZip") {
@@ -49,7 +49,7 @@ tasks.named("distZip") {
     mustRunAfter(":client-v1.8.9:build")
     mustRunAfter(":client-v1.21.3:build")
     mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:vlatest:smp:build")
+    mustRunAfter(":plugins:v1.21.3:smp:build")
 }
 
 application {

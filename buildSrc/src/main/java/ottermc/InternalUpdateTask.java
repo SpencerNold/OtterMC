@@ -37,7 +37,7 @@ public class InternalUpdateTask extends DefaultTask {
         if (!matcher.matches())
             throw new GradleScriptException(version + " is not in the form of old->new", new InputMismatchException());
         String oldVersion = "v" + matcher.group(1);
-        String newVersion = "vlatest";
+        String newVersion = "v" + matcher.group(2);
 
         Project project = getProject();
         File dir = project.getProjectDir();
