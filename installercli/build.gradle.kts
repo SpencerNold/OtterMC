@@ -27,7 +27,7 @@ distributions {
         getProjectOutputPath(":client-v1.8.9", "client-v1.8.9-remapped-joined.jar"),
         getProjectOutputPath(":client-v1.21.3", "client-v1.21.3-remapped-joined.jar"),
         getProjectOutputPath(":plugins:v1.8.9:pvp", "pvp-remapped.jar"),
-        getProjectOutputPath(":plugins:vlatest:smp", "smp-remapped.jar")
+        getProjectOutputPath(":plugins:v1.21.3:smp", "smp-remapped.jar")
     )
     main {
         contents {

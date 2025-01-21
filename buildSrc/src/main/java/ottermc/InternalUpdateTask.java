@@ -1,0 +1,86 @@
+package ottermc;
+
+import org.gradle.api.DefaultTask;
+import org.gradle.api.GradleScriptException;
+import org.gradle.api.Project;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.options.Option;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class InternalUpdateTask extends DefaultTask {
+
+    private String version;
+
+    @Option(option = "clientVersion", description = "Sets the client version to update from->to")
+    public void setClientVersion(String version) {
+        this.version = version;
+    }
+
+    @Input
+    public String getClientVersion() {
+        return version;
+    }
+
+    @TaskAction
+    public void execute() {
+        Pattern pattern = Pattern.compile("^(.+?)->(.+?)$");
+        Matcher matcher = pattern.matcher(version);
+        if (!matcher.matches())
+            throw new GradleScriptException(version + " is not in the form of old->new", new InputMismatchException());
+        String oldVersion = "v" + matcher.group(1);
+        String newVersion = "vlatest";
+
+        Project project = getProject();
+        File dir = project.getProjectDir();
+        walk(dir, file -> {
+            if (file.isDirectory()) {
+
+            } else {
+                if (file.getName().endsWith(".gradle.kts")) {
+                    try {
+                        ArrayList<String> lines = new ArrayList<>();
+                        Scanner scanner = new Scanner(new FileInputStream(file));
+                        while (scanner.hasNextLine()) {
+                            String line = scanner.nextLine();
+                            if (line.contains(oldVersion)) {
+                                line = line.replace(oldVersion, newVersion);
+                            }
+                            lines.add(line);
+                        }
+                        scanner.close();
+                        PrintWriter writer = new PrintWriter(new FileOutputStream(file));
+                        lines.forEach(writer::println);
+                        writer.flush();
+                        writer.close();
+                    } catch (IOException e) {
+                        throw new GradleScriptException("failed to read build script file", e);
+                    }
+                }
+            }
+        });
+    }
+
+    private void walk(File file, Consumer<File> consumer) {
+        consumer.accept(file);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files == null)
+                return;
+            for (File f : files)
+                walk(f, consumer);
+        }
+    }
+
+    private static class Box<T> {
+        public T item = null;
+    }
+}

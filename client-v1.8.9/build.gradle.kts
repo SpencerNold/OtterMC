@@ -1,7 +1,7 @@
 import ottermc.Compiler
 import ottermc.Constants
 import ottermc.Joiner
-import ottermc.Launcher
+import ottermc.RunClientTask
 
 plugins {
 	`java-library`
@@ -35,7 +35,7 @@ dependencies {
 tasks.register("attach") {
 	doLast {
 		val client = file("build/libs/client-v1.8.9-remapped-joined.jar")
-		Launcher.attach(client, Constants.VERSION_1_8_9)
+		RunClientTask.attach(client, Constants.VERSION_1_8_9)
 	}
 	group = "client"
 	description = "Attaches the client to a running game client."
@@ -45,7 +45,7 @@ tasks.register("attach") {
 tasks.register("run") {
 	doLast {
 		val client = file("build/libs/client-v1.8.9-remapped-joined.jar")
-		Launcher.launch(client, Constants.VERSION_1_8_9)
+		RunClientTask.launch(client, Constants.VERSION_1_8_9)
 	}
 	group = "client"
 	description = "Runs the modified game client."
