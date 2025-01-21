@@ -25,9 +25,9 @@ distributions {
     val list = listOf(
         getProjectOutputPath(":wrapper", "wrapper.jar"),
         getProjectOutputPath(":client-v1.8.9", "client-v1.8.9-remapped-joined.jar"),
-        getProjectOutputPath(":client-v1.21.3", "client-v1.21.3-remapped-joined.jar"),
+        getProjectOutputPath(":client-v1.21.4", "client-v1.21.4-remapped-joined.jar"),
         getProjectOutputPath(":plugins:v1.8.9:pvp", "pvp-remapped.jar"),
-        getProjectOutputPath(":plugins:v1.21.3:smp", "smp-remapped.jar")
+        getProjectOutputPath(":plugins:v1.21.4:smp", "smp-remapped.jar")
     )
     main {
         contents {
@@ -39,17 +39,17 @@ distributions {
 tasks.named("distTar") {
     mustRunAfter(":wrapper:jar")
     mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-v1.21.3:build")
+    mustRunAfter(":client-v1.21.4:build")
     mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:v1.21.3:smp:build")
+    mustRunAfter(":plugins:v1.21.4:smp:build")
 }
 
 tasks.named("distZip") {
     mustRunAfter(":wrapper:jar")
     mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-v1.21.3:build")
+    mustRunAfter(":client-v1.21.4:build")
     mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:v1.21.3:smp:build")
+    mustRunAfter(":plugins:v1.21.4:smp:build")
 }
 
 application {

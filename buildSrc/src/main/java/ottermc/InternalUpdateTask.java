@@ -8,13 +8,13 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import java.util.ArrayList;
 
 public class InternalUpdateTask extends DefaultTask {
 
@@ -41,10 +41,16 @@ public class InternalUpdateTask extends DefaultTask {
 
         Project project = getProject();
         File dir = project.getProjectDir();
-        walk(dir, file -> {
-            if (file.isDirectory()) {
 
-            } else {
+        File client = new File(dir, "client-" + oldVersion);
+        if (!client.exists()) {
+            throw new GradleScriptException(oldVersion + " must exist as a version", new InputMismatchException());
+        }
+        File plugins = new File(dir, "plugins" + File.separator + oldVersion);
+
+        // update build scripts
+        walk(dir, file -> {
+            if (!file.isDirectory()) {
                 if (file.getName().endsWith(".gradle.kts")) {
                     try {
                         ArrayList<String> lines = new ArrayList<>();
@@ -67,6 +73,18 @@ public class InternalUpdateTask extends DefaultTask {
                 }
             }
         });
+
+        // update directory names
+        boolean success = updateNameAlias(client, "client-" + newVersion);
+        if (plugins.exists())
+            success = success && updateNameAlias(plugins, newVersion);
+        if (!success) {
+            throw new GradleScriptException("failed to rename a directory", new IOException());
+        }
+    }
+
+    private boolean updateNameAlias(File directory, String name) {
+        return directory.renameTo(new File(directory.getParent(), name));
     }
 
     private void walk(File file, Consumer<File> consumer) {

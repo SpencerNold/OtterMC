@@ -25,11 +25,14 @@ public class InstallTask extends DefaultTask {
         try {
             copy(wrapperSrc, wrapperDst);
 
-            copyVersion("1.8.9", projectDir, clientDir);
-            copyVersion("1.21.3", projectDir, clientDir);
+            String v189 = VersionRegistry.translateVersionToNameString(Constants.VERSION_1_8_9);
+            String vnew = VersionRegistry.translateVersionToNameString(Constants.VERSION_1_21_4);
 
-            copyPlugin(projectDir, pluginDir, "pvp-1.8.9.jar", "plugins", "v1.8.9", "pvp", "build", "libs", "pvp-remapped.jar");
-            copyPlugin(projectDir, pluginDir, "smp-1.21.3.jar", "plugins", "vlatest", "smp", "build", "libs", "smp-remapped.jar");
+            copyVersion(v189, projectDir, clientDir);
+            copyVersion(vnew, projectDir, clientDir);
+
+            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", "v" + v189, "pvp", "build", "libs", "pvp-remapped.jar");
+            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", "v" + vnew, "smp", "build", "libs", "smp-remapped.jar");
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }
