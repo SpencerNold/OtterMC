@@ -1,7 +1,7 @@
-package io.github.ottermc.modules.settings.setting;
+package io.github.ottermc.modules.setting;
 
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.settings.NumericSetting;
+import io.github.ottermc.modules.NumericSetting;
 
 public class FloatSetting extends NumericSetting<Float> {
 

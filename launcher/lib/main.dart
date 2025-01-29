@@ -40,10 +40,9 @@ class _AppState extends State<App> {
             ],
           ),
           actions: [
-            _createTabButton("INSTALL", 0),
-            _createTabButton("ATTACH", 1),
-            _createTabButton("UPDATES", 2),
-            _createTabButton("GITHUB", 3),
+            _createTabButton("CLIENT", 0),
+            _createTabButton("UPDATES", 1),
+            _createTabButton("GITHUB", 2),
           ],
         ),
         backgroundColor: ColorTheme.bk1,
@@ -55,7 +54,7 @@ class _AppState extends State<App> {
   Widget? _createBodyWidget() {
     switch (index) {
       case 0:
-        return const InstallWindow();
+        return const ClientWindow();
       case 1:
         break;
       case 2:

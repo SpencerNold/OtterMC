@@ -1,7 +1,7 @@
-package io.github.ottermc.modules.settings.setting;
+package io.github.ottermc.modules.setting;
 
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.settings.Setting;
+import io.github.ottermc.modules.Setting;
 
 public class BooleanSetting extends Setting<Boolean> {
 

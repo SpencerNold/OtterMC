@@ -1,4 +1,4 @@
-package io.github.ottermc.modules.settings.setting;
+package io.github.ottermc.modules.setting;
 
 public class EnumSetting<T extends Enum<T>> extends IntSetting {
 	

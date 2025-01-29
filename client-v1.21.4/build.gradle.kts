@@ -20,13 +20,14 @@ val universal: Configuration by configurations.creating
 dependencies {
     // Game Dependencies
     api("org.lwjgl:lwjgl-glfw:3.3.3")
+    api("it.unimi.dsi:fastutil:8.5.15")
 
     // Client dependencies
     universal(project(":universal"))
     for (depend in universal.dependencies)
         api(depend)
     implementation("org.ow2.asm:asm:9.7.1")
-    api(files("libs/mc-clean-1.21.3.jar"))
+    api(files("libs/mc-clean.jar"))
 
 }
 

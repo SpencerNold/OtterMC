@@ -10,7 +10,7 @@ import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.io.Secure;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
-import io.github.ottermc.modules.settings.Storable;
+import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.HudManager;

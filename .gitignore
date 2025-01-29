@@ -20,3 +20,4 @@ out/
 # General
 bin
 libs
+build-*.zip

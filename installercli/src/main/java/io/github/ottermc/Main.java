@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.8.9", "1.21.3");
+    private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.8.9", "1.21.4");
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -138,7 +138,6 @@ public class Main {
             writer.close();
             System.out.println("[OtterMC] copied and updated client json file");
 
-            // Update Client Json
         } catch (IOException e) {
             e.printStackTrace();
         }

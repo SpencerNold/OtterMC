@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:launcher/installer.dart';
 import 'package:launcher/theme.dart';
 
-class InstallWindow extends StatelessWidget {
-  const InstallWindow({super.key});
+class ClientWindow extends StatelessWidget {
+  const ClientWindow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,12 @@ class InstallWindow extends StatelessWidget {
           child: Center(
             child: ElevatedButton(
               onPressed: () async {
+                bool attach = false;
                 Version? version = await showDialog(
                     context: context,
                     builder: (context) {
-                      Version version = Version.version189;
+                      ContainerController<Version> controller =
+                          ContainerController(Version.version189);
                       return AlertDialog(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0),
@@ -43,12 +45,14 @@ class InstallWindow extends StatelessWidget {
                             style: TextStyle(color: ColorTheme.light),
                           ),
                         ),
-                        content: const VersionDropdown(),
+                        content: VersionDropdown(controller),
                         actionsAlignment: MainAxisAlignment.center,
                         actions: [
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pop(version);
+                              // install
+                              attach = false;
+                              Navigator.of(context).pop(controller.value);
                             },
                             style: ButtonStyle(
                               backgroundColor: const WidgetStatePropertyAll(
@@ -73,6 +77,35 @@ class InstallWindow extends StatelessWidget {
                               style: TextStyle(color: ColorTheme.light),
                             ),
                           ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // attach
+                              attach = true;
+                              Navigator.of(context).pop(controller.value);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: const WidgetStatePropertyAll(
+                                ColorTheme.accent,
+                              ),
+                              padding: const WidgetStatePropertyAll(
+                                EdgeInsets.only(
+                                  top: 5.0,
+                                  bottom: 5.0,
+                                  left: 15.0,
+                                  right: 15.0,
+                                ),
+                              ),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              "Attach",
+                              style: TextStyle(color: ColorTheme.light),
+                            ),
+                          ),
                         ],
                       );
                     });
@@ -87,7 +120,8 @@ class InstallWindow extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         content: Center(
                           child: FutureBuilder(
-                            future: version.install(),
+                            future:
+                                attach ? version.attach() : version.install(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 Navigator.of(context).pop();
@@ -132,7 +166,7 @@ class InstallWindow extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                "Install",
+                "Install & Attach",
                 style: TextStyle(color: ColorTheme.light),
               ),
             ),
@@ -144,22 +178,22 @@ class InstallWindow extends StatelessWidget {
 }
 
 class VersionDropdown extends StatefulWidget {
-  const VersionDropdown({super.key});
+  final ContainerController<Version> _controller;
+
+  const VersionDropdown(this._controller, {super.key});
 
   @override
   State<VersionDropdown> createState() => _VersionDropdownState();
 }
 
 class _VersionDropdownState extends State<VersionDropdown> {
-  Version version = Version.version189;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-      value: version,
+      value: widget._controller.value,
       onChanged: (Version? value) {
         setState(() {
-          if (value != null) version = value;
+          if (value != null) widget._controller.value = value;
         });
       },
       dropdownColor: ColorTheme.bk2,
@@ -180,4 +214,9 @@ class _VersionDropdownState extends State<VersionDropdown> {
       }).toList(),
     );
   }
+}
+
+class ContainerController<T> {
+  T value;
+  ContainerController(this.value);
 }

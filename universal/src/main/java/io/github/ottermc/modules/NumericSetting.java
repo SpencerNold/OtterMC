@@ -1,4 +1,4 @@
-package io.github.ottermc.modules.settings;
+package io.github.ottermc.modules;
 
 public abstract class NumericSetting<T extends Number> extends Setting<T> {
 

@@ -1,9 +1,8 @@
-package io.github.ottermc.modules.settings.setting;
+package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.modules.settings.Setting;
-import org.lwjgl.input.Keyboard;
-
+import io.github.ottermc.UniversalKeyboard;
 import io.github.ottermc.io.ByteBuf;
+import io.github.ottermc.modules.Setting;
 
 public class KeyboardSetting extends Setting<Integer> {
 
@@ -12,7 +11,7 @@ public class KeyboardSetting extends Setting<Integer> {
 	}
 	
 	public String getKeyName() {
-		return value == -1 ? "" : Keyboard.getKeyName(value);
+		return value == -1 ? "" : UniversalKeyboard.translateKeyToName(value);
 	}
 
 	@Override

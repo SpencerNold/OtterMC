@@ -1,5 +1,6 @@
 package ottermc;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,5 +18,9 @@ public class VersionRegistry {
 
     public static String translateVersionToNameString(int version) {
         return NAMES.get(version);
+    }
+
+    public static Collection<String> getVersionNames() {
+        return NAMES.values();
     }
 }

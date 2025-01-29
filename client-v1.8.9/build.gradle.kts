@@ -24,6 +24,7 @@ dependencies {
 	api("org.lwjgl.lwjgl:lwjgl:2.9.2")
 	api("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
 
+
 	// Client dependencies
 	universal(project(":universal"))
 	for (depend in universal.dependencies)

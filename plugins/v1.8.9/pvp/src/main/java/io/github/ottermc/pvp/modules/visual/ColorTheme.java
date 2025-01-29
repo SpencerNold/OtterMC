@@ -2,8 +2,8 @@ package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
-import io.github.ottermc.modules.settings.Storable;
-import io.github.ottermc.modules.settings.setting.EnumSetting;
+import io.github.ottermc.modules.Storable;
+import io.github.ottermc.modules.setting.EnumSetting;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.util.MathHelper;

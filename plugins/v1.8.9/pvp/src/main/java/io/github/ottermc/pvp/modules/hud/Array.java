@@ -2,10 +2,10 @@ package io.github.ottermc.pvp.modules.hud;
 
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
-import io.github.ottermc.modules.settings.Storable;
-import io.github.ottermc.modules.settings.setting.BooleanSetting;
-import io.github.ottermc.modules.settings.setting.ColorSetting;
-import io.github.ottermc.modules.settings.setting.StringSetting;
+import io.github.ottermc.modules.Storable;
+import io.github.ottermc.modules.setting.BooleanSetting;
+import io.github.ottermc.modules.setting.ColorSetting;
+import io.github.ottermc.modules.setting.StringSetting;
 import io.github.ottermc.pvp.modules.visual.ColorTheme;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;

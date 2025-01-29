@@ -1,4 +1,4 @@
-package io.github.ottermc.modules.settings;
+package io.github.ottermc.modules;
 
 public abstract class Setting<T> extends Storable<T> {
 

@@ -7,9 +7,9 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.AddChatMessageListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.settings.Storable;
+import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
-import io.github.ottermc.modules.settings.setting.StringSetting;
+import io.github.ottermc.modules.setting.StringSetting;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 

@@ -19,7 +19,6 @@ public class FishingHelper extends Module implements RunTickListener {
 
     public FishingHelper() {
         super("FishingHelper", Category.UTILITY);
-        setActive(true);
     }
 
     @Override

@@ -1,7 +1,7 @@
-package io.github.ottermc.modules.settings.storable;
+package io.github.ottermc.modules.storable;
 
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.settings.Storable;
+import io.github.ottermc.modules.Storable;
 
 public class IntStorage extends Storable<Integer> {
 

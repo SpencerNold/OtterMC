@@ -4,9 +4,9 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
-import io.github.ottermc.modules.settings.Storable;
-import io.github.ottermc.modules.settings.setting.BooleanSetting;
-import io.github.ottermc.modules.settings.setting.ColorSetting;
+import io.github.ottermc.modules.Storable;
+import io.github.ottermc.modules.setting.BooleanSetting;
+import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 

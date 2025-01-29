@@ -2,8 +2,8 @@ package io.github.ottermc.pvp.modules.utility;
 
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
-import io.github.ottermc.modules.settings.Storable;
-import io.github.ottermc.modules.settings.storable.FloatStorage;
+import io.github.ottermc.modules.Storable;
+import io.github.ottermc.modules.storable.FloatStorage;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;

@@ -6,9 +6,10 @@ import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.smp.modules.game.FishingHelper;
+import io.github.ottermc.smp.modules.game.TradeSelector;
 import io.github.ottermc.smp.transformers.GameRendererTransformer;
 
-@Plugin(name = "OtterMC 1.21.3 SMP", version = Client.VERSION, target = "1.21.3")
+@Plugin(name = "OtterMC 1.21.4 SMP", version = Client.VERSION, target = "1.21.4")
 public class Main implements Implementation {
 
     @Override
@@ -37,5 +38,6 @@ public class Main implements Implementation {
         manager.register(new FishingHelper());
         // Movement
         // World
+        manager.register(new TradeSelector());
     }
 }

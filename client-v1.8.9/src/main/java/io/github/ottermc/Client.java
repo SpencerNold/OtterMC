@@ -5,6 +5,7 @@ import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.Secure;
 import io.github.ottermc.keybind.KeybindManager;
+import io.github.ottermc.keybind.LWJGLKeyboard;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
@@ -17,6 +18,7 @@ import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
@@ -51,6 +53,7 @@ public class Client {
 
 	@ReflectionRequired
 	public void start() {
+		UniversalKeyboard.register(new LWJGLKeyboard());
 		registerEvents();
 	}
 
