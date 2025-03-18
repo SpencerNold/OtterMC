@@ -1,5 +1,10 @@
 plugins {
     `java-library`
+    application
+}
+
+application {
+    mainClass = "Tester"
 }
 
 java {

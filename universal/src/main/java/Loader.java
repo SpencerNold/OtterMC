@@ -3,6 +3,8 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -10,42 +12,16 @@ import java.util.regex.Pattern;
 
 public class Loader {
 
-    enum Target {
-
-        VANILLA("net.minecraft.client.main.Main", "{$version}"),
-        OLD_FORGE("", ""),
-        FORGE("", ""),
-        FABRIC("net.fabricmc.loader.impl.launch.knot.KnotClient", "fabric-loader-.+?-${version}"),
-        OLD_OPTIFINE("", ""),
-        OPTIFINE("net.minecraft.launchwrapper.Launch", "${version}-OptiFine.*$");
-
-        final String mainClass;
-        final String version;
-        private Pattern pattern;
-
-        Target(String mainClass, String version) {
-            this.mainClass = mainClass;
-            this.version = version;
-        }
-
-        boolean matches(String version) {
-            return pattern.matcher(version).matches();
-        }
-
-        static Target get(String name, String version) {
-            try {
-                Target target = valueOf(name.toUpperCase());
-                target.pattern = Pattern.compile(target.version.replace("${version}", version));
-                return target;
-            } catch (Exception e) {
-                return null;
-            }
-        }
-    }
+    private static final ArrayList<String> SUPPORTED_MAIN_CLASSES = new ArrayList<>(Arrays.asList(
+            "net.minecraft.client.main.Main", // Vanilla
+            "net.minecraft.launchwrapper.Launch", // Old Forge & OptiFine
+            "net.minecraftforge.bootstrap.ForgeBootstrap", // New Forge
+            "net.fabricmc.loader.impl.launch.knot.KnotClient" // Fabric
+    ));
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.err.println("missing argument for the game version and/or target");
+        if (args.length < 1) {
+            System.err.println("missing argument for the game version");
             return;
         }
         Pattern pattern = Pattern.compile("--(.*?) (.*?)(?= |$)");
@@ -55,11 +31,10 @@ public class Loader {
             Map<String, String> arguments = new HashMap<>();
             while (matcher.find())
                 arguments.put(matcher.group(1), matcher.group(2));
-            Target target = Target.get(args[1], args[0]);
-            boolean inject = test(mainClass, target, arguments);
+            boolean inject = test(mainClass, args[0], arguments);
             if (inject) {
                 inject(vmd.id(), getJarFile());
-                System.out.println("attaching to " + target.name() + " v" + args[0]);
+                System.out.println("attaching to " + mainClass + " version " + arguments.get("version") + " v" + args[0]);
                 return;
             }
         }
@@ -76,8 +51,8 @@ public class Loader {
         }
     }
 
-    private static boolean test(String mainClass, Target target, Map<String, String> arguments) {
-        return target != null && mainClass.equals(target.mainClass) && arguments.containsKey("version") && target.matches(arguments.get("version"));
+    private static boolean test(String mainClass, String version, Map<String, String> arguments) {
+        return SUPPORTED_MAIN_CLASSES.contains(mainClass) && arguments.containsKey("version") && arguments.get("version").contains(version);
     }
 
     private static File getJarFile() {

@@ -29,7 +29,6 @@ dependencies {
 	universal(project(":universal"))
 	for (depend in universal.dependencies)
 		api(depend)
-	implementation("org.ow2.asm:asm:9.7.1")
 	api(files("libs/mc-clean.jar"))
 }
 

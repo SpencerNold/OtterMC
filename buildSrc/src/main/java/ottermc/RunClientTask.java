@@ -29,9 +29,9 @@ public class RunClientTask {
 		boolean binDirExists = binDir.exists();
 		File gameJar = new File(file.getParentFile(), "game.jar");
 		try {
-			File mcDir = getMinecraftDirectory();
+			File mcDir = BuildTool.getMinecraftDirectory();
 			String versionName = VersionRegistry.translateVersionToNameString(version);
-			File versionJsonFile = new File(getJoinedWithSeparator(mcDir.getAbsolutePath(), "versions", versionName, versionName + ".json"));
+			File versionJsonFile = new File(BuildTool.getJoinedWithSeparator(mcDir.getAbsolutePath(), "versions", versionName, versionName + ".json"));
 			if (!versionJsonFile.exists())
 				throw new GradleScriptException("missing version json file", new FileNotFoundException(versionJsonFile.getAbsolutePath()));
 			JsonElement element = new Gson().fromJson(new FileReader(versionJsonFile), JsonElement.class);
@@ -56,9 +56,9 @@ public class RunClientTask {
 							boolean add = false;
 							if (os.has("name")) {
 								String osName = os.get("name").getAsString();
-								if (osName.equals("osx") && isMacOS())
+								if (osName.equals("osx") && BuildTool.isMacOS())
 									add = true;
-								else if (osName.equals("windows") && isWindows())
+								else if (osName.equals("windows") && BuildTool.isWindows())
 									add = true;
 							}
 							if (os.has("arch")) {
@@ -117,7 +117,7 @@ public class RunClientTask {
 				walk(libDir, f -> classPath.add(f.getAbsolutePath()));
 			String agent = "-javaagent:" + file.getAbsolutePath();
 			String nativePath = "-Djava.library.path=" + binDir.getAbsolutePath();
-			String assetsDir = getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
+			String assetsDir = BuildTool.getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
 
             List<String> arguments = new ArrayList<>(Arrays.asList(getJava8Path(version), agent, nativePath));
 			arguments.addAll(argList);
@@ -205,25 +205,10 @@ public class RunClientTask {
 		return !System.getProperty("os.arch").contains("64");
 	}
 
-	private static boolean isWindows() {
-		String os = System.getProperty("os.name").toUpperCase();
-		return os.contains("WIN");
-	}
-
-	private static boolean isMacOS() {
-		String os = System.getProperty("os.name").toUpperCase();
-		return os.contains("MAC");
-	}
-
-	private static boolean isLinux() {
-		String os = System.getProperty("os.name").toUpperCase();
-		return !isWindows() && !isMacOS(); // Meh
-	}
-
 	private static String getJava8Path(int version) {
-		if (isWindows())
+		if (BuildTool.isWindows())
 			return getJava8PathWIN();
-		else if (isMacOS())
+		else if (BuildTool.isMacOS())
 			return getJava8PathOSX(version);
 		return getJava8PathUNIX();
 	}
@@ -246,30 +231,5 @@ public class RunClientTask {
 
 	private static String getJava8PathUNIX() {
 		return "java"; // ???
-	}
-
-	static File getMinecraftDirectory() {
-		if (isWindows())
-			return getMinecraftDirectoryWIN();
-		else if (isMacOS())
-			return getMinecraftDirectoryOSX();
-		return getMinecraftDirectoryUNIX();
-	}
-
-	private static File getMinecraftDirectoryWIN() {
-		return new File(getJoinedWithSeparator(System.getenv("APPDATA"), ".minecraft"));
-	}
-
-	private static File getMinecraftDirectoryOSX() {
-		return new File(getJoinedWithSeparator(System.getProperty("user.home"), "Library", "Application Support", "minecraft"));
-	}
-
-	private static File getMinecraftDirectoryUNIX() {
-		// This is very much probably wrong, but I have no idea where .minecraft is stored on linux systems
-		return new File(getJoinedWithSeparator(System.getProperty("user.home"), ".minecraft"));
-	}
-
-	private static String getJoinedWithSeparator(String... paths) {
-		return String.join(File.separator, paths);
 	}
 }

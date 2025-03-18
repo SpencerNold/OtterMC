@@ -89,8 +89,10 @@ public class ClientStorage {
 	public void write() throws IOException {
 		if (!initialized)
 			return;
-		if (!file.exists())
-			file.createNewFile();
+		if (!file.exists()) {
+			if (!file.createNewFile())
+				return;
+		}
 		ByteBuf buf = new ByteBuf();
 		buf.writeInt(VERSION);
 		buf.write(clientId);

@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 public @interface Transformer {
     String className();
 
+    boolean initialize() default false;
     Class<? extends Adapter<String, String>> adapter() default GenericStringAdapter.class;
 }

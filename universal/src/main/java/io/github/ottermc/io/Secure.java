@@ -5,9 +5,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 public class Secure {
-	
+
+	public static final ByteArrayToStringTransformer BASE64_TRANSFORMER = (bytes) -> Base64.getEncoder().encodeToString(bytes);
+
 	public static byte[] random(int n) {
 		SecureRandom random;
 		try {
@@ -20,9 +23,8 @@ public class Secure {
 		return bytes;
 	}
 
-	public static String hash(String s) {
-		Charset charset = StandardCharsets.UTF_8;
-		return new String(hash(s.getBytes(charset)), charset);
+	public static String hashToString(byte[] bytes, ByteArrayToStringTransformer transformer) {
+		return transformer.transform(bytes);
 	}
 
 	public static byte[] hash(byte[] bytes) {
@@ -32,5 +34,10 @@ public class Secure {
 		} catch (Exception ignored) {
 			return null;
 		}
+	}
+
+	@FunctionalInterface
+	public interface ByteArrayToStringTransformer {
+		String transform(byte[] bytes);
 	}
 }

@@ -1,7 +1,6 @@
 package io.github.ottermc;
 
 import agent.ReflectionRequired;
-import agent.transformation.ClassAdapter;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.Secure;
 import io.github.ottermc.keybind.KeybindManager;
@@ -18,12 +17,12 @@ import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class Client {
 
@@ -41,14 +40,14 @@ public class Client {
 	private final File clientDirectory;
 	private final ClientStorage storage;
 
-	public Client(File file, ClassAdapter adapter) {
+	public Client(File file, ClassAdapter1 adapter) {
 		instance = this;
 		this.clientDirectory = file;
 		adapter.register(EntityRendererTransformer.class);
 		adapter.register(GameSettingsTransformer.class);
 		adapter.register(GuiIngameTransformer.class);
 		adapter.register(MinecraftTransformer.class);
-		storage = new ClientStorage(new File(file, "profile." + Secure.hash(TARGET)));
+		storage = new ClientStorage(new File(file, "profile.MC(" + Secure.hashToString(TARGET.getBytes(StandardCharsets.UTF_8), Secure.BASE64_TRANSFORMER) + ")"));
 	}
 
 	@ReflectionRequired

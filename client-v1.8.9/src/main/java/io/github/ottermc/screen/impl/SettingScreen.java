@@ -16,6 +16,7 @@ import io.github.ottermc.screen.render.DrawableHelper;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;

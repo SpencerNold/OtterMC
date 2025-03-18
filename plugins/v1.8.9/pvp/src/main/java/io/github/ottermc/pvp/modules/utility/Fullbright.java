@@ -15,7 +15,7 @@ public class Fullbright extends Module {
 	private final FloatStorage gamma = new FloatStorage(-1.0f);
 	
 	public Fullbright() {
-		super("Fullbright", Category.UTILITY);
+		super("Fullbright", Category.GAME);
 	}
 	
 	@Override

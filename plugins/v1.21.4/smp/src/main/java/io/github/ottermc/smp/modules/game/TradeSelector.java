@@ -23,7 +23,7 @@ public class TradeSelector extends TradeModule implements RunTickListener, DrawO
     private boolean workstation = false;
 
     public TradeSelector() {
-        super("Trade Selector", Category.UTILITY);
+        super("Trade Selector", Category.GAME);
     }
 
     @Override

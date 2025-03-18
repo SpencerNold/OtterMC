@@ -23,7 +23,7 @@ public class Zoom extends Module implements RunTickListener {
 	private boolean zooming;
 	
 	public Zoom() {
-		super("Zoom", Category.UTILITY);
+		super("Zoom", Category.GAME);
 		setActive(true);
 	}
 	

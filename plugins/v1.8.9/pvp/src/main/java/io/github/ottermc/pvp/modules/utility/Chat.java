@@ -22,7 +22,7 @@ public class Chat extends Module {
 	private final BooleanSetting ttf = new BooleanSetting("TrueType Font", false);
 	
 	public Chat() {
-		super("Chat", Category.UTILITY);
+		super("Chat", Category.GAME);
 		instance = this;
 	}
 	

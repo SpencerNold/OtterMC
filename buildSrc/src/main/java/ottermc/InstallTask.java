@@ -11,7 +11,7 @@ public class InstallTask extends DefaultTask {
     @TaskAction
     public void execute() {
         File projectDir = getProject().getProjectDir();
-        File gameDir = RunClientTask.getMinecraftDirectory();
+        File gameDir = BuildTool.getMinecraftDirectory();
 
         File clientDir = new File(gameDir, "ottermc");
         if (!clientDir.exists() && !clientDir.mkdir())

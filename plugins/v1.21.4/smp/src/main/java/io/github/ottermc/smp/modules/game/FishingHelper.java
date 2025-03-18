@@ -18,7 +18,7 @@ public class FishingHelper extends Module implements RunTickListener {
     private int skipTickTimer1 = 4;
 
     public FishingHelper() {
-        super("FishingHelper", Category.UTILITY);
+        super("FishingHelper", Category.GAME);
     }
 
     @Override

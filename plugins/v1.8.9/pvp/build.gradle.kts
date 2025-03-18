@@ -1,6 +1,5 @@
 import ottermc.Compiler
 import ottermc.Constants
-import ottermc.Joiner
 
 plugins {
     java

@@ -125,8 +125,10 @@ class ClientWindow extends StatelessWidget {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 Navigator.of(context).pop();
-                                return const Icon(
-                                  Icons.check_circle,
+                                return Icon(
+                                  snapshot.data!
+                                      ? Icons.check_circle
+                                      : Icons.close_rounded,
                                   color: ColorTheme.accent,
                                   size: 60.0,
                                 );

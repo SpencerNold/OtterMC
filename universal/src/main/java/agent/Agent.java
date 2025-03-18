@@ -1,6 +1,5 @@
 package agent;
 
-import agent.transformation.ClassAdapter;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.logging.Logger;
@@ -45,9 +44,9 @@ public class Agent {
             return;
         File dir = file.getParentFile();
         int version = getCompiledJarMajorVersion();
-        ClassAdapter adapter = new ClassAdapter(instrumentation);
+        ClassAdapter1 adapter = new ClassAdapter1(instrumentation);
         Class<?> main = Class.forName("io.github.ottermc.Client");
-        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassAdapter.class);
+        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassAdapter1.class);
         Object client = constructor.newInstance(dir, adapter);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {

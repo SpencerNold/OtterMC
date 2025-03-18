@@ -5,6 +5,7 @@ import io.github.ottermc.listeners.DrawMainMenuScreenListener;
 import io.github.ottermc.listeners.RenderGameOverlayListener;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.DrawableHelper;
+import org.lwjgl.Sys;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -89,6 +90,7 @@ public class ClientLogger implements DrawMainMenuScreenListener, RenderGameOverl
 
     public static void display(Throwable throwable) {
         display(Severity.ERROR, throwable.getMessage());
+        throwable.printStackTrace(System.err);
     }
 
     public static void info(String message) {
