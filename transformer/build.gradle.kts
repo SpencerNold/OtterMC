@@ -1,10 +1,5 @@
 plugins {
     `java-library`
-    application
-}
-
-application {
-    mainClass = "Tester"
 }
 
 java {
@@ -16,5 +11,5 @@ repositories {
 }
 
 dependencies {
-    implementation("org.ow2.asm:asm:9.7.1")
+    api("org.ow2.asm:asm:9.7.1")
 }

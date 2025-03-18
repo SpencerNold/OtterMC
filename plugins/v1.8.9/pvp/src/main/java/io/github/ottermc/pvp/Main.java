@@ -1,5 +1,6 @@
 package io.github.ottermc.pvp;
 
+import agent.ClassTransformer;
 import io.github.ottermc.Client;
 import io.github.ottermc.ClientLogger;
 import io.github.ottermc.api.Implementation;
@@ -26,16 +27,16 @@ import java.lang.instrument.UnmodifiableClassException;
 public class Main implements Implementation {
 
     @Override
-    public void onPreInit(ClassAdapter1 adapter) {
-        adapter.register(EntityPlayerSPTransformer.class);
-        adapter.register(EntityTransformer.class);
-        adapter.register(GuiScreenTransformer.class);
-        adapter.register(ItemRendererTransformer.class);
-        adapter.register(LayerArmorBaseTransformer.class);
-        adapter.register(PlayerControllerMPTransformer.class);
-        adapter.register(RenderEntityItemTransformer.class);
-        adapter.register(RenderGlobalTransformer.class);
-        adapter.register(RenderItemTransformer.class);
+    public void onPreInit(ClassTransformer transformer) {
+        transformer.register(EntityPlayerSPTransformer.class);
+        transformer.register(EntityTransformer.class);
+        transformer.register(GuiScreenTransformer.class);
+        transformer.register(ItemRendererTransformer.class);
+        transformer.register(LayerArmorBaseTransformer.class);
+        transformer.register(PlayerControllerMPTransformer.class);
+        transformer.register(RenderEntityItemTransformer.class);
+        transformer.register(RenderGlobalTransformer.class);
+        transformer.register(RenderItemTransformer.class);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class Main implements Implementation {
 
     @Override
     public void onPostInit() {
-        ClassAdapter1 adapter = ClassAdapter1.getInstance();
+        ClassTransformer adapter = ClassTransformer.getInstance();
         adapter.register(RendererLivingEntityTransformer.class);
         try {
             adapter.execute();

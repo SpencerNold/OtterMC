@@ -1,5 +1,6 @@
 package io.github.ottermc;
 
+import agent.ClassTransformer;
 import agent.ReflectionRequired;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.modules.ModuleManager;
@@ -19,10 +20,10 @@ public class Client {
 
     private final ModuleManager modManager = new ModuleManager();
 
-    public Client(File file, ClassAdapter1 adapter) {
+    public Client(File file, ClassTransformer transformer) {
         instance = this;
-        adapter.register(InGameHudTransformer.class);
-        adapter.register(MinecraftClientTransformer.class);
+        transformer.register(InGameHudTransformer.class);
+        transformer.register(MinecraftClientTransformer.class);
     }
 
     @ReflectionRequired

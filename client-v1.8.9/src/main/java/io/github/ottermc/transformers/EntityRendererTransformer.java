@@ -1,14 +1,14 @@
 package io.github.ottermc.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.listeners.RenderWorldListener.RenderWorldEvent;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.renderer.EntityRenderer;
 
-@Transformer(name = "net/minecraft/client/renderer/EntityRenderer")
+@Transformer(className = "net/minecraft/client/renderer/EntityRenderer")
 public class EntityRendererTransformer {
 
 	@Injector(target = Target.TAIL, name = "renderWorld(FJ)V")

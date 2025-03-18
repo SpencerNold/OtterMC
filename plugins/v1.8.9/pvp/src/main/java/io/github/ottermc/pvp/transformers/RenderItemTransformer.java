@@ -1,16 +1,16 @@
 package io.github.ottermc.pvp.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import io.github.ottermc.pvp.transformers.wrapper.RenderItemWrapper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 
-@Transformer(name = "net/minecraft/client/renderer/entity/RenderItem")
+@Transformer(className = "net/minecraft/client/renderer/entity/RenderItem")
 public class RenderItemTransformer {
 
 	@Injector(target = Target.HEAD, name = "renderEffect(Lnet/minecraft/client/resources/model/IBakedModel;)V")

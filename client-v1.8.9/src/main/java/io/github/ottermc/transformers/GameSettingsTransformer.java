@@ -1,16 +1,16 @@
 package io.github.ottermc.transformers;
 
-import java.io.File;
-
-import agent.transformation.Callback;
-import agent.transformation.Injector;
 import agent.Reflection;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.Client;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.settings.GameSettings;
 
-@Transformer(name = "net/minecraft/client/settings/GameSettings")
+import java.io.File;
+
+@Transformer(className = "net/minecraft/client/settings/GameSettings")
 public class GameSettingsTransformer {
 	
 	@Injector(name = "loadOptions()V", target = Target.HEAD)

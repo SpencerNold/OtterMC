@@ -1,5 +1,6 @@
 package io.github.ottermc.smp;
 
+import agent.ClassTransformer;
 import io.github.ottermc.Client;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
@@ -12,8 +13,8 @@ import io.github.ottermc.smp.transformers.GameRendererTransformer;
 public class Main implements Implementation {
 
     @Override
-    public void onPreInit(ClassAdapter1 adapter) {
-        adapter.register(GameRendererTransformer.class);
+    public void onPreInit(ClassTransformer transformer) {
+        transformer.register(GameRendererTransformer.class);
     }
 
     @Override

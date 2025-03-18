@@ -1,9 +1,9 @@
 package io.github.ottermc.pvp.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.AddChatMessageListener;
 import net.minecraft.client.Minecraft;
@@ -11,7 +11,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-@Transformer(name =  "net/minecraft/client/entity/EntityPlayerSP")
+@Transformer(className =  "net/minecraft/client/entity/EntityPlayerSP")
 public class EntityPlayerSPTransformer {
 
 	@Injector(name = "addChatMessage(Lnet/minecraft/util/IChatComponent;)V", target = Target.HEAD)

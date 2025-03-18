@@ -1,15 +1,15 @@
 package io.github.ottermc.pvp.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import io.github.ottermc.pvp.transformers.wrapper.LayerArmorBaseWrapper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 
-@Transformer(name = "net/minecraft/client/renderer/entity/layers/LayerArmorBase")
+@Transformer(className = "net/minecraft/client/renderer/entity/layers/LayerArmorBase")
 public class LayerArmorBaseTransformer {
 
 	@Injector(target = Target.HEAD, name = "func_177183_a(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/model/ModelBase;FFFFFFF)V")

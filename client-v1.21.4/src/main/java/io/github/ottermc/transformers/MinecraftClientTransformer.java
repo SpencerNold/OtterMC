@@ -1,15 +1,15 @@
 package io.github.ottermc.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.events.listeners.RunTickListener;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.MinecraftClient;
 
-@Transformer(name = "net/minecraft/client/MinecraftClient")
+@Transformer(className = "net/minecraft/client/MinecraftClient")
 public class MinecraftClientTransformer {
 
     @Injector(target = Target.HEAD, name = "tick()V")

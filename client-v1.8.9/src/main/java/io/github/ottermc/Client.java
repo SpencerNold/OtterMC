@@ -1,5 +1,6 @@
 package io.github.ottermc;
 
+import agent.ClassTransformer;
 import agent.ReflectionRequired;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.Secure;
@@ -40,13 +41,13 @@ public class Client {
 	private final File clientDirectory;
 	private final ClientStorage storage;
 
-	public Client(File file, ClassAdapter1 adapter) {
+	public Client(File file, ClassTransformer transformer) {
 		instance = this;
 		this.clientDirectory = file;
-		adapter.register(EntityRendererTransformer.class);
-		adapter.register(GameSettingsTransformer.class);
-		adapter.register(GuiIngameTransformer.class);
-		adapter.register(MinecraftTransformer.class);
+		transformer.register(EntityRendererTransformer.class);
+		transformer.register(GameSettingsTransformer.class);
+		transformer.register(GuiIngameTransformer.class);
+		transformer.register(MinecraftTransformer.class);
 		storage = new ClientStorage(new File(file, "profile.MC(" + Secure.hashToString(TARGET.getBytes(StandardCharsets.UTF_8), Secure.BASE64_TRANSFORMER) + ")"));
 	}
 

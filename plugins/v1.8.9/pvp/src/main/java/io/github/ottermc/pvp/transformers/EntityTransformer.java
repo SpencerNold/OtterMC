@@ -1,14 +1,14 @@
 package io.github.ottermc.pvp.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.SetVelocityListener;
 import net.minecraft.entity.Entity;
 
-@Transformer(name = "net/minecraft/entity/Entity")
+@Transformer(className = "net/minecraft/entity/Entity")
 public class EntityTransformer {
 
 	@Injector(target = Target.HEAD, name = "setVelocity(DDD)V")

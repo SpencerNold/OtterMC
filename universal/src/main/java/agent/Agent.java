@@ -44,10 +44,10 @@ public class Agent {
             return;
         File dir = file.getParentFile();
         int version = getCompiledJarMajorVersion();
-        ClassAdapter1 adapter = new ClassAdapter1(instrumentation);
+        ClassTransformer transformer = new ClassTransformer(instrumentation);
         Class<?> main = Class.forName("io.github.ottermc.Client");
-        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassAdapter1.class);
-        Object client = constructor.newInstance(dir, adapter);
+        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassTransformer.class);
+        Object client = constructor.newInstance(dir, transformer);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
             String target = (String) main.getDeclaredField("TARGET").get(null);
@@ -99,9 +99,9 @@ public class Agent {
         if (PLUGINS.isEmpty())
             Logger.log("Running vanilla client version, no plugins are installed!");
         for (Implementation implementation : PLUGINS.values())
-            implementation.onPreInit(adapter);
-        adapter.execute();
-        adapter.clear();
+            implementation.onPreInit(transformer);
+        transformer.execute();
+        transformer.clear();
         Method method = main.getDeclaredMethod("start");
         method.invoke(client);
         for (Implementation implementation : PLUGINS.values())

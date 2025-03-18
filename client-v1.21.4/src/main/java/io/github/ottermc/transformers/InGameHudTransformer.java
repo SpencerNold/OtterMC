@@ -1,16 +1,16 @@
 package io.github.ottermc.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.listeners.DrawOverlayListener;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
 
-@Transformer(name = "net/minecraft/client/gui/hud/InGameHud")
+@Transformer(className = "net/minecraft/client/gui/hud/InGameHud")
 public class InGameHudTransformer {
 
     @Injector(target = Target.TAIL, name = "render(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")

@@ -1,14 +1,14 @@
 package io.github.ottermc.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.listeners.RenderGameOverlayListener.RenderGameOverlayEvent;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.gui.GuiIngame;
 
-@Transformer(name = "net/minecraft/client/gui/GuiIngame")
+@Transformer(className = "net/minecraft/client/gui/GuiIngame")
 public class GuiIngameTransformer {
 
 	@Injector(target = Target.HEAD, name = "renderGameOverlay(F)V")

@@ -1,5 +1,8 @@
 package me.spencernold.transformer;
 
+import me.spencernold.transformer.adapters.GenericMethodNameAdapterImpl;
+import me.spencernold.transformer.adapters.MethodNameAdapter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,5 +17,5 @@ public @interface Injector {
     int opcode() default 0; // NOP
     int ordinal() default 0;
 
-    Class<? extends Adapter<String, String>> adapter() default GenericStringAdapter.class;
+    Class<? extends MethodNameAdapter> adapter() default GenericMethodNameAdapterImpl.class;
 }

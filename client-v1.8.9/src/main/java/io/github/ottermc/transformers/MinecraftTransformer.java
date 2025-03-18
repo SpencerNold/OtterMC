@@ -1,20 +1,20 @@
 package io.github.ottermc.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener.PostInitializeEvent;
 import io.github.ottermc.events.listeners.RunTickListener.RunTickEvent;
 import io.github.ottermc.listeners.SaveGameListener.SaveGameEvent;
 import io.github.ottermc.listeners.UpdateDisplayListener.UpdateDisplayEvent;
 import io.github.ottermc.screen.impl.MainMenuScreen;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
-@Transformer(name = "net/minecraft/client/Minecraft")
+@Transformer(className = "net/minecraft/client/Minecraft")
 public class MinecraftTransformer {
 
 	@Injector(target = Target.HEAD, name = "runTick()V")

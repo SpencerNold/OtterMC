@@ -1,14 +1,14 @@
 package io.github.ottermc.pvp.transformers;
 
-import agent.transformation.Callback;
-import agent.transformation.Injector;
-import agent.transformation.Target;
-import agent.transformation.Transformer;
+import me.spencernold.transformer.Callback;
+import me.spencernold.transformer.Injector;
+import me.spencernold.transformer.Target;
+import me.spencernold.transformer.Transformer;
 import io.github.ottermc.pvp.transformers.wrapper.RendererLivingEntityWrapper;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;
 
-@Transformer(name = "net/minecraft/client/renderer/entity/RendererLivingEntity")
+@Transformer(className = "net/minecraft/client/renderer/entity/RendererLivingEntity")
 public class RendererLivingEntityTransformer {
 
 	@Injector(name = "setBrightness(Lnet/minecraft/entity/EntityLivingBase;FZ)Z", target = Target.HEAD)

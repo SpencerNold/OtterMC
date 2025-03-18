@@ -1,5 +1,7 @@
 package me.spencernold.transformer;
 
+import me.spencernold.transformer.adapters.ClassNameAdapter;
+import me.spencernold.transformer.adapters.MethodNameAdapter;
 import me.spencernold.transformer.objects.TransformableClassObject;
 import me.spencernold.transformer.objects.TransformableMethodObject;
 import me.spencernold.transformer.visitors.ClassTransformVisitor;
@@ -7,19 +9,29 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ClassAdapter {
 
-    private static final int ASM_VERSION = Opcodes.ASM9;
-
     private final Map<String, TransformableClassObject> transformers = new HashMap<>();
-    private final int asmMaxMajorVersion;
 
-    public ClassAdapter(int maxSupportedASMJavaVersion) {
+    private final int asmMaxMajorVersion;
+    private final Class<? extends ClassNameAdapter> defaultClassAdapter;
+    private final Class<? extends MethodNameAdapter> defaultMethodAdapter;
+
+    public ClassAdapter() {
+        this(Opcodes.V23, null, null);
+    }
+
+    public ClassAdapter(int maxSupportedASMJavaVersion, Class<? extends ClassNameAdapter> defaultClassAdapter, Class<? extends MethodNameAdapter> defaultMethodAdapter) {
         this.asmMaxMajorVersion = maxSupportedASMJavaVersion;
+        this.defaultClassAdapter = defaultClassAdapter;
+        this.defaultMethodAdapter = defaultMethodAdapter;
     }
 
     public void registerTransformerClass(Class<?> clazz) throws ClassTransformException {
@@ -28,10 +40,11 @@ public class ClassAdapter {
         Transformer transformer = clazz.getAnnotation(Transformer.class);
         String className = transformer.className();
         try {
-            className = transformer.adapter().newInstance().adapt(className);
+            Class<? extends ClassNameAdapter> classNameAdapter = defaultClassAdapter == null ? transformer.adapter() : defaultClassAdapter;
+            className = classNameAdapter.getDeclaredConstructor().newInstance().adapt(className);
             if (transformer.initialize())
                 Class.forName(className);
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new ClassTransformException(e, "failed to adapt %s", className);
         } catch (ClassNotFoundException e) {
             throw new ClassTransformException(e, "class does not exist to transform %s", className);
@@ -45,8 +58,9 @@ public class ClassAdapter {
             Injector injector = method.getAnnotation(Injector.class);
             String methodName = injector.name();
             try {
-                methodName = injector.adapter().newInstance().adapt(methodName);
-            } catch (InstantiationException | IllegalAccessException e) {
+                Class<? extends MethodNameAdapter> methodNameAdapter = defaultMethodAdapter == null ? injector.adapter() : defaultMethodAdapter;
+                methodName = methodNameAdapter.getDeclaredConstructor(String.class).newInstance(transformer.className()).adapt(methodName);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new ClassTransformException(e, "failed to adapt %s::%s", className, methodName);
             }
             object.add(methodName, new TransformableMethodObject(clazz, methodName, method, injector.target(), injector.opcode(), injector.ordinal()));
@@ -63,8 +77,24 @@ public class ClassAdapter {
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
         reader.accept(new ClassTransformVisitor(object, Opcodes.ASM9, writer), 0);
         byteCode = writer.toByteArray();
-        //setMajorVersion(byteCode, version);
+        setMajorVersion(byteCode, version);
         return byteCode;
+    }
+
+    public void clear() {
+        transformers.clear();
+    }
+
+    public List<Class<?>> getClassesToTransform() {
+        return transformers.keySet().stream().map(this::forNameUnsafe).collect(Collectors.toList());
+    }
+
+    private Class<?> forNameUnsafe(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void clampMajorVersion(byte[] buffer, int min, int max) {
