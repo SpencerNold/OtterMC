@@ -38,7 +38,7 @@ public class ClassTransformer implements ClassFileTransformer {
         List<Class<?>> classes = adapter.getClassesToTransform();
         if (classes.isEmpty())
             return;
-        instrumentation.addTransformer(this);
+        instrumentation.addTransformer(this, true);
         instrumentation.retransformClasses(classes.toArray(new Class[0]));
         instrumentation.removeTransformer(this);
     }
