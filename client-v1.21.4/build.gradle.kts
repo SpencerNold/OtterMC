@@ -11,10 +11,6 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-repositories {
-    mavenCentral()
-}
-
 val universal: Configuration by configurations.creating
 
 dependencies {

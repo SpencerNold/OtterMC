@@ -6,12 +6,8 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    api(project(":transformer"))
+    api("com.github.SpencerNold:BTCLib:-SNAPSHOT")
     if (JavaVersion.current().isJava8) {
         implementation(files("${System.getProperty("java.home")}/lib/tools.jar"))
     } else {

@@ -41,10 +41,10 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
     }
 
     private void attemptPostInitializeProcess() {
-        postInitClient();
         Agent.PLUGINS.forEach(((plugin, implementation) -> {
             implementation.onPostInit();
         }));
+        postInitClient();
         hasPostInitialized = true;
     }
 

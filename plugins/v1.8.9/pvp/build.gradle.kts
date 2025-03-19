@@ -17,10 +17,6 @@ tasks.named("build") {
     group = "plugins"
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(project(":client-v1.8.9"))
 }

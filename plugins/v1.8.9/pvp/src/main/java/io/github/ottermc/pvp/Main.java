@@ -47,14 +47,15 @@ public class Main implements Implementation {
     @Override
     public void onPostInit() {
         ClassTransformer adapter = ClassTransformer.getInstance();
+        adapter.clear();
         adapter.register(RendererLivingEntityTransformer.class);
         try {
             adapter.execute();
         } catch (UnmodifiableClassException e) {
             ClientLogger.display(e);
         }
-        registerModules();
         registerHuds();
+        registerModules();
     }
 
     private void registerModules() {
@@ -96,11 +97,6 @@ public class Main implements Implementation {
             Minecraft mc = Minecraft.getMinecraft();
             if (mc.currentScreen == null)
                 mc.displayGuiScreen(new MenuScreen());
-        });
-        manager.register(Keyboard.KEY_M, () -> {
-            if (GameMacro.isModActive()) {
-                System.out.println("Not implemented yet!");
-            }
         });
     }
 

@@ -42,10 +42,6 @@ tasks.withType<JavaCompile> {
     targetCompatibility = "1.8"
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(project(":client-v1.8.9"))
     implementation(kotlin("stdlib"))

@@ -32,7 +32,7 @@ public class ClientStorage {
 	public ClientStorage(File file) {
 		this.file = file;
 	}
-	
+
 	public void init() {
 		ModuleManager modManager = Client.getModManager();
 		modManager.forEach(mod -> {
