@@ -10,6 +10,7 @@ import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.impl.MainMenuScreen;
+import io.github.ottermc.screen.impl.MenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformers.EntityRendererTransformer;
@@ -18,6 +19,7 @@ import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
@@ -55,6 +57,7 @@ public class Client {
 	public void start() {
 		UniversalKeyboard.register(new LWJGLKeyboard());
 		registerEvents();
+		registerKeybinds();
 	}
 
 	@ReflectionRequired
@@ -72,6 +75,14 @@ public class Client {
 		if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
 			mc.displayGuiScreen(new MainMenuScreen());
 		errorManager.postInit();
+	}
+
+	private void registerKeybinds() {
+		keyManager.register(Keyboard.KEY_RSHIFT, () -> {
+			Minecraft mc = Minecraft.getMinecraft();
+			if (mc.currentScreen == null)
+				mc.displayGuiScreen(new MenuScreen());
+		});
 	}
 
 	private void registerEvents() {

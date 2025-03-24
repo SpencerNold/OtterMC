@@ -1,11 +1,11 @@
 package io.github.ottermc.screen.impl;
 
-import agent.Reflection;
 import io.github.ottermc.Client;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.listeners.DrawMainMenuScreenListener;
 import io.github.ottermc.screen.ClientTheme;
 import io.github.ottermc.screen.render.DrawableHelper;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -148,6 +148,6 @@ public class MainMenuScreen extends GuiMainMenu {
 	}
 	
 	private void reflect_renderSkybox(int mouseX, int mouseY, float partialTicks) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiMainMenu", "renderSkybox(IIF)V", this, mouseX, mouseY, partialTicks);
+		Reflection.call(GuiMainMenu.class, this, "renderSkybox", "(IIF)V", mouseX, mouseY, partialTicks);
 	}
 }

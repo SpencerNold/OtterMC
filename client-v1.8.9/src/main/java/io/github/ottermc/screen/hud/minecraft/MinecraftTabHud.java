@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
@@ -38,6 +38,6 @@ public class MinecraftTabHud extends Component {
 	}
 
 	private GuiPlayerTabOverlay getOverlayPlayerList(GuiIngame gui) {
-		return (GuiPlayerTabOverlay) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "overlayPlayerList", gui);
+		return (GuiPlayerTabOverlay) Reflection.getValue(GuiIngame.class, gui, "overlayPlayerList");
 	}
 }

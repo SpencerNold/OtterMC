@@ -1,11 +1,12 @@
 package io.github.ottermc.pvp.transformers.wrapper;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.GetItemScaleListener;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -20,8 +21,6 @@ import java.util.Random;
 
 public class RenderEntityItemWrapper {
 	
-	private static final String className = "net/minecraft/client/renderer/entity/RenderEntityItem";
-
 	public static void doRender(RenderEntityItem renderer, EntityItem entity, double x, double y, double z, float yaw, float partialTicks) {
 		ItemStack itemstack = entity.getEntityItem();
 		Random random = getField_177079_e(renderer);
@@ -79,11 +78,11 @@ public class RenderEntityItemWrapper {
 	}
 	
 	private static Random getField_177079_e(RenderEntityItem renderer) {
-		return (Random) Reflection.getMinecraftField(className, "field_177079_e", renderer);
+		return (Random) Reflection.getValue(RenderEntityItem.class, renderer, "field_177079_e");
 	}
 	
 	private static boolean bindEntityTexture(RenderEntityItem renderer, Entity entity) {
-		return (boolean) Reflection.invokeMinecraft("net/minecraft/client/renderer/entity/Render", "bindEntityTexture(Lnet/minecraft/entity/Entity;)Z", renderer, entity);
+		return (boolean) Reflection.call(Render.class, renderer, "bindEntityTexture", "(Lnet/minecraft/entity/Entity;)Z", entity);
 	}
 	
 	private static RenderManager getRenderManager() {
@@ -99,6 +98,6 @@ public class RenderEntityItemWrapper {
 	}
 	
 	private static int func_177077_a(RenderEntityItem renderer, EntityItem entity, double x, double y, double z, float partialTicks, IBakedModel model) {
-		return (int) Reflection.invokeMinecraft(className, "func_177077_a(Lnet/minecraft/entity/item/EntityItem;DDDFLnet/minecraft/client/resources/model/IBakedModel;)I", renderer, entity, x, y, z, partialTicks, model);
+		return (int) Reflection.call(RenderEntityItem.class, renderer, "func_177077_a", "(Lnet/minecraft/entity/item/EntityItem;DDDFLnet/minecraft/client/resources/model/IBakedModel;)I", entity, x, y, z, partialTicks, model);
 	}
 }

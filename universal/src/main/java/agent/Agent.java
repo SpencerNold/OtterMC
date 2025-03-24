@@ -1,8 +1,12 @@
 package agent;
 
+import agent.adapters.MinecraftClassNameAdapter;
+import agent.adapters.MinecraftFieldNameAdapter;
+import agent.adapters.MinecraftMethodNameAdapter;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.logging.Logger;
+import me.spencernold.transformer.Reflection;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +43,8 @@ public class Agent {
     }
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
+        Reflection reflection = new Reflection(MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class, MinecraftFieldNameAdapter.class);
+        Reflection.setSystemReflectClass(reflection);
         File file = getJarFile();
         if (file == null)
             return;

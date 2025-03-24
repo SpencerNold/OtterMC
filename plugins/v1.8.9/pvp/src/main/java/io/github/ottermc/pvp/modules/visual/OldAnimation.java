@@ -1,13 +1,11 @@
 package io.github.ottermc.pvp.modules.visual;
 
-import org.lwjgl.opengl.GL11;
-
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.RenderItemInFirstPersonListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.pvp.listeners.RenderItemInFirstPersonListener;
 import io.github.ottermc.screen.render.Icon;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -18,22 +16,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemCloth;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 // Sk1er and 1.7.10 MCP Mappings *insert pray emoji here*
 // thank god for GPL
 public class OldAnimation extends Module implements RenderItemInFirstPersonListener {
 
 	private static final Icon ICON = Icon.getIconIgnoreException("module/sword_icon.png");
-
-	private static final String className = "net/minecraft/client/renderer/ItemRenderer";
 
 	public OldAnimation() {
 		super("1.7 Animations", Category.VISUAL);
@@ -50,19 +43,19 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 	}
 
 	private float getPrevEquippedProgress(ItemRenderer renderer) {
-		return (float) Reflection.getMinecraftField(className, "prevEquippedProgress", renderer);
+		return (float) Reflection.getValue(ItemRenderer.class, renderer, "prevEquippedProgress");
 	}
 
 	private float getEquippedProgress(ItemRenderer renderer) {
-		return (float) Reflection.getMinecraftField(className, "equippedProgress", renderer);
+		return (float) Reflection.getValue(ItemRenderer.class, renderer, "equippedProgress");
 	}
 
 	private ItemStack getItemToRender(ItemRenderer renderer) {
-		return (ItemStack) Reflection.getMinecraftField(className, "itemToRender", renderer);
+		return (ItemStack) Reflection.getValue(ItemRenderer.class, renderer, "itemToRender");
 	}
 
 	private boolean isAlwaysEdible(ItemFood food) {
-		return (boolean) Reflection.getMinecraftField("net/minecraft/item/ItemFood", "alwaysEdible", food);
+		return (boolean) Reflection.getValue(ItemFood.class, food, "alwaysEdible");
 	}
 
 	@Override

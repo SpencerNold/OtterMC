@@ -1,8 +1,8 @@
 package io.github.ottermc.pvp.transformers.wrapper;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.RenderEffectListener;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -50,6 +50,6 @@ public class RenderItemWrapper {
 	}
 
 	private static void renderModel(RenderItem renderer, IBakedModel model, int color) {
-		Reflection.invokeMinecraft("net/minecraft/client/renderer/entity/RenderItem", "renderModel(Lnet/minecraft/client/resources/model/IBakedModel;I)V", renderer, model, color);
+            Reflection.call(RenderItem.class, renderer, "renderModel", "(Lnet/minecraft/client/resources/model/IBakedModel;I)V", model, color);
 	}
 }

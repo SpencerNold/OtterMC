@@ -1,8 +1,8 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -34,7 +34,7 @@ public class MinecraftBossBarHud extends Component implements Movable {
 	}
 	
 	private void renderBossHealth(GuiIngame gui) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "renderBossHealth()V", gui);
+		Reflection.call(GuiIngame.class, gui, "renderBossHealth", "()V");
 	}
 	
 	@Override

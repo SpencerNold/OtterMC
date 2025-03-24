@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,6 +28,6 @@ public class MinecraftPumpkinOverlayHud extends Component {
 	}
 	
 	private void renderPumpkinOverlay(GuiIngame gui, ScaledResolution res) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "renderPumpkinOverlay(Lnet/minecraft/client/gui/ScaledResolution;)V", gui, res);
+		Reflection.call(GuiIngame.class, gui, "renderPumpkinOverlay", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
 	}
 }

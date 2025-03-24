@@ -163,6 +163,7 @@ public class DrawableHelper {
 	}
 
 	public void drawIcon(Icon icon, int x, int y, float scale, int color) {
+		scale *= this.scale * 0.5f;
 		GlStateManager.pushMatrix();
 		GlStateManager.enableAlpha();
 		GlStateManager.alphaFunc(516, 0.1F);
@@ -181,7 +182,7 @@ public class DrawableHelper {
 		float sinv = 1.0f / scale;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		Gui.drawModalRectWithCustomSizedTexture(x * (int) sinv, y * (int) sinv, 0, 0, 64, 64, 64, 64);
+		Gui.drawModalRectWithCustomSizedTexture((int) (x * sinv), (int) (y * sinv), 0, 0, 64, 64, 64, 64);
 		GlStateManager.scale(sinv, sinv, sinv);
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 		GlStateManager.disableTexture2D();

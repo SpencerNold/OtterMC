@@ -3,9 +3,9 @@ package io.github.ottermc.pvp.transformers.wrapper;
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
+import me.spencernold.transformer.Reflection;
 import org.lwjgl.opengl.GL11;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener.SetEntityDamageBrightnessEvent;
 import net.minecraft.client.renderer.GlStateManager;
@@ -97,13 +97,13 @@ public class RendererLivingEntityWrapper {
 	}
 
 	private static AbstractTexture getField_177096_e(RendererLivingEntity<?> renderer) {
-		return (DynamicTexture) Reflection.getMinecraftField("net/minecraft/client/renderer/entity/RendererLivingEntity", "field_177096_e", renderer);
+		return (DynamicTexture) Reflection.getValue(RendererLivingEntity.class, renderer, "field_177096_e");
 	}
 	private static FloatBuffer getBrightnessBuffer(RendererLivingEntity<?> renderer) {
-		return (FloatBuffer) Reflection.getMinecraftField("net/minecraft/client/renderer/entity/RendererLivingEntity", "brightnessBuffer", renderer);
+		return (FloatBuffer) Reflection.getValue(RendererLivingEntity.class, renderer, "brightnessBuffer");
 	}
 
 	private static int getColorMultiplier(RendererLivingEntity<?> renderer, EntityLivingBase entity, float f, float partialTicks) {
-		return (int) Reflection.invokeMinecraft("net/minecraft/client/renderer/entity/RendererLivingEntity", "getColorMultiplier(Lnet/minecraft/entity/EntityLivingBase;FF)I", renderer, entity, f, partialTicks);
+		return (int) Reflection.call(RendererLivingEntity.class, renderer, "getColorMultiplier", "(Lnet/minecraft/entity/EntityLivingBase;FF)I", entity, f, partialTicks);
 	}
 }

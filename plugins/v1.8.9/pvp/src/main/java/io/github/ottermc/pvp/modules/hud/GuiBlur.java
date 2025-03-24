@@ -1,6 +1,5 @@
 package io.github.ottermc.pvp.modules.hud;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.DrawDefaultBackgroundListener;
 import io.github.ottermc.events.listeners.RunTickListener;
@@ -8,7 +7,9 @@ import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackgroundListener {
@@ -46,7 +47,7 @@ public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackg
 	}
 	
 	private void drawGradientRect(GuiScreen gui, int x, int y, int width, int height, int c1, int c2) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/Gui", "drawGradientRect(IIIIII)V", gui, x, y, width, height, c1, c2);
+		Reflection.call(Gui.class, gui, "drawGradientRect", "(IIIIII)V", x, y, width, height, c1, c2);
 	}
 
 	@Override

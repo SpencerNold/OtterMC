@@ -41,6 +41,8 @@ public class ModScreen extends AbstractScreen {
 	
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float partialTicks) {
+		System.out.println(Display.getWidth() + ", " + Display.getHeight());
+
 		Color color = ClientTheme.getColor();
 		
 		int width = (int) (getDisplayWidth() * 0.625f);
@@ -80,22 +82,28 @@ public class ModScreen extends AbstractScreen {
 				if (!modules.hasNext())
 					break;
 				Module mod = modules.next();
-				
+				while (mod != null && !mod.shouldRenderInMenu())
+					mod = modules.hasNext() ? modules.next() : null;
+				if (mod == null)
+					break;
+
 				int mx = modX + 4 + (i * (mlen + 4));
 				int my = catY + (counter * (mlen + 4));
-				getDrawable().fillRoundedRectangle(mx, my, mlen, mlen, 8, mod.isActive() ? color.getValue(0x60) : backgroundColor);
-				
-				String mname = mod.getName();
-				getDrawable().drawString(mname, mx + (mlen / 2 - getDrawable().getStringWidth(mname, 0.65f) / 2), my + 4, 0.75f, 0xFFC6C6C6);
 
-				int isize = 64;
+				getDrawable().fillRoundedRectangle(mx, my, mlen, mlen, 8, mod.isActive() ? color.getValue(0x60) : backgroundColor);
+
+				String mname = mod.getName();
+				getDrawable().drawString(mname, (int) (mx + ((mlen / 2.0f) - (getDrawable().getStringWidth(mname, 0.65f) / 2.0f))), my + 4, 0.75f, 0xFFC6C6C6);
+
+				float padding = 16.0f;
+				float scale = mlen / ((64.0f + padding) * this.scale);
+				int mid = getDrawable().middle(mlen, (int) (64 * scale));
 				Icon icon = (Icon) mod.getIcon();
-				int mid = getDrawable().middle(mlen, isize);
 				if (icon != null)
-					getDrawable().drawIcon(icon, mx + mid, my + mid, 0xFFC6C6C6);
-				getDrawable().drawRectangle(mx + mid + 24, my + mid + isize + 8, 16, 16, 0xFFC6C6C6);
+					getDrawable().drawIcon(icon, mx + mid - 2, my + mid, scale, 0xFFC6C6C6);
+				getDrawable().drawRectangle(mx + mid + 8, my + mlen - 20, (int) (8 * this.scale), (int) (8 * this.scale), 0xFFC6C6C6);
 				if (mod.isActive())
-					getDrawable().drawIcon(Icon.CHECK, mx + mid + 24, my + mid + isize + 8, 0.25f, 0xFFC6C6C6);
+					getDrawable().drawIcon(Icon.CHECK, mx + mid + 6, my + mlen - 24, mlen / 256.0f, 0xFFC6C6C6);
 			}
 			counter++;
 		}

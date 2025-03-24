@@ -1,10 +1,10 @@
 package io.github.ottermc.smp.modules.game;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -41,7 +41,7 @@ public class FishingHelper extends Module implements RunTickListener {
             return;
         FishingBobberEntity bobber = ((PlayerEntity) client.player).fishHook;
         if (bobber != null) {
-            boolean caught = (boolean) Reflection.getMinecraftField("net/minecraft/entity/projectile/FishingBobberEntity", "caughtFish", bobber);
+            boolean caught = (boolean) Reflection.getValue(FishingBobberEntity.class, bobber, "caughtFish");
             if (caught) {
                 if (skipTickTimer0 > 0)
                     skipTickTimer0--;

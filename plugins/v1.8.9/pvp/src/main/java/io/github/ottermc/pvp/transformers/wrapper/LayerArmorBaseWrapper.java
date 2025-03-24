@@ -1,9 +1,9 @@
 package io.github.ottermc.pvp.transformers.wrapper;
 
-import agent.Reflection;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.RenderArmorEffectListener;
 import io.github.ottermc.render.Color;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -51,6 +51,6 @@ public class LayerArmorBaseWrapper {
 	}
 	
 	private static RendererLivingEntity<?> getRenderer(LayerArmorBase<ModelBase> layerArmorBase) {
-		return (RendererLivingEntity<?>) Reflection.getMinecraftField("net/minecraft/client/renderer/entity/layers/LayerArmorBase", "renderer", layerArmorBase);
+		return (RendererLivingEntity<?>) Reflection.getValue(LayerArmorBase.class, layerArmorBase, "renderer");
 	}
 }

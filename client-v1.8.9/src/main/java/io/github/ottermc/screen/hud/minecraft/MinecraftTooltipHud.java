@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -37,18 +37,18 @@ public class MinecraftTooltipHud extends Component {
 	}
 
 	private GuiSpectator getSpectatorGui(GuiIngame gui) {
-		return (GuiSpectator) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "spectatorGui", gui);
+		return (GuiSpectator) Reflection.getValue(GuiIngame.class, gui, "spectatorGui");
 	}
 
 	private void renderTooltip(GuiIngame gui, ScaledResolution res, float partialTicks) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "renderTooltip(Lnet/minecraft/client/gui/ScaledResolution;F)V", gui, res, partialTicks);
+		Reflection.call(GuiIngame.class, gui, "renderTooltip", "(Lnet/minecraft/client/gui/ScaledResolution;F)V", res, partialTicks);
 	}
 
 	private boolean showCrosshair(GuiIngame gui) {
-		return (boolean) Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "showCrosshair()Z", gui);
+		return (boolean) Reflection.call(GuiIngame.class, gui, "showCrosshair", "()Z");
 	}
 
 	public void drawTexturedModalRect(Gui gui, int x, int y, int textureX, int textureY, int width, int height) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/Gui", "drawTexturedModalRect(IIIIII)V", gui, x, y, textureX, textureY, width, height);
+		Reflection.call(Gui.class, gui, "drawTexturedModalRect", "(IIIIII)V", x, y, textureX, textureY, width, height);
 	}
 }

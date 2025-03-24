@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
@@ -28,6 +28,6 @@ public class MinecraftNauseaEffectHud extends Component {
 	}
 	
 	private void func_180474_b(GuiIngame gui, float f, ScaledResolution res) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "func_180474_be(FLnet/minecraft/client/gui/ScaledResolution;)V", gui, res);
+		Reflection.call(GuiIngame.class, gui, "func_180474_be", "(FLnet/minecraft/client/gui/ScaledResolution;)V", f, res);
 	}
 }

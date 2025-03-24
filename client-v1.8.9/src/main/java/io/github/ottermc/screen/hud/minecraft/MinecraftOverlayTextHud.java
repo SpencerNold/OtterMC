@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import agent.Reflection;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiOverlayDebug;
@@ -61,26 +61,26 @@ public class MinecraftOverlayTextHud extends Component {
 	}
 
 	private GuiSpectator getSpectatorGui(GuiIngame gui) {
-		return (GuiSpectator) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "spectatorGui", gui);
+		return (GuiSpectator) Reflection.getValue(GuiIngame.class, gui, "spectatorGui");
 	}
 
 	private void func_181551_a(GuiIngame gui, ScaledResolution res) {
-		Reflection.invokeMinecraft("net/minecraft/client/gui/GuiIngame", "func_181551_a(Lnet/minecraft/client/gui/ScaledResolution;)V", gui, res);
+		Reflection.call(GuiIngame.class, gui, "func_181551_a", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
 	}
 	
 	private GuiOverlayDebug getOverlayDebug(GuiIngame gui) {
-		return (GuiOverlayDebug) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "overlayDebug", gui);
+		return (GuiOverlayDebug) Reflection.getValue(GuiIngame.class, gui, "overlayDebug");
 	}
 	
 	private int getRecordPlayingUpFor(GuiIngame gui) {
-		return (int) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "recordPlayingUpFor", gui);
+		return (int) Reflection.getValue(GuiIngame.class, gui, "recordPlayingUpFor");
 	}
 	
 	private boolean getRecordIsPlaying(GuiIngame gui) {
-		return (boolean) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "recordIsPlaying", gui);
+		return (boolean) Reflection.getValue(GuiIngame.class, gui, "recordIsPlaying");
 	}
 	
 	private String getRecordPlaying(GuiIngame gui) {
-		return (String) Reflection.getMinecraftField("net/minecraft/client/gui/GuiIngame", "recordPlaying", gui);
+		return (String) Reflection.getValue(GuiIngame.class, gui, "recordPlaying");
 	}
 }

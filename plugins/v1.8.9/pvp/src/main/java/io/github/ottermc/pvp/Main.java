@@ -71,7 +71,6 @@ public class Main implements Implementation {
         manager.register(new PotionEffect());
 
         // Utility
-//		modManager.register(new Chat()); TODO Remove instance null check in this class when finished
         manager.register(new Fullbright());
         manager.register(new Zoom());
 
@@ -92,12 +91,7 @@ public class Main implements Implementation {
     }
 
     private void registerKeybinds() {
-        KeybindManager manager = Client.getKeyManager();
-        manager.register(Keyboard.KEY_RSHIFT, () -> {
-            Minecraft mc = Minecraft.getMinecraft();
-            if (mc.currentScreen == null)
-                mc.displayGuiScreen(new MenuScreen());
-        });
+
     }
 
     void registerHuds() {
