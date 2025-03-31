@@ -1,7 +1,5 @@
 plugins {
     java
-    application
-    distribution
 }
 
 java {
@@ -12,42 +10,38 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
 }
 
-fun getProjectOutputPath(project: String, jar: String): String {
-    val path = project(project).layout.buildDirectory.asFile.get().absolutePath
-    return path + File.separator + "libs" + File.separator + jar
-}
+tasks.register<Jar>("buildCompleteJar") {
+    archiveClassifier.set("complete")
+    from(sourceSets.main.get().output)
 
-distributions {
-    val list = listOf(
-        getProjectOutputPath(":wrapper", "wrapper.jar"),
-        getProjectOutputPath(":client-v1.8.9", "client-v1.8.9-remapped-joined.jar"),
-        getProjectOutputPath(":client-v1.21.4", "client-v1.21.4-remapped-joined.jar"),
-        getProjectOutputPath(":plugins:v1.8.9:pvp", "pvp-remapped.jar"),
-        getProjectOutputPath(":plugins:v1.21.4:smp", "smp-remapped.jar")
-    )
-    main {
-        contents {
-            from(list)
-        }
+    from(zipTree(configurations.runtimeClasspath.get().filter {
+        it.name.startsWith("gson")
+    }.first()))
+
+    from(getProjectPath(":wrapper"))
+    mustRunAfter(":wrapper:jar")
+
+    from(getProjectPath(":client-v1.8.9"))
+    mustRunAfter(":client-v1.8.9:build")
+
+    from(getProjectPath(":client-v1.21.4"))
+    mustRunAfter(":client-v1.21.4:build")
+
+    from(getProjectPath(":plugins:v1.8.9:pvp"))
+    mustRunAfter(":plugins:v1.8.9:pvp:build")
+
+    from(getProjectPath(":plugins:v1.21.4:smp"))
+    mustRunAfter(":plugins:v1.21.4:smp:build")
+
+    manifest {
+        attributes(
+            "Main-Class" to "io.github.ottermc.Main"
+        )
     }
+
+    dependsOn("build")
 }
 
-tasks.named("distTar") {
-    mustRunAfter(":wrapper:jar")
-    mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-v1.21.4:build")
-    mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:v1.21.4:smp:build")
-}
-
-tasks.named("distZip") {
-    mustRunAfter(":wrapper:jar")
-    mustRunAfter(":client-v1.8.9:build")
-    mustRunAfter(":client-v1.21.4:build")
-    mustRunAfter(":plugins:v1.8.9:pvp:build")
-    mustRunAfter(":plugins:v1.21.4:smp:build")
-}
-
-application {
-    mainClass = "io.github.ottermc.Main"
+fun getProjectPath(name: String): File {
+    return project(name).tasks.named<Jar>("jar").map { it.archiveFile.get().asFile }.get()
 }

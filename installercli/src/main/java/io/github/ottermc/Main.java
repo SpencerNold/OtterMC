@@ -3,67 +3,59 @@ package io.github.ottermc;
 import com.google.gson.*;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.8.9", "1.21.4");
+    private static final String[] SUPPORTED_VERSIONS = { "1.8.9", "1.21.4" };
+    private static final String[] SUPPORTED_PLUGINS = { "pvp.jar", "smp.jar" };
 
-    public static void main(String[] args) {
-        if (args.length < 1) {
-            System.err.println("usage: <version> <plugins...>");
-            return;
-        }
-        String version = args[0];
-        if (!SUPPORTED_VERSIONS.contains(version)) {
-            System.err.println("unsupported version");
-            return;
-        }
+    public static void main(String[] argv) {
         String gameDir = getMinecraftDirectory();
         File clientDir = new File(gameDir, "ottermc");
         if (!clientDir.exists() && !clientDir.mkdir()) {
             System.err.println("failed to create client directory");
             return;
         }
-        File jarDir = getJarDirectory();
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
-            // Install client
-            File clientSrc = new File(jarDir.getParent(), String.format("client-v%s-remapped-joined.jar", version));
-            File clientDst = new File(clientDir, String.format("client-v%s.jar", version));
-            copy(clientSrc, clientDst);
-            System.out.println("[OtterMC] installed client");
+            // Install clients
+            for (String version : SUPPORTED_VERSIONS) {
+                String name = String.format("client-v%s.jar", version);
+                InputStream clientSrc = Main.class.getResourceAsStream("/" + name);
+                if (clientSrc == null) {
+                    System.out.println("client not found: " + name);
+                    continue;
+                }
+                File clientDst = new File(clientDir, name);
+                copy(clientSrc, clientDst);
+                clientSrc.close();
+                System.out.println("[OtterMC] installed " + name);
+            }
 
+            // Install plugins
             File pluginDir = new File(clientDir, "plugins");
             if (!pluginDir.exists() && !pluginDir.mkdir()) {
                 System.err.println("not able to create plugin directory");
                 return;
             }
-            Pattern pattern = Pattern.compile("(.+?)-.+?\\.jar");
-            for (int i = 1; i < args.length; i++) {
-                Matcher matcher = pattern.matcher(args[i]);
-                if (!matcher.find()) {
-                    System.err.println("malformed plugin name: " + args[i]);
+            for (String name : SUPPORTED_PLUGINS) {
+                InputStream pluginSrc = Main.class.getResourceAsStream("/" + name);
+                if (pluginSrc == null) {
+                    System.err.println("plugin not found: " + name);
                     continue;
                 }
-                String nameFull = matcher.group(0);
-                String name = matcher.group(1);
-                File pluginSrc = new File(jarDir.getParent(), name + "-remapped.jar");
-                if (!pluginSrc.exists()) {
-                    System.err.println("plugin " + name + " does not exist");
-                    continue;
-                }
-                File pluginDst = new File(pluginDir, nameFull);
+                File pluginDst = new File(pluginDir, name);
                 copy(pluginSrc, pluginDst);
+                System.out.println("[OtterMC] installed plugin " + name);
+                pluginSrc.close();
             }
 
             // Install wrapper
-            File wrapperSrc = new File(jarDir.getParent(), "wrapper.jar");
+            InputStream wrapperSrc = Main.class.getResourceAsStream("/wrapper.jar");
+            if (wrapperSrc == null) {
+                System.err.println("wrapper not found");
+                return;
+            }
             File wrapperDir = new File(gameDir, String.join(File.separator, "libraries", "io", "github", "ottermc", "wrapper", "1.0.0"));
             if (!wrapperDir.exists() && !wrapperDir.mkdirs()) {
                 System.err.println("failed to create library directory");
@@ -71,6 +63,7 @@ public class Main {
             }
             File wrapperDst = new File(wrapperDir, "wrapper-1.0.0.jar");
             copy(wrapperSrc, wrapperDst);
+            wrapperSrc.close();
             System.out.println("[OtterMC] installed wrapper");
 
             // Add Profile
@@ -92,76 +85,77 @@ public class Main {
                 System.err.println("malformed launcher_profiles.json");
                 return;
             }
-            profiles.getAsJsonObject().add("ottermc-" + version, gson.fromJson(getProfileJson(version), JsonElement.class));
-            FileWriter writer = new FileWriter(profileFile);
-            gson.toJson(element, writer);
-            writer.close();
-            System.out.println("[OtterMC] added profile");
+            for (String version : SUPPORTED_VERSIONS) {
+                profiles.getAsJsonObject().add("ottermc-" + version, gson.fromJson(getProfileJson(version), JsonElement.class));
+                FileWriter writer = new FileWriter(profileFile);
+                gson.toJson(element, writer);
+                writer.close();
+                System.out.println("[OtterMC] added profile for " + version);
+            }
 
             // Copy Game Jar and Json
-            File clientJarDir = new File(gameDir, String.join(File.separator, "versions", "ottermc-" + version));
-            if (!clientJarDir.exists() && !clientJarDir.mkdirs()) {
-                System.err.println("failed to make client version directory");
-                return;
-            }
-            File gameJarSrc = new File(gameDir, String.join(File.separator, "versions", version, version + ".jar"));
-            File gameJarDst = new File(clientJarDir, String.format("ottermc-%s.jar", version));
-            copy(gameJarSrc, gameJarDst);
-            System.out.println("[OtterMC] copied client jar");
+            for (String version : SUPPORTED_VERSIONS) {
+                // Copy Game Jar
+                File clientJarDir = new File(gameDir, String.join(File.separator, "versions", "ottermc-" + version));
+                if (!clientJarDir.exists() && !clientJarDir.mkdirs()) {
+                    System.err.println("failed to make client version directory");
+                    return;
+                }
+                File gameJarSrc = new File(gameDir, String.join(File.separator, "versions", version, version + ".jar"));
+                File gameJarDst = new File(clientJarDir, String.format("ottermc-%s.jar", version));
+                copy(gameJarSrc, gameJarDst);
+                System.out.println("[OtterMC] copied client jar: " + version);
 
-            File gameJsonSrc = new File(gameDir, String.join(File.separator, "versions", version, version + ".json"));
-            reader = new FileReader(gameJsonSrc);
-            element = gson.fromJson(reader, JsonElement.class);
-            reader.close();
-            if (!element.isJsonObject()) {
-                System.err.println("malformed client.json");
-                return;
+                // Copy Game Json
+                File gameJsonSrc = new File(gameDir, String.join(File.separator, "versions", version, version + ".json"));
+                reader = new FileReader(gameJsonSrc);
+                element = gson.fromJson(reader, JsonElement.class);
+                reader.close();
+                if (!element.isJsonObject()) {
+                    System.err.println("malformed client.json");
+                    return;
+                }
+                JsonObject client = element.getAsJsonObject();
+                client.add("id", new JsonPrimitive("ottermc-" + version));
+                client.add("mainClass", new JsonPrimitive("io.github.ottermc.Wrapper"));
+                JsonElement libraries = client.get("libraries");
+                if (!libraries.isJsonArray()) {
+                    System.err.println("malformed client.json");
+                    return;
+                }
+                JsonObject dependency = new JsonObject();
+                dependency.add("name", new JsonPrimitive("io.github.ottermc:wrapper:1.0.0"));
+                libraries.getAsJsonArray().add(dependency);
+                File gameJsonDst = new File(clientJarDir, String.format("ottermc-%s.json", version));
+                if (!gameJsonDst.exists() && !gameJsonDst.createNewFile()) {
+                    System.err.println("failed to create client json");
+                    return;
+                }
+                FileWriter writer = new FileWriter(gameJsonDst);
+                gson.toJson(element, writer);
+                writer.close();
+                System.out.println("[OtterMC] copied and updated client json: " + version);
             }
-            JsonObject client = element.getAsJsonObject();
-            client.add("id", new JsonPrimitive("ottermc-" + version));
-            client.add("mainClass", new JsonPrimitive("io.github.ottermc.Wrapper"));
-            JsonElement libraries = client.get("libraries");
-            if (!libraries.isJsonArray()) {
-                System.err.println("malformed client.json");
-                return;
-            }
-            JsonObject dependency = new JsonObject();
-            dependency.add("name", new JsonPrimitive("io.github.ottermc:wrapper:1.0.0"));
-            libraries.getAsJsonArray().add(dependency);
-            File gameJsonDst = new File(clientJarDir, String.format("ottermc-%s.json", version));
-            if (!gameJsonDst.exists() && !gameJsonDst.createNewFile()) {
-                System.err.println("failed to create client json");
-                return;
-            }
-            writer = new FileWriter(gameJsonDst);
-            gson.toJson(element, writer);
-            writer.close();
-            System.out.println("[OtterMC] copied and updated client json file");
-
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    private static void copy(File src, File dst) throws IOException {
+    private static void copy(InputStream src, File dst) throws IOException {
         if (!dst.exists() && !dst.createNewFile())
             throw new IOException("failed to create: " + dst.getAbsolutePath());
-        FileInputStream input = new FileInputStream(src);
         FileOutputStream output = new FileOutputStream(dst);
         byte[] buffer = new byte[1024];
         int read;
-        while ((read = input.read(buffer)) != -1)
+        while ((read = src.read(buffer)) != -1)
             output.write(buffer, 0, read);
-        input.close();
         output.close();
     }
 
-    private static File getJarDirectory() {
-        try {
-            return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+    private static void copy(File src, File dst) throws IOException {
+        FileInputStream input = new FileInputStream(src);
+        copy(input, dst);
+        input.close();
     }
 
     private static String getProfileJson(String version) {

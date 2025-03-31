@@ -1,6 +1,6 @@
 import ottermc.InstallTask
-import ottermc.PackageTask
 import ottermc.InternalUpdateTask
+import ottermc.PackageTask
 
 tasks.register<InstallTask>("install") {
     group = "client"
