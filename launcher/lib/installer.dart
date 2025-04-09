@@ -45,6 +45,18 @@ abstract class Version {
       yield "[ERROR] $line";
     }
     await file.delete();
+    await _startMinecraftLauncher();
+  }
+
+  static Future<void> _startMinecraftLauncher() async {
+    if (Platform.isWindows) {
+      Process.start("start", ["", "C:\\Program Files (x86)\\Minecraft Launcher\\MinecraftLauncher.exe"]);
+    } else if (Platform.isMacOS) {
+      Process.start("open", ["/Applications/Minecraft.app"]);
+    } else {
+      // Linux?? Not sure how yet, untested
+      Process.start("minecraft-launcher", []);
+    }
   }
 }
 
