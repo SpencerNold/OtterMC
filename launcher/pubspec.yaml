@@ -1,23 +1,23 @@
 name: launcher
 description: "OtterMC Client Installer & Launcher"
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.7.2
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  path_provider: ^2.1.5
+  flutter_launcher_icons: ^0.14.3
+  window_manager: ^0.4.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  flutter_launcher_icons: ^0.14.3
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
@@ -25,6 +25,7 @@ flutter:
     - assets/otter_icon.png
     - assets/background.png
     - assets/icon.png
+    - assets/installercli.jar
 
 flutter_icons:
   macos:
@@ -34,3 +35,4 @@ flutter_icons:
     generate: true
     image_path: "assets/icon.png"
     icon_size: 48
+

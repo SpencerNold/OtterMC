@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 abstract class Version {
   static final Version version189 = _Version189();
@@ -11,8 +11,41 @@ abstract class Version {
   static List<Version> versions = [version189, _Version1214()];
 
   String getName();
-  Future<bool> install();
   Future<bool> attach();
+
+  static Stream<String> install() async* {
+    await Future.delayed(const Duration(milliseconds: 250));
+    final file = File(
+      "${(await _findClientDirectory()).absolute.path}${Platform.pathSeparator}installercli.jar",
+    );
+    print(file.absolute.path);
+    final data = await rootBundle.load("assets/installercli.jar");
+    final buffer = data.buffer;
+    await file.writeAsBytes(
+      buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+      flush: true,
+    );
+    final process = await Process.start("java", ["-jar", file.absolute.path]);
+    final stdout = process.stdout
+        .transform(utf8.decoder)
+        .transform(const LineSplitter());
+    final stderr = process.stderr
+        .transform(utf8.decoder)
+        .transform(const LineSplitter());
+    await for (final line in stdout) {
+      print(line);
+      if (!line.startsWith("[OtterMC]")) {
+        yield "[ERROR] $line";
+      } else {
+        yield line;
+      }
+    }
+    await for (final line in stderr) {
+      print(line);
+      yield "[ERROR] $line";
+    }
+    await file.delete();
+  }
 }
 
 class _Version189 extends Version {
@@ -24,12 +57,6 @@ class _Version189 extends Version {
   }
 
   @override
-  Future<bool> install() async {
-    await Future.delayed(const Duration(milliseconds: 250));
-    return true;
-  }
-
-  @override
   Future<bool> attach() async {
     await Future.delayed(const Duration(milliseconds: 250));
     Directory clientDir = await _findClientDirectory();
@@ -38,7 +65,7 @@ class _Version189 extends Version {
     }
     String client = clientDir.absolute.path + _clientJarName;
     Process process = await Process.start("java", ["-jar", client, "1.8.9"]);
-    process.stdout.transform(utf8.decoder).forEach(print);
+    await process.stdout.transform(utf8.decoder).forEach(print);
     return true;
   }
 }
@@ -52,12 +79,6 @@ class _Version1214 extends Version {
   }
 
   @override
-  Future<bool> install() async {
-    await Future.delayed(const Duration(milliseconds: 250));
-    return true;
-  }
-
-  @override
   Future<bool> attach() async {
     await Future.delayed(const Duration(milliseconds: 250));
     Directory clientDir = await _findClientDirectory();
@@ -66,20 +87,19 @@ class _Version1214 extends Version {
     }
     String client = clientDir.absolute.path + _clientJarName;
     Process process = await Process.start("java", ["-jar", client, "1.8.9"]);
-    process.stdout.transform(utf8.decoder).forEach(print);
+    await process.stdout.transform(utf8.decoder).forEach(print);
     return true;
   }
 }
 
 Future<Directory> _findClientDirectory() async {
-  String sep = Platform.pathSeparator;
   if (Platform.isMacOS) {
     return Directory(
-        "${(await getApplicationSupportDirectory()).absolute.path}${sep}minecraft${sep}ottermc");
+      "${Platform.environment['HOME']}/Library/Application Support/minecraft/ottermc",
+    );
   } else if (Platform.isWindows) {
-    return Directory(
-        "${(await getApplicationSupportDirectory()).absolute.path}$sep.minecraft${sep}ottermc");
+    return Directory("${Platform.environment['APPDATA']}\\.minecraft\\ottermc");
   } else {
-    return Directory("~/.minecraft");
+    return Directory("${Platform.environment['HOME']}/.minecraft/ottermc");
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:launcher/installer.dart';
 import 'package:launcher/theme.dart';
@@ -26,151 +28,154 @@ class ClientWindow extends StatelessWidget {
             ),
           ),
           child: Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                bool attach = false;
-                Version? version = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      ContainerController<Version> controller =
-                          ContainerController(Version.version189);
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        backgroundColor: ColorTheme.bk2,
-                        title: const Center(
-                          child: Text(
-                            "Select Version",
-                            style: TextStyle(color: ColorTheme.light),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    Version? version = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        ContainerController<Version> controller =
+                            ContainerController(Version.version189);
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7.0),
                           ),
-                        ),
-                        content: VersionDropdown(controller),
-                        actionsAlignment: MainAxisAlignment.center,
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              // install
-                              attach = false;
-                              Navigator.of(context).pop(controller.value);
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: const WidgetStatePropertyAll(
-                                ColorTheme.accent,
-                              ),
-                              padding: const WidgetStatePropertyAll(
-                                EdgeInsets.only(
-                                  top: 5.0,
-                                  bottom: 5.0,
-                                  left: 15.0,
-                                  right: 15.0,
-                                ),
-                              ),
-                              shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                              ),
-                            ),
-                            child: const Text(
-                              "Install",
+                          backgroundColor: ColorTheme.bk2,
+                          title: const Center(
+                            child: Text(
+                              "Select Version",
                               style: TextStyle(color: ColorTheme.light),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // attach
-                              attach = true;
-                              Navigator.of(context).pop(controller.value);
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: const WidgetStatePropertyAll(
-                                ColorTheme.accent,
-                              ),
-                              padding: const WidgetStatePropertyAll(
-                                EdgeInsets.only(
-                                  top: 5.0,
-                                  bottom: 5.0,
-                                  left: 15.0,
-                                  right: 15.0,
+                          content: VersionDropdown(controller),
+                          actionsAlignment: MainAxisAlignment.center,
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(controller.value);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: const WidgetStatePropertyAll(
+                                  ColorTheme.accent,
                                 ),
-                              ),
-                              shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                              ),
-                            ),
-                            child: const Text(
-                              "Attach",
-                              style: TextStyle(color: ColorTheme.light),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-                if (version == null) return;
-                showDialog(
-                    // ignore: use_build_context_synchronously
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return AlertDialog(
-                        contentPadding: EdgeInsets.zero,
-                        backgroundColor: Colors.transparent,
-                        content: Center(
-                          child: FutureBuilder(
-                            future:
-                                attach ? version.attach() : version.install(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                Navigator.of(context).pop();
-                                return Icon(
-                                  snapshot.data!
-                                      ? Icons.check_circle
-                                      : Icons.close_rounded,
-                                  color: ColorTheme.accent,
-                                  size: 60.0,
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text(
-                                  "Error ${snapshot.error}",
-                                  style: const TextStyle(
-                                    color: ColorTheme.light,
+                                padding: const WidgetStatePropertyAll(
+                                  EdgeInsets.only(
+                                    top: 5.0,
+                                    bottom: 5.0,
+                                    left: 15.0,
+                                    right: 15.0,
                                   ),
-                                );
-                              } else {
-                                return const SizedBox(
-                                  width: 60.0,
-                                  height: 60.0,
-                                  child: CircularProgressIndicator(
+                                ),
+                                shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                "Attach",
+                                style: TextStyle(color: ColorTheme.light),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    if (version == null) return;
+                    showDialog(
+                      // ignore: use_build_context_synchronously
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          contentPadding: EdgeInsets.zero,
+                          backgroundColor: Colors.transparent,
+                          content: Center(
+                            child: FutureBuilder(
+                              future: version.attach(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  Navigator.of(context).pop();
+                                  return Icon(
+                                    snapshot.data!
+                                        ? Icons.check_circle
+                                        : Icons.close_rounded,
                                     color: ColorTheme.accent,
-                                  ),
-                                );
-                              }
-                            },
+                                    size: 60.0,
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    "Error ${snapshot.error}",
+                                    style: const TextStyle(
+                                      color: ColorTheme.light,
+                                    ),
+                                  );
+                                } else {
+                                  return const SizedBox(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    child: CircularProgressIndicator(
+                                      color: ColorTheme.accent,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    });
-              },
-              style: ButtonStyle(
-                padding: const WidgetStatePropertyAll(
-                  EdgeInsets.all(25.0),
-                ),
-                shape: WidgetStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                        );
+                      },
+                    );
+                  },
+                  style: ButtonStyle(
+                    padding: const WidgetStatePropertyAll(EdgeInsets.all(25.0)),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    backgroundColor: const WidgetStatePropertyAll(
+                      ColorTheme.accent,
+                    ),
+                  ),
+                  child: const Text(
+                    "Attach",
+                    style: TextStyle(color: ColorTheme.light),
                   ),
                 ),
-                backgroundColor: const WidgetStatePropertyAll(
-                  ColorTheme.accent,
+                const SizedBox(height: 15.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          contentPadding: EdgeInsets.zero,
+                          backgroundColor: Colors.transparent,
+                          content: Center(child: InstallerLogWidget()),
+                        );
+                      },
+                    );
+                  },
+                  style: ButtonStyle(
+                    padding: const WidgetStatePropertyAll(EdgeInsets.all(25.0)),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    backgroundColor: const WidgetStatePropertyAll(
+                      ColorTheme.accent,
+                    ),
+                  ),
+                  child: const Text(
+                    "Install",
+                    style: TextStyle(color: ColorTheme.light),
+                  ),
                 ),
-              ),
-              child: const Text(
-                "Install & Attach",
-                style: TextStyle(color: ColorTheme.light),
-              ),
+              ],
             ),
           ),
         ),
@@ -201,20 +206,72 @@ class _VersionDropdownState extends State<VersionDropdown> {
       dropdownColor: ColorTheme.bk2,
       borderRadius: BorderRadius.circular(10.0),
       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-      items: Version.versions.map((version) {
-        return DropdownMenuItem(
-          value: version,
-          child: Center(
-            child: Text(
-              version.getName(),
-              style: const TextStyle(
-                color: ColorTheme.light,
+      items:
+          Version.versions.map((version) {
+            return DropdownMenuItem(
+              value: version,
+              child: Center(
+                child: Text(
+                  version.getName(),
+                  style: const TextStyle(color: ColorTheme.light),
+                ),
               ),
-            ),
-          ),
-        );
-      }).toList(),
+            );
+          }).toList(),
     );
+  }
+}
+
+class InstallerLogWidget extends StatefulWidget {
+  const InstallerLogWidget({super.key});
+
+  @override
+  State<InstallerLogWidget> createState() => _InstallerLogWidgetState();
+}
+
+class _InstallerLogWidgetState extends State<InstallerLogWidget> {
+  final List<String> _log = [];
+  late final StreamSubscription<String> _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = Version.install().listen(
+      (line) {
+        setState(() => _log.add(line));
+      },
+      onDone: () {
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      width: 600,
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          if (index >= _log.length) {
+            return const Text("");
+          } else {
+            return Text(
+              _log[index],
+              style: const TextStyle(color: ColorTheme.light),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }
 

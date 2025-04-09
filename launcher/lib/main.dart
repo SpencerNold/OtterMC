@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:launcher/theme.dart';
 import 'package:launcher/windows.dart';
 
-void main() {
+import 'package:window_manager/window_manager.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  await windowManager.setTitle("OtterMC Launcher");
   runApp(const App());
 }
 
@@ -33,10 +38,7 @@ class _AppState extends State<App> {
                 size: 40.0,
               ),
               SizedBox(width: 10.0),
-              Text(
-                "OtterMC",
-                style: TextStyle(color: ColorTheme.light),
-              )
+              Text("OtterMC", style: TextStyle(color: ColorTheme.light)),
             ],
           ),
           actions: [
@@ -77,16 +79,14 @@ class _AppState extends State<App> {
       ),
       child: Container(
         decoration: BoxDecoration(
-          border: index != idx
-              ? null
-              : const Border(
-                  bottom: BorderSide(width: 2.0, color: ColorTheme.accent),
-                ),
+          border:
+              index != idx
+                  ? null
+                  : const Border(
+                    bottom: BorderSide(width: 2.0, color: ColorTheme.accent),
+                  ),
         ),
-        child: Text(
-          display,
-          style: const TextStyle(color: ColorTheme.accent),
-        ),
+        child: Text(display, style: const TextStyle(color: ColorTheme.accent)),
       ),
     );
   }
