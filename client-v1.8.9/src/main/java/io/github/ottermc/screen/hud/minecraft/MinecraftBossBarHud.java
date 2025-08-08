@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.hud.minecraft;
 
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.Movable;
 import me.spencernold.transformer.Reflection;
@@ -11,7 +12,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.boss.BossStatus;
 
 public class MinecraftBossBarHud extends Component implements Movable {
-	
+
+
 	public MinecraftBossBarHud() {
 		super(true);
 		x = -1;
@@ -34,7 +36,7 @@ public class MinecraftBossBarHud extends Component implements Movable {
 	}
 	
 	private void renderBossHealth(GuiIngame gui) {
-		Reflection.call(GuiIngame.class, gui, "renderBossHealth", "()V");
+		Reflection.call("net/minecraft/client/gui/GuiIngame", gui, "renderBossHealth", "()V");
 	}
 	
 	@Override

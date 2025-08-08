@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.hud.minecraft;
 
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 
 public class MinecraftTitleHud extends Component {
+
+    private final String guiIngameClassName = "net/minecraft/client/gui/GuiIngame";
 	
 	public MinecraftTitleHud() {
 		super(true);
@@ -64,26 +67,26 @@ public class MinecraftTitleHud extends Component {
 	}
 
 	private String getField_175200_y(GuiIngame gui) {
-		return (String) Reflection.getValue(GuiIngame.class, gui, "field_175200_y");
+		return (String) Reflection.getValue(guiIngameClassName, gui, "field_175200_y");
 	}
 
 	private String getField_175201_x(GuiIngame gui) {
-		return (String) Reflection.getValue(GuiIngame.class, gui, "field_175201_x");
+		return (String) Reflection.getValue(guiIngameClassName, gui, "field_175201_x");
 	}
 
 	private int getField_175199_z(GuiIngame gui) {
-		return (int) Reflection.getValue(GuiIngame.class, gui, "field_175199_z");
+		return (int) Reflection.getValue(guiIngameClassName, gui, "field_175199_z");
 	}
 
 	private int getField_175192_A(GuiIngame gui) {
-		return (int) Reflection.getValue(GuiIngame.class, gui, "field_175192_A");
+		return (int) Reflection.getValue(guiIngameClassName, gui, "field_175192_A");
 	}
 
 	private int getField_175193_B(GuiIngame gui) {
-		return (int) Reflection.getValue(GuiIngame.class, gui, "field_175193_B");
+		return (int) Reflection.getValue(guiIngameClassName, gui, "field_175193_B");
 	}
 
 	private int getField_175195_w(GuiIngame gui) {
-		return (int) Reflection.getValue(GuiIngame.class, gui, "field_175195_w");
+		return (int) Reflection.getValue(guiIngameClassName, gui, "field_175195_w");
 	}
 }

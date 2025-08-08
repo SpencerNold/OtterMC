@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.hud.minecraft;
 
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
@@ -8,6 +9,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class MinecraftExperienceBarHud extends Component {
+
+	private final String guiIngameClassName = "net/minecraft/client/gui/GuiIngame";
 
 	public MinecraftExperienceBarHud() {
 		super(true);
@@ -30,10 +33,10 @@ public class MinecraftExperienceBarHud extends Component {
 	}
 	
 	private void renderExpBar(GuiIngame gui, ScaledResolution res, int k1) {
-		Reflection.call(GuiIngame.class, gui, "renderExpBar", "(Lnet/minecraft/client/gui/ScaledResolution;I)V", res, k1);
+		Reflection.call(guiIngameClassName, gui, "renderExpBar", "(Lnet/minecraft/client/gui/ScaledResolution;I)V", res, k1);
 	}
 
 	private void renderHorseJumpBar(GuiIngame gui, ScaledResolution res, int k1) {
-		Reflection.call(GuiIngame.class, gui, "renderHorseJumpBar", "(Lnet/minecraft/client/gui/ScaledResolution;I)V", res, k1);
+		Reflection.call(guiIngameClassName, gui, "renderHorseJumpBar", "(Lnet/minecraft/client/gui/ScaledResolution;I)V", res, k1);
 	}
 }

@@ -19,7 +19,7 @@ public class RenderItemTransformer {
 		callback.setCanceled(true);
 	}
 	
-	@Injector(target = Target.HEAD, name = "renderItem(Lnet/minecraft/item/ItemStack;net/minecraft/client/resources/model/IBakedModel)V")
+	@Injector(target = Target.HEAD, name = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/resources/model/IBakedModel;)V")
 	public void onRenderItem(RenderItem renderer, ItemStack itemStack, IBakedModel model, Callback callback) {
 		GlStateManager.scale(2.0, 2.0, 2.0);
 	}

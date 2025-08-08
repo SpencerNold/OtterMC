@@ -20,6 +20,8 @@ import java.io.IOException;
 
 public class MainMenuScreen extends GuiMainMenu {
 
+	private final String guiMainMenuClassName = "net/minecraft/client/gui/GuiMainMenu";
+
 	private final DrawableHelper drawable = new DrawableHelper();
 	
 	@Override
@@ -148,6 +150,6 @@ public class MainMenuScreen extends GuiMainMenu {
 	}
 	
 	private void reflect_renderSkybox(int mouseX, int mouseY, float partialTicks) {
-		Reflection.call(GuiMainMenu.class, this, "renderSkybox", "(IIF)V", mouseX, mouseY, partialTicks);
+		Reflection.call(guiMainMenuClassName, this, "renderSkybox", "(IIF)V", mouseX, mouseY, partialTicks);
 	}
 }

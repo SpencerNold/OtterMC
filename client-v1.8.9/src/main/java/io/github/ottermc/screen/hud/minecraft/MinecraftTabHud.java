@@ -11,7 +11,7 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.world.World;
 
 public class MinecraftTabHud extends Component {
-	
+
 	public MinecraftTabHud() {
 		super(true);
 	}
@@ -38,6 +38,6 @@ public class MinecraftTabHud extends Component {
 	}
 
 	private GuiPlayerTabOverlay getOverlayPlayerList(GuiIngame gui) {
-		return (GuiPlayerTabOverlay) Reflection.getValue(GuiIngame.class, gui, "overlayPlayerList");
+		return (GuiPlayerTabOverlay) Reflection.getValue("net/minecraft/client/gui/GuiIngame", gui, "overlayPlayerList");
 	}
 }

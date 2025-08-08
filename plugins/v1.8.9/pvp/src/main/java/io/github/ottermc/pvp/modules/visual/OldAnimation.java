@@ -7,6 +7,7 @@ import io.github.ottermc.pvp.listeners.RenderItemInFirstPersonListener;
 import io.github.ottermc.screen.render.Icon;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -28,6 +29,9 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 
 	private static final Icon ICON = Icon.getIconIgnoreException("module/sword_icon.png");
 
+	private final String itemRendererClassName = "net/minecraft/client/renderer/ItemRenderer";
+	private final String itemFoodClassName = "net/minecraft/item/ItemFood";
+
 	public OldAnimation() {
 		super("1.7 Animations", Category.VISUAL);
 	}
@@ -43,19 +47,19 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 	}
 
 	private float getPrevEquippedProgress(ItemRenderer renderer) {
-		return (float) Reflection.getValue(ItemRenderer.class, renderer, "prevEquippedProgress");
+		return (float) Reflection.getValue(itemRendererClassName, renderer, "prevEquippedProgress");
 	}
 
 	private float getEquippedProgress(ItemRenderer renderer) {
-		return (float) Reflection.getValue(ItemRenderer.class, renderer, "equippedProgress");
+		return (float) Reflection.getValue(itemRendererClassName, renderer, "equippedProgress");
 	}
 
 	private ItemStack getItemToRender(ItemRenderer renderer) {
-		return (ItemStack) Reflection.getValue(ItemRenderer.class, renderer, "itemToRender");
+		return (ItemStack) Reflection.getValue(itemRendererClassName, renderer, "itemToRender");
 	}
 
 	private boolean isAlwaysEdible(ItemFood food) {
-		return (boolean) Reflection.getValue(ItemFood.class, food, "alwaysEdible");
+		return (boolean) Reflection.getValue(itemFoodClassName, food, "alwaysEdible");
 	}
 
 	@Override

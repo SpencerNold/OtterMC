@@ -4,6 +4,7 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.pvp.listeners.RenderArmorEffectListener;
 import io.github.ottermc.render.Color;
 import me.spencernold.transformer.Reflection;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -14,6 +15,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerArmorBaseWrapper {
+
+	private static final String layerArmorBaseClassName = "net/minecraft/client/renderer/entity/layers/LayerArmorBase";
 
 	private static final ResourceLocation ENCHANTED_ITEM_GLINT_RES = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
@@ -51,6 +54,6 @@ public class LayerArmorBaseWrapper {
 	}
 	
 	private static RendererLivingEntity<?> getRenderer(LayerArmorBase<ModelBase> layerArmorBase) {
-		return (RendererLivingEntity<?>) Reflection.getValue(LayerArmorBase.class, layerArmorBase, "renderer");
+		return (RendererLivingEntity<?>) Reflection.getValue(layerArmorBaseClassName, layerArmorBase, "renderer");
 	}
 }

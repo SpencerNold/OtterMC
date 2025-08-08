@@ -4,6 +4,7 @@ import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import me.spencernold.transformer.Reflection;
+import net.minecraft.client.gui.GuiIngame;
 import org.lwjgl.opengl.GL11;
 
 import io.github.ottermc.events.EventBus;
@@ -17,6 +18,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
 public class RendererLivingEntityWrapper {
+
+	private static final String rendererLivingEntityClassName = "net/minecraft/client/renderer/entity/RendererLivingEntity";
 
 	public static boolean setBrightness(RendererLivingEntity<?> renderer, EntityLivingBase entity, float partialTicks, boolean combineTextures) {
 		float f = ((Entity) entity).getBrightness(partialTicks);
@@ -97,13 +100,13 @@ public class RendererLivingEntityWrapper {
 	}
 
 	private static AbstractTexture getField_177096_e(RendererLivingEntity<?> renderer) {
-		return (DynamicTexture) Reflection.getValue(RendererLivingEntity.class, renderer, "field_177096_e");
+		return (DynamicTexture) Reflection.getValue(rendererLivingEntityClassName, renderer, "field_177096_e");
 	}
 	private static FloatBuffer getBrightnessBuffer(RendererLivingEntity<?> renderer) {
-		return (FloatBuffer) Reflection.getValue(RendererLivingEntity.class, renderer, "brightnessBuffer");
+		return (FloatBuffer) Reflection.getValue(rendererLivingEntityClassName, renderer, "brightnessBuffer");
 	}
 
 	private static int getColorMultiplier(RendererLivingEntity<?> renderer, EntityLivingBase entity, float f, float partialTicks) {
-		return (int) Reflection.call(RendererLivingEntity.class, renderer, "getColorMultiplier", "(Lnet/minecraft/entity/EntityLivingBase;FF)I", entity, f, partialTicks);
+		return (int) Reflection.call(rendererLivingEntityClassName, renderer, "getColorMultiplier", "(Lnet/minecraft/entity/EntityLivingBase;FF)I", entity, f, partialTicks);
 	}
 }

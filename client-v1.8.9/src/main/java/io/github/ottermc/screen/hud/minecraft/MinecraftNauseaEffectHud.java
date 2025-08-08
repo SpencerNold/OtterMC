@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.hud.minecraft;
 
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 
 public class MinecraftNauseaEffectHud extends Component {
-	
-	public MinecraftNauseaEffectHud() {
+
+    public MinecraftNauseaEffectHud() {
 		super(true);
 	}
 
@@ -28,6 +29,6 @@ public class MinecraftNauseaEffectHud extends Component {
 	}
 	
 	private void func_180474_b(GuiIngame gui, float f, ScaledResolution res) {
-		Reflection.call(GuiIngame.class, gui, "func_180474_be", "(FLnet/minecraft/client/gui/ScaledResolution;)V", f, res);
+        Reflection.call("net/minecraft/client/gui/GuiIngame", gui, "func_180474_be", "(FLnet/minecraft/client/gui/ScaledResolution;)V", f, res);
 	}
 }

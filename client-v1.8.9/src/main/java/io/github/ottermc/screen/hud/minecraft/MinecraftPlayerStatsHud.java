@@ -1,15 +1,15 @@
 package io.github.ottermc.screen.hud.minecraft;
 
-import me.spencernold.transformer.Reflection;
-import org.lwjgl.opengl.GL11;
-
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
+import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.opengl.GL11;
 
 public class MinecraftPlayerStatsHud extends Component {
-	
+
 	public MinecraftPlayerStatsHud() {
 		super(true);
 	}
@@ -28,6 +28,6 @@ public class MinecraftPlayerStatsHud extends Component {
 	}
 	
 	private void renderPlayerStats(GuiIngame gui, ScaledResolution res) {
-		Reflection.call(GuiIngame.class, gui, "renderPlayerStats", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
+		Reflection.call("net/minecraft/client/gui/GuiIngame", gui, "renderPlayerStats", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
 	}
 }

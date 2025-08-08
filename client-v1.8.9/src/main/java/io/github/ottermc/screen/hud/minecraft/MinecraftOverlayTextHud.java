@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.hud.minecraft;
 
+import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.screen.hud.Component;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 
 public class MinecraftOverlayTextHud extends Component {
+
+	private final String guiIngameClassName = "net/minecraft/client/gui/GuiIngame";
 	
 	public MinecraftOverlayTextHud() {
 		super(true);
@@ -61,26 +64,26 @@ public class MinecraftOverlayTextHud extends Component {
 	}
 
 	private GuiSpectator getSpectatorGui(GuiIngame gui) {
-		return (GuiSpectator) Reflection.getValue(GuiIngame.class, gui, "spectatorGui");
+		return (GuiSpectator) Reflection.getValue(guiIngameClassName, gui, "spectatorGui");
 	}
 
 	private void func_181551_a(GuiIngame gui, ScaledResolution res) {
-		Reflection.call(GuiIngame.class, gui, "func_181551_a", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
+		Reflection.call(guiIngameClassName, gui, "func_181551_a", "(Lnet/minecraft/client/gui/ScaledResolution;)V", res);
 	}
 	
 	private GuiOverlayDebug getOverlayDebug(GuiIngame gui) {
-		return (GuiOverlayDebug) Reflection.getValue(GuiIngame.class, gui, "overlayDebug");
+		return (GuiOverlayDebug) Reflection.getValue(guiIngameClassName, gui, "overlayDebug");
 	}
 	
 	private int getRecordPlayingUpFor(GuiIngame gui) {
-		return (int) Reflection.getValue(GuiIngame.class, gui, "recordPlayingUpFor");
+		return (int) Reflection.getValue(guiIngameClassName, gui, "recordPlayingUpFor");
 	}
 	
 	private boolean getRecordIsPlaying(GuiIngame gui) {
-		return (boolean) Reflection.getValue(GuiIngame.class, gui, "recordIsPlaying");
+		return (boolean) Reflection.getValue(guiIngameClassName, gui, "recordIsPlaying");
 	}
 	
 	private String getRecordPlaying(GuiIngame gui) {
-		return (String) Reflection.getValue(GuiIngame.class, gui, "recordPlaying");
+		return (String) Reflection.getValue(guiIngameClassName, gui, "recordPlaying");
 	}
 }

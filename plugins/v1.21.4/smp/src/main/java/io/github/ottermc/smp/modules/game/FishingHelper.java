@@ -14,6 +14,8 @@ import net.minecraft.util.Hand;
 
 public class FishingHelper extends Module implements RunTickListener {
 
+    private final String fishingBobberEntityClassName = FishingBobberEntity.class.getName().replace('.', '/');
+
     private int skipTickTimer0 = 4;
     private int skipTickTimer1 = 4;
 
@@ -41,7 +43,7 @@ public class FishingHelper extends Module implements RunTickListener {
             return;
         FishingBobberEntity bobber = ((PlayerEntity) client.player).fishHook;
         if (bobber != null) {
-            boolean caught = (boolean) Reflection.getValue(FishingBobberEntity.class, bobber, "caughtFish");
+            boolean caught = (boolean) Reflection.getValue(fishingBobberEntityClassName, bobber, "caughtFish");
             if (caught) {
                 if (skipTickTimer0 > 0)
                     skipTickTimer0--;
