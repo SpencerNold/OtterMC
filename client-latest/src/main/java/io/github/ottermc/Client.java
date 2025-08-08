@@ -12,9 +12,9 @@ import java.io.File;
 
 public class Client {
 
-    public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.21.4)";
+    public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (latest)";
     @ReflectionRequired
-    public static final String TARGET = "1.21.4";
+    public static final String TARGET = "latest";
 
     private static Client instance;
 

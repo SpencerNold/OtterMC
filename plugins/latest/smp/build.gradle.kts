@@ -12,11 +12,11 @@ java {
 tasks.named("build") {
     doLast {
         val client = file("build/libs/smp.jar")
-        Compiler.compile(client, Constants.VERSION_1_21_4)
+        Compiler.compile(client, Constants.VERSION_LATEST)
     }
     group = "plugins"
 }
 
 dependencies {
-    implementation(project(":client-v1.21.4"))
+    implementation(project(":client-latest"))
 }

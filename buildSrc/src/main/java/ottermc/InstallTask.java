@@ -26,21 +26,21 @@ public class InstallTask extends DefaultTask {
             copy(wrapperSrc, wrapperDst);
 
             String v189 = VersionRegistry.translateVersionToNameString(Constants.VERSION_1_8_9);
-            String vnew = VersionRegistry.translateVersionToNameString(Constants.VERSION_1_21_4);
+            String vnew = VersionRegistry.translateVersionToNameString(Constants.VERSION_LATEST);
 
             copyVersion(v189, projectDir, clientDir);
             copyVersion(vnew, projectDir, clientDir);
 
-            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", "v" + v189, "pvp", "build", "libs", "pvp-remapped.jar");
-            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", "v" + vnew, "smp", "build", "libs", "smp-remapped.jar");
+            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", v189, "pvp", "build", "libs", "pvp-remapped.jar");
+            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", vnew, "smp", "build", "libs", "smp-remapped.jar");
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }
     }
 
     private void copyVersion(String version, File projectDir, File clientDir) throws IOException {
-        File src = new File(projectDir, String.join(File.separator, "client-v" + version, "build", "libs", String.format("client-v%s-remapped-joined.jar", version)));
-        File dst = new File(clientDir, String.format("client-v%s.jar", version));
+        File src = new File(projectDir, String.join(File.separator, "client-" + version, "build", "libs", String.format("client-%s-remapped-joined.jar", version)));
+        File dst = new File(clientDir, String.format("client-%s.jar", version));
         copy(src, dst);
     }
 

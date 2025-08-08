@@ -38,14 +38,14 @@ public class PackageTask extends DefaultTask {
                 List<Pair<String, File>> targets = new ArrayList<>();
                 targets.add(wrapper);
 
-                File clientFile = new File(directory, String.join(File.separator, "client-v" + version, "build", "libs", "client-v" + version + "-remapped-joined.jar"));
+                File clientFile = new File(directory, String.join(File.separator, "client-" + version, "build", "libs", "client-" + version + "-remapped-joined.jar"));
                 if (!clientFile.exists())
                     continue;
-                String clientName = "client-v" + version + ".jar";
+                String clientName = "client-" + version + ".jar";
                 Pair<String, File> client = new Pair<>(clientName, clientFile);
                 targets.add(client);
 
-                File pluginDir = new File(directory, String.join(File.separator, "plugins", "v" + version));
+                File pluginDir = new File(directory, String.join(File.separator, "plugins", version));
                 for (File pl : pluginDir.listFiles()) {
                     File pluginFile = new File(pl, String.join(File.separator, "build", "libs", pl.getName() + "-remapped.jar"));
                     String pluginName = pl.getName() + ".jar";

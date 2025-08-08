@@ -23,7 +23,7 @@ libs
 build-*.zip
 
 plugins/v1.8.9/export/src/main
-plugins/v1.21.4/export/src/main
+plugins/latest/export/src/main
 
 launcher/OtterMC.dmg
 launcher/OtterMC.exe

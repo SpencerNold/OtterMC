@@ -9,7 +9,7 @@ import io.github.ottermc.smp.modules.game.FishingHelper;
 import io.github.ottermc.smp.modules.game.TradeSelector;
 import io.github.ottermc.smp.transformers.GameRendererTransformer;
 
-@Plugin(name = "OtterMC 1.21.4 SMP", version = Client.VERSION, target = "1.21.4")
+@Plugin(name = "OtterMC SMP", version = Client.VERSION, target = "latest")
 public class Main implements Implementation {
 
     @Override

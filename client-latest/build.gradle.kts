@@ -28,8 +28,8 @@ dependencies {
 
 tasks.register("attach") {
     doLast {
-        val client = file("build/libs/client-v1.21.4-remapped-joined.jar")
-        RunClientTask.attach(client, Constants.VERSION_1_21_4)
+        val client = file("build/libs/client-latest-remapped-joined.jar")
+        RunClientTask.attach(client, Constants.VERSION_LATEST)
     }
     group = "client"
     description = "Attaches the client to a running game client."
@@ -38,8 +38,8 @@ tasks.register("attach") {
 
 tasks.register("run") {
     doLast {
-        val client = file("build/libs/client-v1.21.4-remapped-joined.jar")
-        RunClientTask.launch(client, Constants.VERSION_1_21_4)
+        val client = file("build/libs/client-latest-remapped-joined.jar")
+        RunClientTask.launch(client, Constants.VERSION_LATEST)
     }
     group = "client"
     description = "Runs the modified game client."
@@ -48,8 +48,8 @@ tasks.register("run") {
 
 tasks.named("build") {
     doLast {
-        val client = file("build/libs/client-v1.21.4.jar")
-        val mapped = Compiler.compile(client, Constants.VERSION_1_21_4)
+        val client = file("build/libs/client-latest.jar")
+        val mapped = Compiler.compile(client, Constants.VERSION_LATEST)
         Joiner.joinJars(mapped, universal.asPath.split(File.pathSeparator))
     }
     group = "client"

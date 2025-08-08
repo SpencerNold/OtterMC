@@ -21,6 +21,7 @@ public class RenderItemTransformer {
 	
 	@Injector(target = Target.HEAD, name = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/resources/model/IBakedModel;)V")
 	public void onRenderItem(RenderItem renderer, ItemStack itemStack, IBakedModel model, Callback callback) {
-		GlStateManager.scale(2.0, 2.0, 2.0);
+		// GlStateManager.scale(2.0, 2.0, 2.0);
+		// TODO This is for the big items mod!
 	}
 }

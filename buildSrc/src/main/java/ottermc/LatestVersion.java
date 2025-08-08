@@ -1,0 +1,2 @@
+package ottermc;
+public class LatestVersion { public static final String NAME = "1.21.4"; }

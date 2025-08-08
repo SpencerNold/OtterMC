@@ -24,14 +24,14 @@ tasks.register<Jar>("buildCompleteJar") {
     from(getProjectPath(":client-v1.8.9"))
     mustRunAfter(":client-v1.8.9:build")
 
-    from(getProjectPath(":client-v1.21.4"))
-    mustRunAfter(":client-v1.21.4:build")
+    from(getProjectPath(":client-latest"))
+    mustRunAfter(":client-latest:build")
 
     from(getProjectPath(":plugins:v1.8.9:pvp"))
     mustRunAfter(":plugins:v1.8.9:pvp:build")
 
-    from(getProjectPath(":plugins:v1.21.4:smp"))
-    mustRunAfter(":plugins:v1.21.4:smp:build")
+    from(getProjectPath(":plugins:latest:smp"))
+    mustRunAfter(":plugins:latest:smp:build")
 
     manifest {
         attributes(

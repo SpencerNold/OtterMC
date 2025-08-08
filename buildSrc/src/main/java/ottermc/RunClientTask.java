@@ -30,7 +30,7 @@ public class RunClientTask {
 		File gameJar = new File(file.getParentFile(), "game.jar");
 		try {
 			File mcDir = BuildTool.getMinecraftDirectory();
-			String versionName = VersionRegistry.translateVersionToNameString(version);
+			String versionName = VersionRegistry.translateVersionToMinecraftString(version);
 			File versionJsonFile = new File(BuildTool.getJoinedWithSeparator(mcDir.getAbsolutePath(), "versions", versionName, versionName + ".json"));
 			if (!versionJsonFile.exists())
 				throw new GradleScriptException("missing version json file", new FileNotFoundException(versionJsonFile.getAbsolutePath()));

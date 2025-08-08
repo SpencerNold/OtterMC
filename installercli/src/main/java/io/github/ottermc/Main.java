@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Main {
 
-    private static final String[] SUPPORTED_VERSIONS = { "1.8.9", "1.21.4" };
+    private static final String[] SUPPORTED_VERSIONS = { "1.8.9", "latest" };
     private static final String[] SUPPORTED_PLUGINS = { "pvp.jar", "smp.jar" };
 
     public static void main(String[] argv) {
