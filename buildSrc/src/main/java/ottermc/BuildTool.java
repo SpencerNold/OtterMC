@@ -51,6 +51,8 @@ public class BuildTool {
 
     public static void copy(File src, File dst) {
         try {
+            if (!dst.exists())
+                dst.createNewFile();
             FileInputStream input = new FileInputStream(src);
             FileOutputStream output = new FileOutputStream(dst);
             int n = -1;
@@ -61,6 +63,17 @@ public class BuildTool {
             output.close();
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy from: " + src.getAbsolutePath() + " to " + dst.getAbsolutePath(), e);
+        }
+    }
+
+    public static void deleteDirectory(File file) {
+        if (file.isFile())
+            file.delete();
+        else {
+            for (File f : file.listFiles()) {
+                deleteDirectory(f);
+                file.delete();
+            }
         }
     }
 }

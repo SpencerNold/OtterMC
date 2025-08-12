@@ -38,7 +38,7 @@ public class FishingHelper extends Module implements RunTickListener {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.world == null || client.player == null || client.interactionManager == null)
             return;
-        ItemStack itemStack = ((PlayerEntity) client.player).getInventory().getMainHandStack();
+        ItemStack itemStack = ((PlayerEntity) client.player).getInventory().getMainStacks().getFirst();
         if (itemStack == null || itemStack.getItem() != Items.FISHING_ROD)
             return;
         FishingBobberEntity bobber = ((PlayerEntity) client.player).fishHook;
