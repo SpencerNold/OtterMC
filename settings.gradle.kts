@@ -8,10 +8,10 @@ include("client-v1.8.9")
 include("client-latest")
 
 include("plugins:v1.8.9:pvp")
-include("plugins:v1.8.9:export")
+include("plugins:v1.8.9:pvp-export")
 
 include("plugins:latest:smp")
-include("plugins:latest:export")
+include("plugins:latest:smp-export")
 
 // in build scripts, v<version> is a 'hot' line of code
 

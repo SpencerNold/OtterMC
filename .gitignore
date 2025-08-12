@@ -22,8 +22,8 @@ bin
 libs
 build-*.zip
 
-plugins/v1.8.9/export/src/main
-plugins/latest/export/src/main
+plugins/v1.8.9/pvp-export/src/main
+plugins/latest/smp-export/src/main
 
 launcher/OtterMC.dmg
 launcher/OtterMC.exe

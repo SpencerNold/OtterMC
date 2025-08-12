@@ -23,7 +23,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.lang.instrument.UnmodifiableClassException;
 
-@Plugin(name = "OtterMC 1.8.9 Pvp", version = Client.VERSION, target = "1.8.9")
+@Plugin(name = "OtterMC Pvp", version = Client.VERSION, target = "1.8.9")
 public class Main implements Implementation {
 
     @Override
