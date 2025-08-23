@@ -1,12 +1,12 @@
 package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
+import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 
@@ -18,7 +18,7 @@ public class DamageColor extends Module implements SetEntityDamageBrightnessList
 	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	
 	public DamageColor() {
-		super("Damage Color", Category.VISUAL);
+		super("Damage Color", CategoryList.VISUAL);
 	}
 	
 	@Override

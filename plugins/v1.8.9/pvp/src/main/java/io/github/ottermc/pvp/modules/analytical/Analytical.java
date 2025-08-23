@@ -1,12 +1,12 @@
 package io.github.ottermc.pvp.modules.analytical;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.AttackEntityListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.listeners.SaveGameListener;
-import io.github.ottermc.pvp.listeners.SetVelocityListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.pvp.listeners.AttackEntityListener;
+import io.github.ottermc.pvp.listeners.SetVelocityListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -31,7 +31,7 @@ public class Analytical extends Module implements AttackEntityListener, SetVeloc
 	private final AnalyticalAPI api = new AnalyticalAPI("");
 	
 	public Analytical() {
-		super("Analytical Data", Category.ANALYTICAL);
+		super("Analytical Data", CategoryList.ANALYTICAL);
 		instance = this;
 		setActive(true);
 		for (int i = 0; i < helpers.length; i++)

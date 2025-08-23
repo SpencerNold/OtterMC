@@ -21,4 +21,5 @@ tasks.named("build") {
 
 dependencies {
     implementation(project(":client-latest"))
+    implementation("com.github.SpencerNold:KWAF:-SNAPSHOT")
 }

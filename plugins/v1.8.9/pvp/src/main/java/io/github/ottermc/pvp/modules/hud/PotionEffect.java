@@ -1,13 +1,13 @@
 package io.github.ottermc.pvp.modules.hud;
 
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.pvp.modules.visual.ColorTheme;
-import io.github.ottermc.render.Color;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
+import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 
 public class PotionEffect extends Module {
@@ -20,7 +20,7 @@ public class PotionEffect extends Module {
 	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 
 	public PotionEffect() {
-		super("Potion Effects", Category.HUD);
+		super("Potion Effects", CategoryList.DISPLAY);
 		instance = this;
 	}
 

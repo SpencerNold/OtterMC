@@ -1,14 +1,14 @@
 package io.github.ottermc.pvp.modules.hud;
 
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.modules.setting.StringSetting;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.pvp.modules.visual.ColorTheme;
-import io.github.ottermc.render.Color;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
+import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 
 public class Array extends Module {
@@ -23,7 +23,7 @@ public class Array extends Module {
 	private final StringSetting text = new StringSetting("Text", "", 6);
 	
 	public Array() {
-		super("Custom Array", Category.HUD);
+		super("Custom Array", CategoryList.DISPLAY);
 		instance = this;
 	}
 	

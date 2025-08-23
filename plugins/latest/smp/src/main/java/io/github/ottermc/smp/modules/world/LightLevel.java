@@ -2,8 +2,8 @@ package io.github.ottermc.smp.modules.world;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.Listener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.smp.CategoryList;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnRestriction;
@@ -13,7 +13,7 @@ import net.minecraft.world.LightType;
 public class LightLevel extends Module implements Listener {
 
     public LightLevel() {
-        super("Light Level", Category.WORLD);
+        super("Light Level", CategoryList.WORLD);
         setActive(true);
     }
 

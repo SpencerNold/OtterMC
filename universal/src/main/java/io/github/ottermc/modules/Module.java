@@ -51,7 +51,7 @@ public abstract class Module implements Renderable {
 	}
 	
 	public int getSerialId() {
-		return (category.name() + name).hashCode();
+		return (category.getDisplayName() + name).hashCode();
 	}
 
 	public boolean shouldRenderInMenu() {

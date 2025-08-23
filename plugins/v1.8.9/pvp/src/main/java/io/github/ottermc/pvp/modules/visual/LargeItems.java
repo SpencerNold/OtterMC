@@ -1,16 +1,16 @@
 package io.github.ottermc.pvp.modules.visual;
 
-import java.util.Arrays;
-import java.util.List;
-
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.GetItemScaleListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.pvp.listeners.GetItemScaleListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LargeItems extends Module implements GetItemScaleListener {
 
@@ -20,7 +20,7 @@ public class LargeItems extends Module implements GetItemScaleListener {
 	private final List<Item> items = Arrays.asList(Items.gold_nugget, Items.gold_ingot, Items.golden_apple, Items.skull);
 	
 	public LargeItems() {
-		super("Large Items", Category.VISUAL);
+		super("Large Items", CategoryList.VISUAL);
 	}
 	
 	@Override

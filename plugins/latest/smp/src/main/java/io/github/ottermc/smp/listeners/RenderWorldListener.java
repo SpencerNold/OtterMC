@@ -1,4 +1,4 @@
-package io.github.ottermc.smp.modules.listeners;
+package io.github.ottermc.smp.listeners;
 
 import io.github.ottermc.events.Event;
 import io.github.ottermc.events.Listener;

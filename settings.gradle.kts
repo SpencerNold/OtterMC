@@ -13,8 +13,6 @@ include("plugins:v1.8.9:pvp-export")
 include("plugins:latest:smp")
 include("plugins:latest:smp-export")
 
-// in build scripts, v<version> is a 'hot' line of code
-
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {

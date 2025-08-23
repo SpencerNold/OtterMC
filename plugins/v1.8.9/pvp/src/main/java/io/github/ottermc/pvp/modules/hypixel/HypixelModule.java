@@ -1,7 +1,7 @@
 package io.github.ottermc.pvp.modules.hypixel;
 
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.pvp.modules.CategoryList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.world.World;
@@ -14,7 +14,7 @@ public abstract class HypixelModule extends Module {
 	// Some sort of win counter
 	
 	public HypixelModule(String name) {
-		super(name, Category.ONLINE);
+		super(name, CategoryList.ONLINE);
 	}
 
 	public final boolean isConnectedToHypixel() {

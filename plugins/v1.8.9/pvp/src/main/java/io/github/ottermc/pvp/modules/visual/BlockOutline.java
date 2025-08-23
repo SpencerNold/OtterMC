@@ -1,14 +1,12 @@
 package io.github.ottermc.pvp.modules.visual;
 
-import org.lwjgl.opengl.GL11;
-
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.DrawSelectionBoxListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
+import io.github.ottermc.pvp.listeners.DrawSelectionBoxListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.render.VoxelRenderer;
 import io.github.ottermc.screen.render.Icon;
@@ -21,6 +19,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	
@@ -31,7 +30,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	private final BooleanSetting fill = new BooleanSetting("Fill Block", false);
 	
 	public BlockOutline() {
-		super("Block Outline", Category.VISUAL);
+		super("Block Outline", CategoryList.VISUAL);
 	}
 	
 	@Override

@@ -1,13 +1,12 @@
 package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.pvp.listeners.RenderItemInFirstPersonListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.screen.render.Icon;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -33,7 +32,7 @@ public class OldAnimation extends Module implements RenderItemInFirstPersonListe
 	private final String itemFoodClassName = "net/minecraft/item/ItemFood";
 
 	public OldAnimation() {
-		super("1.7 Animations", Category.VISUAL);
+		super("1.7 Animations", CategoryList.VISUAL);
 	}
 
 	@Override

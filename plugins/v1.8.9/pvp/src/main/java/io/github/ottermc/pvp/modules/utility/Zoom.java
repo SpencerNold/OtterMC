@@ -1,17 +1,16 @@
 package io.github.ottermc.pvp.modules.utility;
 
-import org.lwjgl.input.Keyboard;
-
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.KeyboardSetting;
 import io.github.ottermc.modules.storable.FloatStorage;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
+import org.lwjgl.input.Keyboard;
 
 public class Zoom extends Module implements RunTickListener {
 
@@ -23,7 +22,7 @@ public class Zoom extends Module implements RunTickListener {
 	private boolean zooming;
 	
 	public Zoom() {
-		super("Zoom", Category.GAME);
+		super("Zoom", CategoryList.GAME);
 		setActive(true);
 	}
 	

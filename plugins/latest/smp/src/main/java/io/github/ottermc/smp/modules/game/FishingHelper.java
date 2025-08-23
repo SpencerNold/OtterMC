@@ -2,8 +2,8 @@ package io.github.ottermc.smp.modules.game;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
+import io.github.ottermc.smp.CategoryList;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +20,7 @@ public class FishingHelper extends Module implements RunTickListener {
     private int skipTickTimer1 = 4;
 
     public FishingHelper() {
-        super("FishingHelper", Category.GAME);
+        super("FishingHelper", CategoryList.GAME);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package io.github.ottermc.pvp.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.RenderArmorEffectListener;
-import io.github.ottermc.pvp.listeners.RenderEffectListener;
 import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.modules.setting.FloatSetting;
+import io.github.ottermc.pvp.listeners.RenderArmorEffectListener;
+import io.github.ottermc.pvp.listeners.RenderEffectListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
 
@@ -23,7 +23,7 @@ public class EnchantmentGlint extends Module implements RenderEffectListener, Re
 	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 
 	public EnchantmentGlint() {
-		super("Tool Glint", Category.VISUAL);
+		super("Tool Glint", CategoryList.VISUAL);
 	}
 	
 	@Override

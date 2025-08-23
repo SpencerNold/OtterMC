@@ -5,6 +5,7 @@ import ottermc.VersionTask
 tasks.register<InstallTask>("install") {
     group = "client"
     description = "Prepares to run the client"
+    dependsOn(":c2:build")
     dependsOn(":universal:build")
     dependsOn(":client-v1.8.9:build")
     dependsOn(":plugins:v1.8.9:pvp:build")
@@ -18,6 +19,7 @@ tasks.register<InstallTask>("install") {
 tasks.register<PackageTask>("package") {
     group = "client"
     description = "Builds and packages the client code for production"
+    dependsOn(":c2:build")
     dependsOn(":universal:build")
     dependsOn(":client-v1.8.9:build")
     dependsOn(":plugins:v1.8.9:pvp:build")

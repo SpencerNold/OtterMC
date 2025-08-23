@@ -3,7 +3,7 @@ package io.github.ottermc.smp.modules.game;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.listeners.DrawOverlayListener;
-import io.github.ottermc.modules.Category;
+import io.github.ottermc.smp.CategoryList;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -23,7 +23,7 @@ public class TradeSelector extends TradeModule implements RunTickListener, DrawO
     private boolean workstation = false;
 
     public TradeSelector() {
-        super("Trade Selector", Category.GAME);
+        super("Trade Selector", CategoryList.GAME);
     }
 
     @Override

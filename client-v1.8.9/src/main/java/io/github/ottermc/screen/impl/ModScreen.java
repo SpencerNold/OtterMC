@@ -3,6 +3,7 @@ package io.github.ottermc.screen.impl;
 import io.github.ottermc.Client;
 import io.github.ottermc.ClientLogger;
 import io.github.ottermc.modules.Category;
+import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.AbstractScreen;
@@ -61,8 +62,8 @@ public class ModScreen extends AbstractScreen {
 		int catY = centerY + height2 + 4;
 		int catWidth = (int) (width * 0.2f) - 8;
 		getDrawable().fillRoundedRectangle(catX, catY, catWidth, height -  height2 - 8, 6, backgroundColor);
-		for (int i = 0; i < Category.values().length; i++) {
-			Category category = Category.values()[i];
+		for (int i = 0; i < CategoryRegistry.values().length; i++) {
+			Category category = CategoryRegistry.values()[i];
 			
 			int ny = catY + (i * 26) + 2;
 			if (i == selectedCategoryIndex)
@@ -76,7 +77,7 @@ public class ModScreen extends AbstractScreen {
         int modWidth = (int) (width * 0.8f) - 34;
 		int mlen = modWidth / 5;
 		int counter = 0;
-		Iterator<Module> modules = Client.getModManager().getByCategory(Category.values()[selectedCategoryIndex]).iterator();
+		Iterator<Module> modules = Client.getModManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).iterator();
 		while (modules.hasNext()) {
 			for (int i = 0; i < 5; i++) {
 				if (!modules.hasNext())
@@ -122,7 +123,7 @@ public class ModScreen extends AbstractScreen {
 		int theX = centerX + 6;
 		if (mouseX > theX && mouseX < (theX + ((int) width * 0.2f) - 8)) {
 			int index = (int) ((mouseY - 6 - (height * 0.1f) - centerY) / 26.0f);
-			index = clamp(index, 0, Category.values().length - 1);
+			index = clamp(index, 0, CategoryRegistry.values().length - 1);
 			selectedCategoryIndex = index;
 		}
 		
@@ -132,7 +133,7 @@ public class ModScreen extends AbstractScreen {
 			int i = (int) ((mouseX - centerX - width * 0.2f - 2) / (mlen + 4));
 			int counter = (int) ((mouseY - centerY - height * 0.1f - 4) / (mlen + 4));
 			int index = counter * 5 + i;
-			List<Module> modules = Client.getModManager().getByCategory(Category.values()[selectedCategoryIndex]).collect(Collectors.toList());
+			List<Module> modules = Client.getModManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).collect(Collectors.toList());
 			if (index < modules.size()) {
 				Module mod = modules.get(index);
 				if (button == 0)

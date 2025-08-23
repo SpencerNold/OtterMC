@@ -4,6 +4,7 @@ import agent.ClassTransformer;
 import io.github.ottermc.Client;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
+import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.smp.modules.game.FishingHelper;
 import io.github.ottermc.smp.modules.game.TradeSelector;
@@ -14,6 +15,8 @@ public class Main implements Implementation {
 
     @Override
     public void onPreInit(ClassTransformer transformer) {
+        CategoryRegistry.register(CategoryList.values());
+
         transformer.register(GameRendererTransformer.class);
     }
 

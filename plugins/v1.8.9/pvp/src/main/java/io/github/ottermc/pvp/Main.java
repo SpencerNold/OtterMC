@@ -6,7 +6,9 @@ import io.github.ottermc.ClientLogger;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.keybind.KeybindManager;
+import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.pvp.modules.analytical.Analytical;
 import io.github.ottermc.pvp.modules.hud.*;
 import io.github.ottermc.pvp.modules.hypixel.AutoGG;
@@ -28,6 +30,8 @@ public class Main implements Implementation {
 
     @Override
     public void onPreInit(ClassTransformer transformer) {
+        CategoryRegistry.register(CategoryList.values());
+
         transformer.register(EntityPlayerSPTransformer.class);
         transformer.register(EntityTransformer.class);
         transformer.register(GuiScreenTransformer.class);

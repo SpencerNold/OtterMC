@@ -5,6 +5,7 @@ import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.modules.Category;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.pvp.listeners.DrawDefaultBackgroundListener;
+import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import me.spencernold.transformer.Reflection;
@@ -15,7 +16,7 @@ import net.minecraft.client.gui.GuiScreen;
 public class GuiBlur extends Module implements RunTickListener, DrawDefaultBackgroundListener {
 
 	public GuiBlur() {
-		super("Gui Blur", Category.HUD);
+		super("Gui Blur", CategoryList.DISPLAY);
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package io.github.ottermc.smp.transformers;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.smp.modules.listeners.RenderWorldListener;
+import io.github.ottermc.smp.listeners.RenderWorldListener;
 import me.spencernold.transformer.Callback;
 import me.spencernold.transformer.Injector;
 import me.spencernold.transformer.Target;

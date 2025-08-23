@@ -2,5 +2,5 @@ package io.github.ottermc.modules;
 
 public interface Renderable {
 
-	Object getIcon();
+	default Object getIcon() { return null; }
 }
