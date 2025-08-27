@@ -14,6 +14,12 @@ public abstract class UniversalKeyboard {
         return instance.keyToName(key);
     }
 
+    public static int translateNameToKey(String name) {
+        if (instance == null)
+            throw new IllegalStateException("UniversalKeyboard must be registered before it can be used");
+        return instance.nameToKey(name);
+    }
+
     public static boolean isKeyDown(int key) {
         if (instance == null)
             throw new IllegalStateException("UniversalKeyboard must be registered before it can be used");
