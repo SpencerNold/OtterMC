@@ -11,6 +11,11 @@ public class LWJGLKeyboard extends UniversalKeyboard {
     }
 
     @Override
+    protected int nameToKey(String name) {
+        return Keyboard.getKeyIndex(name);
+    }
+
+    @Override
     protected boolean keyDown(int key) {
         return Keyboard.isKeyDown(key);
     }

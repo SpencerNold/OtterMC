@@ -4,7 +4,9 @@ import agent.adapters.MinecraftClassNameAdapter;
 import agent.adapters.MinecraftFieldNameAdapter;
 import agent.adapters.MinecraftMethodNameAdapter;
 import io.github.ottermc.api.Implementation;
+import io.github.ottermc.api.Initializer;
 import io.github.ottermc.api.Plugin;
+import io.github.ottermc.c2.ServerController;
 import io.github.ottermc.logging.Logger;
 import me.spencernold.transformer.Reflection;
 
@@ -53,7 +55,7 @@ public class Agent {
         ClassTransformer transformer = new ClassTransformer(instrumentation);
         Class<?> main = Class.forName("io.github.ottermc.Client");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassTransformer.class);
-        Object client = constructor.newInstance(dir, transformer);
+        Initializer client = (Initializer) constructor.newInstance(dir, transformer);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
             String target = (String) main.getDeclaredField("TARGET").get(null);
@@ -108,10 +110,10 @@ public class Agent {
             implementation.onPreInit(transformer);
         transformer.execute();
         transformer.clear();
-        Method method = main.getDeclaredMethod("start");
-        method.invoke(client);
+        client.start();
         for (Implementation implementation : PLUGINS.values())
             implementation.onEnable();
+        ServerController.start();
     }
 
     private static int getCompiledJarMajorVersion() throws IOException {

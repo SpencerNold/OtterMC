@@ -8,12 +8,16 @@ public class EnumSetting<T extends Enum<T>> extends IntSetting {
 		super(name, Type.ENUM, value.ordinal(), 0, clazz.getEnumConstants().length);
 		this.clazz = clazz;
 	}
-	
+
 	public T getEnumValue() {
 		return clazz.getEnumConstants()[value];
 	}
 	
 	public void setEnumValue(T value) {
 		this.value = value.ordinal();
+	}
+
+	public T[] getEnumConstants() {
+		return clazz.getEnumConstants();
 	}
 }

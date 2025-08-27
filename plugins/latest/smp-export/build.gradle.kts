@@ -19,7 +19,19 @@ tasks.named("build") {
     group = "plugins"
 }
 
+
+tasks.jar {
+    from({
+        configurations.runtimeClasspath.get()
+            .filter { dep ->
+                dep.name.startsWith("kotlin-stdlib")
+            }
+            .map { zipTree(it) }
+    })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
+    implementation(kotlin("stdlib"))
     implementation(project(":client-latest"))
-    implementation("com.github.SpencerNold:KWAF:-SNAPSHOT")
 }

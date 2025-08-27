@@ -2,6 +2,7 @@ package io.github.ottermc;
 
 import agent.ClassTransformer;
 import agent.ReflectionRequired;
+import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.io.Secure;
 import io.github.ottermc.keybind.KeybindManager;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public class Client {
+public class Client implements Initializer {
 
 	public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (1.8.9)";
 	@ReflectionRequired
@@ -43,6 +44,7 @@ public class Client {
 	private final File clientDirectory;
 	private final ClientStorage storage;
 
+	@ReflectionRequired
 	public Client(File file, ClassTransformer transformer) {
 		instance = this;
 		this.clientDirectory = file;
@@ -111,8 +113,13 @@ public class Client {
 		return instance.keyManager;
 	}
 
+	@Override
+	public ModuleManager getModuleManager() {
+		return modManager;
+	}
+
 	public static ModuleManager getModManager() {
-		return instance.modManager;
+		return instance.getModuleManager();
 	}
 
 	public static HudManager getHudManager() {
@@ -131,6 +138,7 @@ public class Client {
 		return instance.errorManager;
 	}
 
+	@ReflectionRequired
 	public static Client getInstance() {
 		return instance;
 	}

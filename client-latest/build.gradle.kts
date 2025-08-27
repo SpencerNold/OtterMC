@@ -17,6 +17,7 @@ dependencies {
     // Game Dependencies
     api("org.lwjgl:lwjgl-glfw:3.3.3")
     api("it.unimi.dsi:fastutil:8.5.15")
+    api("com.google.code.gson:gson:2.11.0")
 
     // Client dependencies
     universal(project(":universal"))

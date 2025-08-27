@@ -3,19 +3,19 @@ package io.github.ottermc.modules.setting;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.NumericSetting;
 
-public class FloatSetting extends NumericSetting<Float> {
+public class FloatSetting extends NumericSetting<Double> {
 
-	public FloatSetting(String name, Float value, Float min, Float max) {
+	public FloatSetting(String name, Double value, Double min, Double max) {
 		super(name, Type.FLOAT, value, min, max);
 	}
 
 	@Override
 	public void write(ByteBuf buf) {
-		buf.writeFloat(value);
+		buf.writeDouble(value);
 	}
 
 	@Override
 	public void read(ByteBuf buf) {
-		value = buf.readFloat();
+		value = buf.readDouble();
 	}
 }

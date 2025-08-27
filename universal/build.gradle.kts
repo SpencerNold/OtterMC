@@ -8,6 +8,7 @@ java {
 
 dependencies {
     api("com.github.SpencerNold:BTCLib:-SNAPSHOT")
+    api("com.github.SpencerNold:KWAF:-SNAPSHOT")
     if (JavaVersion.current().isJava8) {
         implementation(files("${System.getProperty("java.home")}/lib/tools.jar"))
     } else {

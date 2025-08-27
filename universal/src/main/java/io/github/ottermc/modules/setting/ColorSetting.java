@@ -6,7 +6,7 @@ import io.github.ottermc.render.Color;
 
 public class ColorSetting extends Setting<Color> {
 
-	private boolean alpha;
+	private final boolean alpha;
 	
 	public ColorSetting(String name, Color value, boolean alpha) {
 		super(name, value, Type.COLOR);

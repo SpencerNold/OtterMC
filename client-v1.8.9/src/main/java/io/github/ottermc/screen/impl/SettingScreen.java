@@ -306,11 +306,11 @@ public class SettingScreen extends AbstractScreen {
 	
 	private static abstract class SliderSettingComponent<T extends NumericSetting<? extends Number>> extends SettingComponent<T> {
 		
-		private final float size;
+		private final double size;
 		private int position;
 		private boolean selected;
 		
-		protected SliderSettingComponent(T setting, float size) {
+		protected SliderSettingComponent(T setting, double size) {
 			super(setting);
 			this.size = size;
 			position = (int) (((Number) setting.getValue()).floatValue() * 120.0f / size);
@@ -340,7 +340,7 @@ public class SettingScreen extends AbstractScreen {
 			mouseX *= screen.getDrawable().getScale();
 			if (selected) {
 				position = MathHelper.clamp_int(mouseX - x, 0, 120);
-				float value = (position / 120.0f * size);
+				double value = (position / 120.0d * size);
 				if (setting instanceof FloatSetting)
 					((FloatSetting) setting).setValue(value);
 				else if (setting instanceof IntSetting)

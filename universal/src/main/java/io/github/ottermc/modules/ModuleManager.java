@@ -20,11 +20,19 @@ public class ModuleManager {
 	public Stream<Module> filter(Predicate<Module> predicate) {
 		return modules.stream().filter(predicate);
 	}
-	
+
+	public Module find(Predicate<Module> predicate) {
+		return filter(predicate).findAny().orElse(null);
+	}
+
 	public Stream<Module> getByCategory(Category category) {
 		return filter(m -> m.category == category);
 	}
-	
+
+	public LinkedList<Module> getModules() {
+		return modules;
+	}
+
 	public void iterate(Consumer<Module> consumer) {
 		modules.forEach(consumer);
 	}

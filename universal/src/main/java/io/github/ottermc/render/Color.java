@@ -10,22 +10,21 @@ public class Color {
 	public static final Color DEFAULT = new Color(151, 128, 154, 255);
     public static final Color WHITE = new Color(-1);
 
-	private int value;
+	private final int value;
+    private final boolean hasAlpha;
 
 	public Color(int r, int g, int b, int a) {
-		value = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+        this(((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF), true);
 	}
 
 	public Color(int rgb) {
-		value = 0xff000000 | rgb;
+		this.value = 0xff000000 | rgb;
+        this.hasAlpha = false;
 	}
 	
-    public Color(int rgba, boolean hasalpha) {
-        if (hasalpha) {
-            value = rgba;
-        } else {
-            value = 0xFF000000 | rgba;
-        }
+    public Color(int value, boolean hasAlpha) {
+        this.hasAlpha = hasAlpha;
+        this.value = hasAlpha ? value : (0xFF000000 | value);
     }
 
 	public Color(float r, float g, float b, float a) {
@@ -41,7 +40,7 @@ public class Color {
     }
 
     public int getBlue() {
-        return (value >> 0) & 0xFF;
+        return (value) & 0xFF;
     }
 
     public int getAlpha() {
@@ -70,5 +69,9 @@ public class Color {
     
     public int getValue(int alpha) {
     	return (value & 0x00FFFFFF) | (alpha << 24); 
+    }
+
+    public boolean hasAlpha() {
+        return hasAlpha;
     }
 }

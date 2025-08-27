@@ -21,5 +21,6 @@ public abstract class UniversalKeyboard {
     }
 
     protected abstract String keyToName(int key);
+    protected abstract int nameToKey(String name);
     protected abstract boolean keyDown(int key);
 }
