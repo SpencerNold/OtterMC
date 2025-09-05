@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.jar.JarEntry;
@@ -25,6 +24,7 @@ public class Agent {
 
     public static final Map<Plugin, Implementation> PLUGINS = new HashMap<>();
 
+    private static State state = State.BOOT;
     private static boolean injectionLoad = false;
 
     public static void premain(String args, Instrumentation instrumentation) {
@@ -56,6 +56,7 @@ public class Agent {
         Class<?> main = Class.forName("io.github.ottermc.Client");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassTransformer.class);
         Initializer client = (Initializer) constructor.newInstance(dir, transformer);
+        Agent.setState(State.START);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
             String target = (String) main.getDeclaredField("TARGET").get(null);
@@ -106,14 +107,17 @@ public class Agent {
         }
         if (PLUGINS.isEmpty())
             Logger.log("Running vanilla client version, no plugins are installed!");
+        setState(State.PRE_INIT);
         for (Implementation implementation : PLUGINS.values())
             implementation.onPreInit(transformer);
         transformer.execute();
         transformer.clear();
+        setState(State.INIT);
         client.start();
         for (Implementation implementation : PLUGINS.values())
             implementation.onEnable();
         ServerController.start();
+        setState(State.POST_INIT);
     }
 
     private static int getCompiledJarMajorVersion() throws IOException {
@@ -172,5 +176,13 @@ public class Agent {
 
     public static boolean isInjectionLoad() {
         return injectionLoad;
+    }
+
+    public static State getState() {
+        return state;
+    }
+
+    public static void setState(State state) {
+        Agent.state = state;
     }
 }

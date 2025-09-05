@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
-    <head>
-        <meta charset="UTF-8">
-        <title>OtterMC - Controller</title>
-        <style>
-            html, body {
-                height: 100%;
-                margin: 0;
-                overflow: hidden;
-            }
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #f00f0f0;
-                font-family: sans-serif;
-    }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>OtterMC Client</h2>
-            <h5></h5>
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>OtterMC - Controller</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>OtterMC Client</h2>
+    <p>A modified Minecraft client that provides modular enhancements all in one place that are allowed on most Minecraft servers.</p>
+    <div class="setting">
+        <label for="category">Category</label>
+        <select id="category">
+        </select>
+    </div>
+    <div class="setting">
+        <label for="module">Module</label>
+        <select id="module">
+        </select>
+    </div>
+    <button class="pretty-button" id="settings-button">Settings</button>
+</div>
+
+<script src="scripts/index.js" defer></script>
+</body>
 </html>

@@ -5,7 +5,7 @@ import io.github.ottermc.modules.Setting;
 
 public class StringSetting extends Setting<String> {
 	
-	private int lines;
+	private final int lines;
 
 	public StringSetting(String name, String value, int lines) {
 		super(name, value, Type.STRING);

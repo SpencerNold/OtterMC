@@ -4,6 +4,7 @@ import agent.ClassTransformer;
 import agent.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
+import io.github.ottermc.keybind.GLFWKeyboard;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.transformers.InGameHudTransformer;
 import io.github.ottermc.transformers.MinecraftClientTransformer;
@@ -30,6 +31,7 @@ public class Client implements Initializer {
 
     @ReflectionRequired
     public void start() {
+        UniversalKeyboard.register(new GLFWKeyboard());
         registerEvents();
     }
 

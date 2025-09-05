@@ -1,0 +1,132 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(48, 25, 52, 0.5), rgba(48, 25, 52, 0.5)), url("assets/background.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    max-width: 500px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 1.8rem;
+    background: rgba(48, 25, 52, 0.8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.container p {
+    margin: 0.5rem 0 1.5rem;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.setting {
+    margin-bottom: 1.5rem;
+}
+
+.setting label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.setting input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: rgba(48, 25, 52, 0.8);
+}
+
+.setting input[type="range"] {
+    width: 100%;
+    accent-color: rgba(48, 25, 52, 0.8);
+}
+
+.setting input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.setting input[type="text"]:focus {
+    border-color: rgba(48, 25, 52, 0.5);
+    box-shadow: 0 0 0 3px rgba(48, 25, 52, 0.3);
+    outline: none;
+}
+
+.setting input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    width: 50px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.setting input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 8px;
+}
+.setting input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+.setting select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.pretty-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: rgba(48, 25, 52, 0.8);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 100%;
+}
+
+.pretty-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    background: rgba(48, 25, 52, 0.5);
+}
+
+.pretty-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}

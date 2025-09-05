@@ -1,0 +1,26 @@
+package io.github.ottermc.keybind;
+
+import io.github.ottermc.UniversalKeyboard;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
+
+public class GLFWKeyboard extends UniversalKeyboard {
+
+    @Override
+    protected String keyToName(int key) {
+        return InputUtil.fromKeyCode(key, 0).getTranslationKey();
+    }
+
+    @Override
+    protected int nameToKey(String name) {
+        return InputUtil.fromTranslationKey(name).getCode();
+    }
+
+    @Override
+    protected boolean keyDown(int key) {
+        long handle = MinecraftClient.getInstance().getWindow().getHandle();
+        return GLFW.glfwGetKey(handle, key) == GLFW.GLFW_PRESS;
+    }
+}
