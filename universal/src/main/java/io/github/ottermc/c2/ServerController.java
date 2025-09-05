@@ -21,11 +21,6 @@ public class ServerController {
         return Agent.getState() != State.RUNNING ? Resource.Companion.get("loading.html") : Resource.Companion.get("module.html");
     }
 
-    @Route(method = Http.Method.GET, path = "/state")
-    public State getState() {
-        return Agent.getState();
-    }
-
     @Route.File(path = "/stylesheet.css", contentType = Route.ContentType.CSS, cacheControl = "no-cache")
     public InputStream stylesheet() {
         return Resource.Companion.get("stylesheet.css");

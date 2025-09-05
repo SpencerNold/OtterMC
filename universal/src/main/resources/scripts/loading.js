@@ -8,7 +8,7 @@ function run() {
 
 function sendStateRequest() {
     const xhr = new XMLHttpRequest()
-    xhr.open("GET", "/state")
+    xhr.open("GET", "/api/state")
     xhr.onload = () => {
         if (xhr.status == 200) {
             const state = JSON.parse(xhr.responseText)
@@ -20,7 +20,7 @@ function sendStateRequest() {
         }
     }
     xhr.onerror = () => {
-        console.error("Network error")
+        location.reload()
     }
     xhr.send()
 }

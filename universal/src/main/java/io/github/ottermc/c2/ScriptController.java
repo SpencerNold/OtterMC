@@ -23,4 +23,9 @@ public class ScriptController {
     public InputStream loadingScript() {
         return Resource.Companion.get("scripts/loading.js");
     }
+
+    @Route.File(path = "/ping.js", contentType = Route.ContentType.JAVASCRIPT, cacheControl = "no-cache")
+    public InputStream pingScript() {
+        return Resource.Companion.get("scripts/ping.js");
+    }
 }

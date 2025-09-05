@@ -1,5 +1,7 @@
 package io.github.ottermc.c2;
 
+import agent.Agent;
+import agent.State;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,6 +23,11 @@ import java.util.Map;
 
 @Service.Controller(path = "/api")
 public class APIController {
+
+    @Route(method = Http.Method.GET, path = "/state")
+    public State getState() {
+        return Agent.getState();
+    }
 
     @Route(method = Http.Method.GET, path = "/modstat")
     public JsonObject getModStat(HttpRequest request) {
