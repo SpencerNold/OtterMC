@@ -38,9 +38,7 @@ public class Main implements Implementation {
     private void registerModules() {
         ModuleManager manager = Client.getModManager();
         // Game
-        manager.register(new FishingHelper());
         // Movement
         // World
-        manager.register(new TradeSelector());
     }
 }

@@ -1,7 +1,7 @@
 import ottermc.Compiler
-import ottermc.RunClientTask
 import ottermc.Constants
 import ottermc.Joiner
+import ottermc.RunClientTask
 
 plugins {
     `java-library`
@@ -48,20 +48,10 @@ tasks.register("run") {
 }
 
 tasks.named("build") {
+    group = "client"
     doLast {
         val client = file("build/libs/client-latest.jar")
         val mapped = Compiler.compile(client, Constants.VERSION_LATEST)
         Joiner.joinJars(mapped, universal.asPath.split(File.pathSeparator))
-    }
-    group = "client"
-}
-
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "Loader"
-        attributes["Agent-Class"] = "agent.Agent"
-        attributes["Premain-Class"] = "agent.Agent"
-        attributes["Can-Retransform-Classes"] = true
-        attributes["Can-Redefine-Classes"] = true
     }
 }

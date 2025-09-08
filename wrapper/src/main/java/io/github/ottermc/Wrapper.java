@@ -19,17 +19,15 @@ public class Wrapper {
                 arguments.put(key.substring(2), args[i + 1]);
             i++;
         }
-        if (!arguments.containsKey("version") || !arguments.containsKey("gameDir"))
+        if (!arguments.containsKey("targetVersion") || !arguments.containsKey("ottermcVersion") || !arguments.containsKey("gameDir"))
             exit(40);
-        String version = arguments.get("version");
-        if (!version.startsWith("ottermc-"))
-            exit(41);
-        version = version.substring(8);
+        String targetVersion = arguments.get("targetVersion");
+        String ottermcVersion = arguments.get("ottermcVersion");
         File gameDir = new File(arguments.get("gameDir"));
-        File versionDir = new File(gameDir, String.join(File.separator, "versions", version));
+        File versionDir = new File(gameDir, String.join(File.separator, "versions", targetVersion));
         if (!versionDir.exists())
             exit(42);
-        File agentJar = new File(gameDir, String.join(File.separator, "ottermc", String.format("client-v%s.jar", version)));
+        File agentJar = new File(gameDir, String.join(File.separator, "ottermc", String.format("client-%s.jar", ottermcVersion)));
         if (!agentJar.exists())
             exit(43);
 
@@ -43,7 +41,7 @@ public class Wrapper {
         RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
         List<String> jvmArguments = runtimeBean.getInputArguments();
         launch.addAll(jvmArguments);
-        if (System.getProperty("os.name").toLowerCase().contains("mac") && !version.equals("1.8.9")) {
+        if (System.getProperty("os.name").toLowerCase().contains("mac") && !targetVersion.equals("1.8.9")) {
             // TODO Find a more elegant solution to this problem
             launch.add("-XstartOnFirstThread");
         }

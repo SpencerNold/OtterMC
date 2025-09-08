@@ -25,10 +25,8 @@ build-*.zip
 plugins/v1.8.9/pvp-export/src/main
 plugins/latest/smp-export/src/main
 
-launcher/OtterMC.dmg
-launcher/OtterMC.exe
+distributors/macos/staging/Library/Application Support/structure
 
-launcher/macos_dist/temp
-launcher/win_dist/temp
+OtterMC.pkg
 
 setup.txt

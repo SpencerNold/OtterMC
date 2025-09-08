@@ -1,0 +1,23 @@
+#!/bin/bash
+USER_HOME=$(eval echo ~$(logname))
+DIR="/Library/Application Support/structure"
+MC_DIR="$USER_HOME/Library/Application Support/minecraft"
+
+cp -R "$DIR/." "$MC_DIR"
+
+rm -rf "$DIR"
+
+# copy latest jar over
+LATEST_VERSION_DIR="$MC_DIR/versions/ottermc-latest"
+mkdir -p $LATEST_VERSION_DIR
+cp "$MC_DIR/versions/1.21.8/1.21.8.jar" "$LATEST_VERSION_DIR/ottermc-latest.jar"
+
+# copy 1.8.9 jar over
+V189_VERSION_DIR="$MC_DIR/versions/ottermc-v1.8.9"
+mkdir -p V189_VERSION_DIR
+cp "$MC_DIR/versions/1.8.9/1.8.9.jar" "$V189_VERSION_DIR/ottermc-v1.8.9.jar"
+
+chown -R "$(logname)":staff "$MC_DIR"
+chmod -R u+rwX,go+rX "$MC_DIR"
+
+exit 0

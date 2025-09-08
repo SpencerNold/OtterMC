@@ -15,3 +15,13 @@ dependencies {
         implementation(files("libs/tools.jar"))
     }
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "Loader"
+        attributes["Agent-Class"] = "agent.Agent"
+        attributes["Premain-Class"] = "agent.Agent"
+        attributes["Can-Retransform-Classes"] = true
+        attributes["Can-Redefine-Classes"] = true
+    }
+}

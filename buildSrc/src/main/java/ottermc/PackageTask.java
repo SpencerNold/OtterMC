@@ -3,94 +3,39 @@ package ottermc;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleScriptException;
 import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
 import org.gradle.api.tasks.TaskAction;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class PackageTask extends DefaultTask {
 
     @TaskAction
     public void execute() {
-        try {
-            Project project = getProject();
-            String[] command = generateCommand();
-            Process process = new ProcessBuilder().directory(new File(project.getRootDir(), "launcher")).command(command).start();
-            Scanner scanner = new Scanner(process.getInputStream());
-            while (scanner.hasNextLine()) {
-                project.getLogger().lifecycle(scanner.nextLine());
-            }
-            scanner = new Scanner(process.getErrorStream());
-            while (scanner.hasNextLine()) {
-                project.getLogger().lifecycle(scanner.nextLine());
-            }
-            File directory = project.getRootDir();
-
-            File wrapperFile = new File(directory, String.join(File.separator, "wrapper", "build", "libs", "wrapper.jar"));
-            String wrapperName = "wrapper.jar";
-            Pair<String, File> wrapper = new Pair<>(wrapperName, wrapperFile);
-            for (String version : VersionRegistry.getVersionNames()) {
-                List<Pair<String, File>> targets = new ArrayList<>();
-                targets.add(wrapper);
-
-                File clientFile = new File(directory, String.join(File.separator, "client-" + version, "build", "libs", "client-" + version + "-remapped-joined.jar"));
-                if (!clientFile.exists())
-                    continue;
-                String clientName = "client-" + version + ".jar";
-                Pair<String, File> client = new Pair<>(clientName, clientFile);
-                targets.add(client);
-
-                File pluginDir = new File(directory, String.join(File.separator, "plugins", version));
-                for (File pl : pluginDir.listFiles()) {
-                    File pluginFile = new File(pl, String.join(File.separator, "build", "libs", pl.getName() + "-remapped.jar"));
-                    String pluginName = pl.getName() + ".jar";
-                    Pair<String, File> plugin = new Pair<>(pluginName, pluginFile);
-                    targets.add(plugin);
-                }
-
-                compress(new File(directory, "build-" + version + ".zip"), targets);
-            }
-        } catch (IOException e) {
-            throw new GradleScriptException("failed to build flutter project", e);
-        }
-    }
-
-    private void compress(File output, List<Pair<String, File>> targets) {
-        try {
-            ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(output));
-            for (Pair<String, File> target : targets) {
-                ZipEntry entry = new ZipEntry(target.getKey());
-                stream.putNextEntry(entry);
-                FileInputStream input = new FileInputStream(target.getValue());
-                copy(input, stream);
-                input.close();
-            }
-            stream.close();
-        } catch (IOException e) {
-            throw new GradleScriptException("failed to compress", e);
-        }
-    }
-
-    private void copy(InputStream input, OutputStream output) throws IOException {
-        byte[] buffer = new byte[4096];
-        int n;
-        while ((n = input.read(buffer)) != -1)
-            output.write(buffer, 0, n);
-    }
-
-    private String[] generateCommand() {
+        Project project = getProject();
+        File directory = project.getRootDir();
         String os = getOperatingSystem();
-        List<String> command = new ArrayList<>();
-        command.add("flutter");
-        command.add("build");
-        command.add(os);
-        command.add("--release");
-        return command.toArray(new String[0]);
+        File distributor = new File(directory, "distributors" + File.separator + os + File.separator + "generate." + (os.equals("windows") ? "bat" : "sh"));
+        try {
+            String[] command = os.equals("windows") ?
+                    new String[] { "cmd.exe", "/c", distributor.getAbsolutePath() } :
+                    new String[] { "/bin/bash", distributor.getAbsolutePath() };
+            Process process = new ProcessBuilder(command)
+                    .directory(directory)
+                    .start();
+            Scanner scanner = new Scanner(process.getInputStream());
+            while (scanner.hasNextLine())
+                System.out.println(scanner.nextLine());
+            scanner = new Scanner(process.getErrorStream());
+            while (scanner.hasNextLine())
+                System.out.println(scanner.nextLine());
+            //int exitCode = process.waitFor();
+            //if (exitCode != 0)
+            //    throw new GradleScriptException("failed to execute generate command", new RuntimeException("exit code returned: " + exitCode));
+        } catch (IOException e) {
+            throw new GradleScriptException("failed to execute generate command", e);
+        }
     }
 
     private String getOperatingSystem() {

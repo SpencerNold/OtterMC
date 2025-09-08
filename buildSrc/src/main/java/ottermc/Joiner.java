@@ -26,11 +26,11 @@ public class Joiner {
             if (dst.exists())
                 dst.delete();
             JarOutputStream output = new JarOutputStream(new FileOutputStream(dst));
-            writeJar(output, src);
             for (String s : paths) {
                 File f = new File(s);
                 writeJar(output, f);
             }
+            writeJar(output, src);
             output.close();
             existingEntries.clear();
             return dst;
