@@ -53,6 +53,7 @@ public class InstallTask extends DefaultTask {
     }
 
     private void copy(File src, File dst) throws IOException {
+        dst.getParentFile().mkdirs();
         InputStream input = new FileInputStream(src);
         OutputStream output = new FileOutputStream(dst);
         byte[] buffer = new byte[1024];
