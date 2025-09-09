@@ -26,7 +26,10 @@ plugins/v1.8.9/pvp-export/src/main
 plugins/latest/smp-export/src/main
 
 distributors/macos/staging/Library/Application Support/structure
+distributors/windows/staging
+distributors/windows/Output
 
 OtterMC.pkg
+OtterMC.exe
 
 setup.txt
