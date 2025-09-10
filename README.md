@@ -1,7 +1,9 @@
 # OtterMC
  OtterMC is a modded Minecraft client that currently is written with SMP servers and Hypixel in mind. These modifications are written with the hope of not giving an unfair advantage, and are allowed on most Minecraft servers. Do not use this client on any server where the modifications are not allowed. 
 
-# Getting Started
+# Getting Started (For Users)
+
+# Getting Started (For Developers)
 Before you can do anything, a couple libraries are required to be able to run the project that aren't able to be packaged with gradle and can't legally be in this repository.
 
 ### Installing tools.jar

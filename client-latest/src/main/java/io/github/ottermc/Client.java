@@ -14,7 +14,7 @@ import java.io.File;
 
 public class Client implements Initializer {
 
-    public static final String NAME = "OtterMC", VERSION = "ALPHA-0.0.1 (latest)";
+    public static final String NAME = "OtterMC", VERSION = "ALPHA-1.0.0 (latest)";
     @ReflectionRequired
     public static final String TARGET = "latest";
 
