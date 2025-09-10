@@ -31,7 +31,7 @@ public class EditHudScreen extends AbstractScreen {
 	private int clickOffsX = 0, clickOffsY = 0;
 
 	public EditHudScreen() {
-		hudManager = Client.getHudManager();
+		hudManager = Client.getInstance().getHudManager();
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class EditHudScreen extends AbstractScreen {
 	@Override
 	public void onScreenClose() {
 		BlurShaderProgram.setActive(false, false);
-		try {
-			Client.getClientStorage().write();
-		} catch (IOException e) {
+        try {
+            Client.getInstance().save();
+        } catch (IOException e) {
 			ClientLogger.display(e);
-		}
-	}
+        }
+    }
 
 	@Override
 	public void onClick(int mouseX, int mouseY, int button) {

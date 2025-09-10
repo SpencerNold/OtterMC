@@ -5,6 +5,7 @@ import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
+import io.github.ottermc.modules.setting.FloatSetting;
 import io.github.ottermc.pvp.listeners.DrawSelectionBoxListener;
 import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.render.Color;
@@ -28,7 +29,8 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, true);
 	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting fill = new BooleanSetting("Fill Block", false);
-	
+	private final FloatSetting thickness = new FloatSetting("Thickness", 1.5, 0.5, 3.0);
+
 	public BlockOutline() {
 		super("Block Outline", CategoryList.VISUAL);
 	}
@@ -56,7 +58,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 		GlStateManager.enableBlend();
 		GlStateManager.disableTexture2D();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		GL11.glLineWidth(1.5f);
+		GL11.glLineWidth(thickness.getValue().floatValue());
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 		AxisAlignedBB box = block.getSelectedBoundingBox(mc.theWorld, target.getBlockPos()).offset(-(mc.getRenderManager()).viewerPosX, -(mc.getRenderManager()).viewerPosY, -(mc.getRenderManager()).viewerPosZ).expand(0.0010000000474974513D, 0.0010000000474974513D, 0.0010000000474974513D);
 		GlStateManager.color(color.getRedNormal(), color.getGreenNormal(), color.getBlueNormal(), color.getAlphaNormal());
@@ -74,7 +76,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	
 	@Override
 	public Storable<?>[] getWritables() {
-		return new Storable<?>[] { color, theme, fill };
+		return new Storable<?>[] { color, theme, fill, thickness };
 	}
 	
 	@Override

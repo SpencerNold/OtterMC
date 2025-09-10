@@ -1,13 +1,8 @@
 package io.github.ottermc.render;
 
-// Ripped straight from java.awt.Color with some minor alterations
-
-// I'm not sure if stripped JVM implementations
-// contain the Java standard library class or not
-// so just to be safe, yoink!
 public class Color {
 	
-	public static final Color DEFAULT = new Color(151, 128, 154, 255);
+	public static final Color DEFAULT = new Color(48, 25, 52, 255);
     public static final Color WHITE = new Color(-1);
 
 	private final int value;

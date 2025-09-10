@@ -4,12 +4,14 @@ import agent.ClassTransformer;
 import agent.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.io.Secure;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.keybind.LWJGLKeyboard;
+import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
+import io.github.ottermc.screen.hud.Movable;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.impl.MenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
@@ -26,7 +28,6 @@ import org.lwjgl.opengl.Display;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 public class Client implements Initializer {
 
@@ -41,25 +42,25 @@ public class Client implements Initializer {
 	private final HudManager hudManager = new HudManager();
 	private final ClientLogger errorManager = new ClientLogger();
 
-	private final File clientDirectory;
 	private final ClientStorage storage;
+	private final File clientDirectory;
+
 
 	@ReflectionRequired
 	public Client(File file, ClassTransformer transformer) {
 		instance = this;
 		this.clientDirectory = file;
+		this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
 		transformer.register(EntityRendererTransformer.class);
 		transformer.register(GameSettingsTransformer.class);
 		transformer.register(GuiIngameTransformer.class);
 		transformer.register(MinecraftTransformer.class);
-		storage = new ClientStorage(new File(file, "profile.MC(" + Secure.hashToString(TARGET.getBytes(StandardCharsets.UTF_8), Secure.BASE64_TRANSFORMER) + ")"));
 	}
 
 	@ReflectionRequired
 	public void start() {
 		UniversalKeyboard.register(new LWJGLKeyboard());
 		registerEvents();
-		registerKeybinds();
 	}
 
 	@ReflectionRequired
@@ -67,24 +68,27 @@ public class Client implements Initializer {
 		Display.setTitle(Client.NAME + " " + Client.VERSION);
 		Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
 		registerGameHuds();
-		storage.init();
-		try {
-			storage.read();
-		} catch (IOException e) {
-			ClientLogger.display(e);
-		}
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
 			mc.displayGuiScreen(new MainMenuScreen());
 		errorManager.postInit();
 	}
 
-	private void registerKeybinds() {
-		keyManager.register(Keyboard.KEY_RSHIFT, () -> {
-			Minecraft mc = Minecraft.getMinecraft();
-			if (mc.currentScreen == null)
-				mc.displayGuiScreen(new MenuScreen());
-		});
+	@Override
+	public void load() throws IOException {
+		storage.clear();
+		for (Module module : getModuleManager().getModules())
+			storage.writable(module);
+		for (Component component : getHudManager().getComponents()) {
+			if (component instanceof Movable)
+				storage.writable((Movable) component);
+		}
+		storage.read();
+	}
+
+	@Override
+	public void save() throws IOException {
+		storage.write();
 	}
 
 	private void registerEvents() {
@@ -109,32 +113,29 @@ public class Client implements Initializer {
 		hudManager.register(GameDisplay.TAB);
 	}
 
-	public static KeybindManager getKeyManager() {
-		return instance.keyManager;
-	}
-
 	@Override
 	public ModuleManager getModuleManager() {
 		return modManager;
 	}
 
-	public static ModuleManager getModManager() {
-		return instance.getModuleManager();
+	@Override
+	public File getClientDirectory() {
+		return clientDirectory;
 	}
 
-	public static HudManager getHudManager() {
+	public ClientStorage getStorage() {
+		return storage;
+	}
+
+	public KeybindManager getKeyManager() {
+		return instance.keyManager;
+	}
+
+	public HudManager getHudManager() {
 		return instance.hudManager;
 	}
 
-	public static ClientStorage getClientStorage() {
-		return instance.storage;
-	}
-
-	public static File getClientDirectory() {
-		return instance.clientDirectory;
-	}
-
-	public static ClientLogger getErrorManager() {
+	public ClientLogger getErrorManager() {
 		return instance.errorManager;
 	}
 

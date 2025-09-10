@@ -1,27 +1,17 @@
 package io.github.ottermc.pvp.modules.analytical;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.github.ottermc.ClientLogger;
+import io.github.ottermc.io.http.*;
+import structures.Pair;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import io.github.ottermc.Client;
-import io.github.ottermc.ClientLogger;
-import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.io.http.HttpClient;
-import io.github.ottermc.io.http.Method;
-import io.github.ottermc.io.http.Request;
-import io.github.ottermc.io.http.RequestBuilder;
-import io.github.ottermc.io.http.Response;
-import net.minecraft.client.Minecraft;
-import structures.Pair;
 
 public class AnalyticalAPI {
 	
@@ -74,19 +64,7 @@ public class AnalyticalAPI {
 	// mode = 1 for analytical
 	// key = hash(clientId + uuid + mode)
 	private byte[] generateClientHashedKey() {
-		byte[] clientId = Client.getClientStorage().getClientId();
-		String uuid = Minecraft.getMinecraft().getSession().getPlayerID();
-		ByteBuf buf = new ByteBuf();
-		buf.write(clientId);
-		buf.write(uuid.getBytes(StandardCharsets.UTF_8));
-		buf.writeShort((short) 1);
-		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			return digest.digest(buf.getDataBuffer());
-		} catch (NoSuchAlgorithmException e) {
-			ClientLogger.display(e);
-			return new byte[32];
-		}
+		return new byte[32];
 	}
 	
 	private String hexify(byte[] bytes) {

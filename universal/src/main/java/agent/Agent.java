@@ -26,6 +26,7 @@ public class Agent {
 
     private static State state = State.BOOT;
     private static boolean injectionLoad = false;
+    private static Initializer client;
 
     public static void premain(String args, Instrumentation instrumentation) {
         try {
@@ -55,7 +56,7 @@ public class Agent {
         ClassTransformer transformer = new ClassTransformer(instrumentation);
         Class<?> main = Class.forName("io.github.ottermc.Client");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassTransformer.class);
-        Initializer client = (Initializer) constructor.newInstance(dir, transformer);
+        client = (Initializer) constructor.newInstance(dir, transformer);
         Agent.setState(State.START);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
@@ -184,5 +185,9 @@ public class Agent {
 
     public static void setState(State state) {
         Agent.state = state;
+    }
+
+    public static Initializer getClient() {
+        return client;
     }
 }

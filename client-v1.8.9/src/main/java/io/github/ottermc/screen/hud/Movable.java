@@ -1,19 +1,20 @@
 package io.github.ottermc.screen.hud;
 
 import io.github.ottermc.io.ByteBuf;
+import io.github.ottermc.modules.Writable;
 import net.minecraft.util.MathHelper;
 
-public interface Movable {
-	public void setX(int x);
-	public void setY(int y);
+public interface Movable extends Writable<ByteBuf> {
+	void setX(int x);
+	void setY(int y);
 	
-	public int getSerialId();
+	int getSerialId();
 	
-	public default void setScale(float scale) {
+	default void setScale(float scale) {
 		((Component) this).scale = MathHelper.clamp_float(scale, 0.0f, 3.0f);
 	}
 	
-	public default void clamp(int displayWidth, int displayHeight) {
+	default void clamp(int displayWidth, int displayHeight) {
 		if (!(this instanceof Component))
 			return; // This should not happen, but if it does AAAAAAAAAAAHHHHHHHHHHHHHHH (of course)
 		Component component = (Component) this;
@@ -23,14 +24,14 @@ public interface Movable {
 		setY(y);
 	}
 	
-	public default void write(ByteBuf buf) {
+	default void write(ByteBuf buf) {
 		Component component = (Component) this;
 		buf.writeInt(component.getX());
 		buf.writeInt(component.getY());
 		buf.writeFloat(component.getScale());
 	}
 	
-	public default void read(ByteBuf buf) {
+	default void read(ByteBuf buf) {
 		setX(buf.readInt());
 		setY(buf.readInt());
 		setScale(buf.readFloat());

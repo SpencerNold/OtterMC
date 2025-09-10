@@ -5,6 +5,7 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class InitializationManager implements PostInitializeListener, RunTickListener {
@@ -45,6 +46,11 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
             implementation.onPostInit();
         }));
         postInitClient();
+        try {
+            Agent.getClient().load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         hasPostInitialized = true;
     }
 
@@ -54,7 +60,7 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
             Method method = clazz.getDeclaredMethod("onPostInit");
             method.invoke(client);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

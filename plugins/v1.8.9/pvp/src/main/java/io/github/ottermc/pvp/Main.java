@@ -63,7 +63,7 @@ public class Main implements Implementation {
     }
 
     private void registerModules() {
-        ModuleManager manager = Client.getModManager();
+        ModuleManager manager = Client.getInstance().getModuleManager();
         // HUD
         manager.register(new ArmorStatus());
         manager.register(new Array());
@@ -99,7 +99,7 @@ public class Main implements Implementation {
     }
 
     void registerHuds() {
-        HudManager manager = Client.getHudManager();
+        HudManager manager = Client.getInstance().getHudManager();
         // Client HUD
         manager.register(ClientDisplay.ARMOR_STATUS);
         manager.register(ClientDisplay.ARRAY);

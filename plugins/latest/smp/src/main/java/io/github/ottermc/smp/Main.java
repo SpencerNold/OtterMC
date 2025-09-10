@@ -6,8 +6,6 @@ import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
-import io.github.ottermc.smp.modules.game.FishingHelper;
-import io.github.ottermc.smp.modules.game.TradeSelector;
 import io.github.ottermc.smp.transformers.GameRendererTransformer;
 
 @Plugin(name = "OtterMC SMP", version = Client.VERSION, target = "latest")
@@ -36,7 +34,7 @@ public class Main implements Implementation {
     }
 
     private void registerModules() {
-        ModuleManager manager = Client.getModManager();
+        ModuleManager manager = Client.getInstance().getModuleManager();
         // Game
         // Movement
         // World

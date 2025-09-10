@@ -5,12 +5,14 @@ import agent.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.GLFWKeyboard;
+import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.transformers.InGameHudTransformer;
 import io.github.ottermc.transformers.MinecraftClientTransformer;
 import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Client implements Initializer {
 
@@ -22,9 +24,14 @@ public class Client implements Initializer {
 
     private final ModuleManager modManager = new ModuleManager();
 
+    private final ClientStorage storage;
+    private final File clientDirectory;
+
     @ReflectionRequired
     public Client(File file, ClassTransformer transformer) {
         instance = this;
+        this.clientDirectory = file;
+        this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
         transformer.register(InGameHudTransformer.class);
         transformer.register(MinecraftClientTransformer.class);
     }
@@ -33,6 +40,19 @@ public class Client implements Initializer {
     public void start() {
         UniversalKeyboard.register(new GLFWKeyboard());
         registerEvents();
+    }
+
+    @Override
+    public void load() throws IOException {
+        storage.clear();
+        for (Module module : getModuleManager().getModules())
+            storage.writable(module);
+        storage.read();
+    }
+
+    @Override
+    public void save() throws IOException {
+        storage.write();
     }
 
     @ReflectionRequired
@@ -49,8 +69,13 @@ public class Client implements Initializer {
         return modManager;
     }
 
-    public static ModuleManager getModManager() {
-        return instance.getModuleManager();
+    @Override
+    public File getClientDirectory() {
+        return clientDirectory;
+    }
+
+    public ClientStorage getStorage() {
+        return storage;
     }
 
     @ReflectionRequired

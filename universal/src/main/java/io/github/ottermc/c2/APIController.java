@@ -18,6 +18,7 @@ import me.spencernold.kwaf.Route;
 import me.spencernold.kwaf.http.HttpRequest;
 import me.spencernold.kwaf.services.Service;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -125,6 +126,11 @@ public class APIController {
         }
         if (module.isActive() != state)
             module.setActive(state);
+        try {
+            Agent.getClient().save();
+        } catch (IOException e) {
+            return -1;
+        }
         return 0;
     }
 

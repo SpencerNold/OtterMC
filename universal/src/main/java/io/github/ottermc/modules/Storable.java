@@ -17,6 +17,4 @@ public abstract class Storable<T> implements Writable<ByteBuf> {
 	public T getValue() {
 		return value;
 	}
-	
-	public abstract int getSerialId();
 }

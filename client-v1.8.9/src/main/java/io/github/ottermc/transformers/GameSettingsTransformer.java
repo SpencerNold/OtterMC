@@ -1,9 +1,7 @@
 package io.github.ottermc.transformers;
 
-import agent.adapters.MinecraftClassNameAdapter;
 import io.github.ottermc.Client;
 import me.spencernold.transformer.*;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
 
 import java.io.File;
@@ -16,7 +14,7 @@ public class GameSettingsTransformer {
 	@Injector(name = "loadOptions()V", target = Target.HEAD)
 	public void onLoadOptionsHead(GameSettings settings, Callback callback) {
 		File file = (File) Reflection.getValue("net/minecraft/client/settings/GameSettings", settings, "optionsFile");
-		File save = new File(Client.getClientDirectory(), "ottermc-client-settings.txt");
+		File save = new File(Client.getInstance().getClientDirectory(), "ottermc-client-settings.txt");
 		if (!file.exists())
 			return;
 		if (!save.exists())
@@ -26,7 +24,7 @@ public class GameSettingsTransformer {
 	
 	@Injector(name = "loadOptions()V", target = Target.TAIL)
 	public void onLoadOptionsTail(GameSettings settings, Callback callback) {
-		File save = new File(Client.getClientDirectory(), "ottermc-client-settings.txt");
+		File save = new File(Client.getInstance().getClientDirectory(), "ottermc-client-settings.txt");
 		Reflection.setValue(gameSettingsClassName, settings, "optionsFile", save);
 	}
 }

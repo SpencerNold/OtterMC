@@ -34,7 +34,7 @@ public class ModScreen extends AbstractScreen {
 	public void onScreenClose() {
 		BlurShaderProgram.setActive(false, false);
 		try {
-			Client.getClientStorage().write();
+			Client.getInstance().save();
 		} catch (IOException e) {
 			ClientLogger.display(e);
 		}
@@ -77,7 +77,7 @@ public class ModScreen extends AbstractScreen {
         int modWidth = (int) (width * 0.8f) - 34;
 		int mlen = modWidth / 5;
 		int counter = 0;
-		Iterator<Module> modules = Client.getModManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).iterator();
+		Iterator<Module> modules = Client.getInstance().getModuleManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).iterator();
 		while (modules.hasNext()) {
 			for (int i = 0; i < 5; i++) {
 				if (!modules.hasNext())
@@ -133,7 +133,8 @@ public class ModScreen extends AbstractScreen {
 			int i = (int) ((mouseX - centerX - width * 0.2f - 2) / (mlen + 4));
 			int counter = (int) ((mouseY - centerY - height * 0.1f - 4) / (mlen + 4));
 			int index = counter * 5 + i;
-			List<Module> modules = Client.getModManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).collect(Collectors.toList());
+
+			List<Module> modules = Client.getInstance().getModuleManager().getByCategory(CategoryRegistry.values()[selectedCategoryIndex]).collect(Collectors.toList());
 			if (index < modules.size()) {
 				Module mod = modules.get(index);
 				if (button == 0)

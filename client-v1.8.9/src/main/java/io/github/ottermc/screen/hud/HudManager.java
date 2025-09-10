@@ -29,7 +29,11 @@ public class HudManager implements RenderGameOverlayListener {
 	public Stream<Component> filter(Predicate<Component> predicate) {
 		return components.stream().filter(predicate);
 	}
-	
+
+	public LinkedList<Component> getComponents() {
+		return components;
+	}
+
 	public void iterate(Consumer<Component> consumer) {
 		components.forEach(consumer);
 	}
