@@ -3,7 +3,6 @@ package io.github.ottermc.pvp.modules.visual;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
-import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.pvp.listeners.SetEntityDamageBrightnessListener;
 import io.github.ottermc.pvp.modules.CategoryList;
@@ -15,8 +14,7 @@ public class DamageColor extends Module implements SetEntityDamageBrightnessList
 	private static final Icon ICON = Icon.getIconIgnoreException("module/hurt_icon.png");
 
 	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
-	
+
 	public DamageColor() {
 		super("Damage Color", CategoryList.VISUAL);
 	}
@@ -33,7 +31,7 @@ public class DamageColor extends Module implements SetEntityDamageBrightnessList
 	
 	@Override
 	public void onSetEntityDamageBrightness(SetEntityDamageBrightnessEvent event) {
-		Color color = (theme.getValue() && ColorTheme.isModActive()) ? ColorTheme.getColorTheme() : this.color.getValue();
+		Color color = this.color.getValue();
 		event.setRed(color.getRedNormal());
 		event.setGreen(color.getGreenNormal());
 		event.setBlue(color.getBlueNormal());
@@ -46,6 +44,6 @@ public class DamageColor extends Module implements SetEntityDamageBrightnessList
 	
 	@Override
 	public Storable<?>[] getWritables() {
-		return new Storable<?>[] { color, theme };
+		return new Storable<?>[] { color };
 	}
 }

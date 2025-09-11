@@ -5,7 +5,6 @@ import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.pvp.modules.CategoryList;
-import io.github.ottermc.pvp.modules.visual.ColorTheme;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.render.Icon;
@@ -17,7 +16,6 @@ public class Direction extends Module {
 	private static Direction instance;
 	
 	private final ColorSetting color = new ColorSetting("Color", new Color(-1), false);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting ttf = new BooleanSetting("TrueType Font", true);
 
 	public Direction() {
@@ -42,11 +40,11 @@ public class Direction extends Module {
 	
 	@Override
 	public Storable<?>[] getWritables() {
-		return new Storable<?>[] { color, theme, ttf };
+		return new Storable<?>[] { color, ttf };
 	}
 	
 	public static Color getColor() {
-		return (instance.theme.getValue() && ColorTheme.isModActive()) ? ColorTheme.getColorTheme() : instance.color.getValue();
+		return instance.color.getValue();
 	}
 	
 	public static boolean shouldUseClientFont() {

@@ -5,11 +5,9 @@ import io.github.ottermc.Client;
 import io.github.ottermc.ClientLogger;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
-import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.pvp.modules.CategoryList;
-import io.github.ottermc.pvp.modules.analytical.Analytical;
 import io.github.ottermc.pvp.modules.hud.*;
 import io.github.ottermc.pvp.modules.hypixel.AutoGG;
 import io.github.ottermc.pvp.modules.hypixel.GameMacro;
@@ -19,9 +17,6 @@ import io.github.ottermc.pvp.modules.visual.*;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
 import io.github.ottermc.pvp.transformers.*;
 import io.github.ottermc.screen.hud.HudManager;
-import io.github.ottermc.screen.impl.MenuScreen;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
 
 import java.lang.instrument.UnmodifiableClassException;
 
@@ -80,7 +75,6 @@ public class Main implements Implementation {
 
         // Visual
         manager.register(new BlockOutline());
-        manager.register(new ColorTheme());
         manager.register(new DamageColor());
         manager.register(new EnchantmentGlint());
         manager.register(new LargeItems());
@@ -89,9 +83,6 @@ public class Main implements Implementation {
         // Hypixel
         manager.register(new AutoGG());
         manager.register(new GameMacro());
-
-        // Analytical
-        manager.register(new Analytical());
     }
 
     private void registerKeybinds() {

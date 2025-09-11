@@ -27,7 +27,6 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	private static final Icon ICON = Icon.getIconIgnoreException("module/block_icon.png");
 	
 	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, true);
-	private final BooleanSetting theme = new BooleanSetting("Use Theme", true);
 	private final BooleanSetting fill = new BooleanSetting("Fill Block", false);
 	private final FloatSetting thickness = new FloatSetting("Thickness", 1.5, 0.5, 3.0);
 
@@ -51,7 +50,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 		if (event.getType() != 0 || target.typeOfHit != MovingObjectType.BLOCK)
 			return;
 		event.setCanceled(true);
-		Color color = (theme.getValue() && ColorTheme.isModActive()) ? ColorTheme.getColorTheme() : this.color.getValue();
+		Color color = this.color.getValue();
 		Minecraft mc = Minecraft.getMinecraft();
 		Block block = ((World) ((Entity) mc.thePlayer).worldObj).getBlockState(target.getBlockPos()).getBlock();
 		GlStateManager.depthMask(false);
@@ -76,7 +75,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	
 	@Override
 	public Storable<?>[] getWritables() {
-		return new Storable<?>[] { color, theme, fill, thickness };
+		return new Storable<?>[] { color, fill, thickness };
 	}
 	
 	@Override
