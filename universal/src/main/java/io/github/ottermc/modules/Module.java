@@ -102,21 +102,14 @@ public abstract class Module implements Renderable, Writable<ByteBuf> {
 
     @Override
     public void read(ByteBuf buf) {
-        System.out.println("\n\n");
-        System.out.println("Name: " + name);
         setActive(buf.readBoolean());
         int length = buf.readInt();
-        System.out.println("Settings:");
         for (int i = 0; i < length; i++) {
             int id = buf.readInt();
             Writable<ByteBuf> writable = getWritableById(id);
             if (writable == null)
                 continue;
             writable.read(buf);
-            if (writable instanceof Setting) {
-                Setting setting = (Setting) writable;
-                System.out.println(setting.name + ": " + setting.value);
-            }
         }
     }
 
