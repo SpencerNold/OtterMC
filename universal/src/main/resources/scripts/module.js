@@ -39,7 +39,7 @@ function loadModule() {
                     const checkbox = createCheckbox(s.name, s.value)
                     document.getElementById("container").insertBefore(checkbox, button)
                 } else if (s.type == "INT" || s.type == "FLOAT") {
-                    const slider = createSlider(s.name, s.value, s.min, s.max, "FLOAT" ? "0.01" : "1")
+                    const slider = createSlider(s.name, s.value, s.min, s.max, (s.type == "FLOAT") ? "0.01" : "1")
                     document.getElementById("container").insertBefore(slider, button)
                 } else if (s.type == "ENUM") {
                     var components = []

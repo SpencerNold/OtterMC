@@ -1,13 +1,10 @@
 // Export plugin, meant for updating plugins at runtime (future only!)
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import ottermc.Compiler
 import ottermc.Constants
-import ottermc.BuildTool
-import ottermc.KotlinPackageTask
 
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "2.0.0"
 }
 
 kotlin {
@@ -24,6 +21,17 @@ tasks.named("build") {
     group = "plugins"
 }
 
+tasks.jar {
+    from({
+        configurations.runtimeClasspath.get()
+            .filter {
+                it.name.startsWith("kotlin-stdlib")
+            }.map { zipTree(it) }
+    })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
+    implementation(kotlin("stdlib"))
     implementation(project(":client-v1.8.9"))
 }

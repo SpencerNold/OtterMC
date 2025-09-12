@@ -1,5 +1,8 @@
 package io.github.ottermc.pvp.screen.hud.client;
 
+import io.github.ottermc.events.EventBus;
+import io.github.ottermc.listeners.ClickMouseListener;
+import io.github.ottermc.listeners.RightClickMouseListener;
 import io.github.ottermc.screen.hud.MovableComponent;
 import io.github.ottermc.screen.render.DrawableHelper;
 import net.minecraft.client.Minecraft;
@@ -10,10 +13,9 @@ import net.minecraft.client.settings.KeyBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientClickCounterHud extends MovableComponent {
+public class ClientClickCounterHud extends MovableComponent implements ClickMouseListener, RightClickMouseListener {
 
-    private static final ClickCounter LEFT;
-    private static final ClickCounter RIGHT;
+    private static final ClickCounter LEFT, RIGHT;
 
     static {
         Minecraft mc = Minecraft.getMinecraft();
@@ -23,6 +25,7 @@ public class ClientClickCounterHud extends MovableComponent {
 
     public ClientClickCounterHud() {
         super(10, 10, 58, 18);
+        EventBus.add(this);
     }
 
     @Override
@@ -37,9 +40,7 @@ public class ClientClickCounterHud extends MovableComponent {
 
     private void drawCounter(Minecraft mc) {
         int color = io.github.ottermc.pvp.modules.hud.ClickCounter.getColor().getValue();
-        LEFT.update();
         LEFT.draw(mc, drawable, getDefaultX(), getDefaultY(), 28, getRawHeight(), color);
-        RIGHT.update();
         RIGHT.draw(mc, drawable, getDefaultX() + 30, getDefaultY(), 28, getRawHeight(), color);
     }
 
@@ -48,22 +49,32 @@ public class ClientClickCounterHud extends MovableComponent {
         return "CLICK_COUNTER_COMPONENT".hashCode();
     }
 
-    public static void addLefClick() {
-        // TODO Implement at some point
+    @Override
+    public void onClickMouse(ClickMouseEvent event) {
+        if (visible)
+            addLeftClick();
+    }
+
+    @Override
+    public void onRightClickMouse(RightClickMouseEvent event) {
+        if (visible)
+            addRightClick();
+    }
+
+    public static void addLeftClick() {
+        LEFT.clicks.add(System.currentTimeMillis());
     }
 
     public static void addRightClick() {
-        // TODO Implement at some point
+        RIGHT.clicks.add(System.currentTimeMillis());
     }
 
     private static class ClickCounter {
 
-        final List<Long> clicks = new ArrayList<>();
-        final KeyBinding key;
-        boolean wasPressed;
-        long lastPressed;
+        private final List<Long> clicks = new ArrayList<>();
+        private final KeyBinding key;
 
-        ClickCounter(KeyBinding key) {
+        private ClickCounter(KeyBinding key) {
             this.key = key;
         }
 
@@ -73,23 +84,10 @@ public class ClientClickCounterHud extends MovableComponent {
             mc.fontRendererObj.drawString(text, x + 14.5f - mc.fontRendererObj.getStringWidth(text) * 0.5f, y + 5.5f, color, false);
         }
 
-        void update() {
-            if (Minecraft.getMinecraft().currentScreen != null)
-                return;
-            boolean pressed = key.isKeyDown();
-            if (pressed != wasPressed) {
-                lastPressed = System.currentTimeMillis();
-                wasPressed = pressed;
-                if (pressed)
-                    clicks.add(lastPressed);
-            }
-        }
-
         int getClicks() {
             final long time = System.currentTimeMillis();
             clicks.removeIf(l -> l + 1000 < time);
-            int count = clicks.size();
-            return count >= 8 ? count + 1 : count;
+            return clicks.size();
         }
 
         public String toString() {

@@ -24,6 +24,7 @@ public class ClientKeyStrokeHud extends MovableComponent {
     }
 
     private void drawKeys(Minecraft mc, boolean clickColor) {
+        clickColor = clickColor && mc.currentScreen == null;
         int color = KeyStroke.getColor().getValue();
         int key;
         String text;
