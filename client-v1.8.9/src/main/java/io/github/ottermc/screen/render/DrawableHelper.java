@@ -215,12 +215,16 @@ public class DrawableHelper {
 		return res.getScaledHeight_double();
 	}
 
-	public boolean intersects(int x, int y, int width, int height, int mouseX, int mouseY) {
-		return intersectsRaw(x, y, width, height, mouseX, mouseY);
+	public boolean intersects(int x, int y, int width, int height, float scale, int mouseX, int mouseY) {
+		x = (int) (x * scale);
+		y = (int) (y * scale);
+		width = (int) (width * scale);
+		height = (int) (height * scale);
+		return intersects(x, y, width, height, mouseX, mouseY);
 	}
 
-	public boolean intersectsRaw(int x, int y, int width, int height, int mouseX, int mouseY) {
-		return mouseX > x && mouseX < (x + width) && mouseY > y && mouseY < (y + height);
+	public boolean intersects(int x, int y, int width, int height, int mouseX, int mouseY) {
+		return mouseX >= x && mouseX <= (x + width) && mouseY >= y && mouseY <= (y + height);
 	}
 
 	public int middle(int x1, int x2) {

@@ -8,7 +8,9 @@ import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.keybind.LWJGLKeyboard;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.HudManager;
+import io.github.ottermc.screen.hud.MovableComponent;
 import io.github.ottermc.screen.impl.EditHudScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
@@ -76,10 +78,10 @@ public class Client implements Initializer {
 		storage.clear();
 		for (Module module : getModuleManager().getModules())
 			storage.writable(module);
-		//for (Component component : getHudManager().getComponents()) {
-		//	if (component instanceof Movable)
-		//		storage.writable((Movable) component);
-		//}
+		for (Component component : getHudManager().getComponents()) {
+			if (component instanceof MovableComponent)
+				storage.writable((MovableComponent) component);
+		}
 		storage.read();
 	}
 
