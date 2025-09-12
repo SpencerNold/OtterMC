@@ -1,14 +1,11 @@
 package io.github.ottermc.pvp.screen.hud.client;
 
-import java.util.ArrayList;
-
-import io.github.ottermc.screen.hud.Component;
-import io.github.ottermc.screen.hud.Movable;
-import org.lwjgl.opengl.Display;
-
+import io.github.ottermc.screen.hud.MovableComponent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,84 +13,89 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 
-public class ClientPotionEffectHud extends Component implements Movable {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-	private static final ResourceLocation inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
+public class ClientPotionEffectHud extends MovableComponent {
 
-	public ClientPotionEffectHud() {
-		super(false);
-		x = 4;
-		y = -1;
-	}
+    private static final ResourceLocation inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
 
-	@Override
-	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
-		if (!Display.isFullscreen())
-			return;
-		if (mc.getRenderViewEntity() instanceof EntityPlayer) {
-			EntityLivingBase player = (EntityLivingBase) mc.getRenderViewEntity();
-			ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>(player.getActivePotionEffects());
-			height = effects.size() * 20;
-			int color = io.github.ottermc.pvp.modules.hud.PotionEffect.getColor().getValue();
-			for (int i = 0; i < effects.size(); i++) {
-				PotionEffect effect = effects.get(i);
-				if (effect == null)
-					continue;
-				Potion potion = Potion.potionTypes[effect.getPotionID()];
-				int index = potion.getStatusIconIndex();
-				mc.getTextureManager().bindTexture(inventoryBackground);
-				drawable.drawTexturedModalRect(getX() + 4, getY() + (i * 20) + 4, index % 8 * 18, 198 + index / 8 * 18, 18, 18);
-				String text = getPotionDisplayString(effect);
-				width = Math.max(width, mc.fontRendererObj.getStringWidth(text) + 32);
-				mc.fontRendererObj.drawString(text, getX() + 28, getY() + (i * 20) + 9, color, false);
-			}
-		}
-	}
+    public ClientPotionEffectHud() {
+        super(10, 10, 124, 58);
+    }
 
-	private String getPotionDisplayString(PotionEffect effect) {
-		String name = I18n.format(effect.getEffectName(), new Object[0]);
-		if (effect.getAmplifier() == 1)
-			name = name + " " + I18n.format("enchantment.level.2", new Object[0]);
-		else if (effect.getAmplifier() == 2)
-			name = name + " " + I18n.format("enchantment.level.3", new Object[0]);
-		else if (effect.getAmplifier() == 3)
-			name = name + " " + I18n.format("enchantment.level.4", new Object[0]);
-		String time = Potion.getDurationString(effect);
-		return name + " " + time;
-	}
+    @Override
+    protected void draw(Minecraft mc, GuiIngame gui, float partialTicks) {
+        if (mc.getRenderViewEntity() instanceof EntityPlayer) {
+            EntityLivingBase player = (EntityLivingBase) mc.getRenderViewEntity();
+            ArrayList<PotionEffect> effects = new ArrayList<>(player.getActivePotionEffects());
+            ScaledResolution resolution = new ScaledResolution(mc);
+            drawEffects(mc, effects, (getYOffset() - getDefaultY()) > (resolution.getScaledHeight() / 2));
+        }
+    }
 
-	@Override
-	public int getRawWidth() {
-		return width;
-	}
+    @Override
+    public void drawDummyObject(Minecraft mc, Gui gui, float partialTicks) {
+        drawEffects(mc, Arrays.asList(
+                new PotionEffect(1, 3600, 2),
+                new PotionEffect(5, 3600, 2),
+                new PotionEffect(12, 3600)
+        ), false);
+    }
 
-	@Override
-	public int getRawHeight() {
-		return height;
-	}
+    private void drawEffects(Minecraft mc, List<PotionEffect> effects, boolean drawBottomUp) {
+        GlStateManager.enableAlpha();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
 
-	@Override
-	public int getX() {
-		return x;
-	}
+        int color = io.github.ottermc.pvp.modules.hud.PotionEffect.getColor().getValue();
+        for (int i = 0; i < effects.size(); i++) {
+            PotionEffect effect = effects.get(i);
+            if (effect == null)
+                continue;
+            int x = getDefaultX();
+            int y = getDefaultY() + (drawBottomUp ? (getRawHeight() + ((i + 1) * -20)) : (i * 20));
+            Potion potion = Potion.potionTypes[effect.getPotionID()];
+            int index = potion.getStatusIconIndex();
+            mc.getTextureManager().bindTexture(inventoryBackground);
+            drawable.drawTexturedModalRect(x, y, index % 8 * 18, 198 + index / 8 * 18, 18, 18);
+            String text = getPotionDisplayString(effect);
+            mc.fontRendererObj.drawString(text, x + 20, y + 5.5f, color, false);
+        }
 
-	@Override
-	public int getY() {
-		return y == -1 ? y = (int) drawable.getHeight() - getRawHeight() - 4 : y;
-	}
-	
-	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	@Override
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	@Override
-	public int getSerialId() {
-		return "POTION_EFFECT_COMPONENT".hashCode();
-	}
+/*
+        int effectiveHeight = effects.size() * 20 - 2;
+        for (int i = 0; i < effects.size(); i++) {
+            PotionEffect effect = effects.get(i);
+            if (effect == null)
+                continue;
+            int x = getDefaultX();
+            int y = getDefaultY() + (drawBottomUp ? (effectiveHeight + (i * -20)) : (i * 20));
+            Potion potion = Potion.potionTypes[effect.getPotionID()];
+            int index = potion.getStatusIconIndex();
+            mc.getTextureManager().bindTexture(inventoryBackground);
+            drawable.drawTexturedModalRect(x, y, index % 8 * 18, 198 + index / 8 * 18, 18, 18);
+            String text = getPotionDisplayString(effect);
+            mc.fontRendererObj.drawString(text, x + 20, y + 5.5f, color, false);
+        }
+ */
+    }
+
+    private String getPotionDisplayString(PotionEffect effect) {
+        String time = Potion.getDurationString(effect);
+        String name = time + " " + I18n.format(effect.getEffectName(), new Object[0]);
+        if (effect.getAmplifier() == 1)
+            name = name + " " + I18n.format("enchantment.level.2", new Object[0]);
+        else if (effect.getAmplifier() == 2)
+            name = name + " " + I18n.format("enchantment.level.3", new Object[0]);
+        else if (effect.getAmplifier() == 3)
+            name = name + " " + I18n.format("enchantment.level.4", new Object[0]);
+        return name;
+    }
+
+    @Override
+    public int getSerialId() {
+        return "POTION_EFFECT_COMPONENT".hashCode();
+    }
 }

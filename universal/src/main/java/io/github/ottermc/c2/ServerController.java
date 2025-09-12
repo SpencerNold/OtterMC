@@ -16,6 +16,11 @@ public class ServerController {
         return Agent.getState() != State.RUNNING ? Resource.Companion.get("loading.html") : Resource.Companion.get("index.html");
     }
 
+    @Route.File(path = "/selector", contentType = Route.ContentType.HTML, cacheControl = "no-store", immutable = false)
+    public InputStream selectorFile() {
+        return Agent.getState() != State.RUNNING ? Resource.Companion.get("loading.html") : Resource.Companion.get("selector.html");
+    }
+
     @Route.File(path = "/module", contentType = Route.ContentType.HTML, cacheControl = "no-store", immutable = false)
     public InputStream moduleFile() {
         return Agent.getState() != State.RUNNING ? Resource.Companion.get("loading.html") : Resource.Companion.get("module.html");

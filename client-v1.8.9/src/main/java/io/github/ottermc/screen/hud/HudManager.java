@@ -1,57 +1,50 @@
 package io.github.ottermc.screen.hud;
 
-import java.util.LinkedList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-import net.minecraft.client.gui.GuiIngame;
-import org.lwjgl.opengl.GL11;
-
 import io.github.ottermc.listeners.RenderGameOverlayListener;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
+
+import java.util.LinkedList;
 
 public class HudManager implements RenderGameOverlayListener {
 
-	private final LinkedList<Component> components = new LinkedList<>();
-	
-	public void register(Component component) {
-		components.add(component);
-	}
-	
-	public <T extends Component> T getComponent(Class<T> clazz) {
-		return clazz.cast(filter(clazz::isInstance).findAny().orElse(null));
-	}
-	
-	public Stream<Component> filter(Predicate<Component> predicate) {
-		return components.stream().filter(predicate);
-	}
+    private final LinkedList<Component> components = new LinkedList<>();
 
-	public LinkedList<Component> getComponents() {
-		return components;
-	}
+    public void register(Component component) {
+        components.add(component);
+    }
 
-	public void iterate(Consumer<Component> consumer) {
-		components.forEach(consumer);
-	}
+    public LinkedList<Component> getComponents() {
+        return components;
+    }
 
-	@Override
-	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-		event.setCanceled(true);
-		if (BlurShaderProgram.shouldHideHud())
-			return;
-		Minecraft mc = Minecraft.getMinecraft();
-		mc.entityRenderer.setupOverlayRendering();
-		boolean tex2d = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		components.forEach(c -> c.drawComponent(mc, (GuiIngame) event.getGuiIngame(), new ScaledResolution(mc), event.getPartialTicks()));
-		if (tex2d)
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-		else
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GlStateManager.enableBlend();
-	}
+    @Override
+    public void onRenderGameOverlay(RenderGameOverlayEvent event) {
+        if (BlurShaderProgram.shouldHideHud())
+            return;
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.gameSettings.showDebugInfo)
+            return;
+        mc.entityRenderer.setupOverlayRendering();
+        boolean tex2d = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        for (Component c : components) {
+            if (!c.isVisible())
+                continue;
+            if (c instanceof MovableComponent) {
+                ((MovableComponent) c).enableTranslate();
+                c.draw(mc, (GuiIngame) event.getGuiIngame(), event.getPartialTicks());
+                ((MovableComponent) c).disableTranslate();
+            } else
+                c.draw(mc, (GuiIngame) event.getGuiIngame(), event.getPartialTicks());
+        }
+        if (tex2d)
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+        else
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+    }
 }

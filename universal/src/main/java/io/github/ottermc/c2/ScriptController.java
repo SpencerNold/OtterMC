@@ -9,9 +9,9 @@ import java.io.InputStream;
 @Service.Controller(path = "/scripts")
 public class ScriptController {
 
-    @Route.File(path = "/index.js", contentType = Route.ContentType.JAVASCRIPT, cacheControl = "no-cache")
+    @Route.File(path = "/selector.js", contentType = Route.ContentType.JAVASCRIPT, cacheControl = "no-cache")
     public InputStream indexScript() {
-        return Resource.Companion.get("scripts/index.js");
+        return Resource.Companion.get("scripts/selector.js");
     }
 
     @Route.File(path = "/module.js", contentType = Route.ContentType.JAVASCRIPT, cacheControl = "no-cache")

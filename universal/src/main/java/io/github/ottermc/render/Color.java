@@ -2,7 +2,7 @@ package io.github.ottermc.render;
 
 public class Color {
 	
-	public static final Color DEFAULT = new Color(48 + 48, 25 + 48, 52 + 48, 255);
+	private static final Color DEFAULT = new Color(48 + 48, 25 + 48, 52 + 48, 255);
     public static final Color WHITE = new Color(-1);
 
 	private final int value;
@@ -68,5 +68,9 @@ public class Color {
 
     public boolean hasAlpha() {
         return hasAlpha;
+    }
+
+    public static Color getDefault() {
+        return DEFAULT;
     }
 }

@@ -40,7 +40,6 @@ public class Main implements Implementation {
 
     @Override
     public void onEnable() {
-        registerKeybinds();
     }
 
     @Override
@@ -61,10 +60,8 @@ public class Main implements Implementation {
         ModuleManager manager = Client.getInstance().getModuleManager();
         // HUD
         manager.register(new ArmorStatus());
-        manager.register(new Array());
         manager.register(new ClickCounter());
         manager.register(new Coordinate());
-        manager.register(new Direction());
         manager.register(new GuiBlur());
         manager.register(new KeyStroke());
         manager.register(new PotionEffect());
@@ -85,18 +82,12 @@ public class Main implements Implementation {
         manager.register(new GameMacro());
     }
 
-    private void registerKeybinds() {
-
-    }
-
     void registerHuds() {
         HudManager manager = Client.getInstance().getHudManager();
         // Client HUD
         manager.register(ClientDisplay.ARMOR_STATUS);
-        manager.register(ClientDisplay.ARRAY);
         manager.register(ClientDisplay.CLICK_COUNTER);
         manager.register(ClientDisplay.COORDINATE);
-        manager.register(ClientDisplay.DIRECTION);
         manager.register(ClientDisplay.KEYSTROKE);
         manager.register(ClientDisplay.POTION_EFFECT);
     }

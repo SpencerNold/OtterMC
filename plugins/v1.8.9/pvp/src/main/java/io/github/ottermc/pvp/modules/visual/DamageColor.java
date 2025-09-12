@@ -13,7 +13,7 @@ public class DamageColor extends Module implements SetEntityDamageBrightnessList
 	
 	private static final Icon ICON = Icon.getIconIgnoreException("module/hurt_icon.png");
 
-	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, false);
+	private final ColorSetting color = new ColorSetting("Color", Color.getDefault(), false);
 
 	public DamageColor() {
 		super("Damage Color", CategoryList.VISUAL);

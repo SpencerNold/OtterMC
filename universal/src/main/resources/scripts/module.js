@@ -83,7 +83,7 @@ function saveModule() {
         } else {
             console.error("Error: ", xhr.status, xhr.statusText)
         }
-        window.location.href = "/"
+        window.location.href = "/selector"
     }
     xhr.onerror = () => {
         console.error("Network error")

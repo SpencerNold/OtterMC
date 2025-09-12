@@ -1,74 +1,39 @@
 package io.github.ottermc.pvp.screen.hud.client;
 
 import io.github.ottermc.pvp.modules.hud.Coordinate;
-import io.github.ottermc.screen.hud.Component;
-import io.github.ottermc.screen.hud.Movable;
+import io.github.ottermc.screen.hud.MovableComponent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
-import org.lwjgl.opengl.Display;
 
-public class ClientCoordinateHud extends Component implements Movable {
-	
-	public ClientCoordinateHud() {
-		super(false);
-		x = 4;
-		y = 4;
-	}
+public class ClientCoordinateHud extends MovableComponent {
 
-	@Override
-	protected void draw(Minecraft mc, GuiIngame gui, ScaledResolution res, float partialTicks) {
-		if (!Display.isFullscreen())
-			return;
-		Entity player = mc.thePlayer;
-		String text = String.format("X: %.1f, Y: %.1f, Z: %.1f (%s)", player.posX, player.posY, player.posZ, EnumFacing.fromAngle(player.rotationYaw).getName());
-		boolean ttf = Coordinate.shouldUseClientFont();
-		int color = Coordinate.getColor().getValue();
-		if (ttf) {
-			width = drawable.getStringWidth(text);
-			height = drawable.getStringHeight();
-			drawable.drawString(text, getX() + 1, getY() + 1, color);
-		} else {
-			width = mc.fontRendererObj.getStringWidth(text);
-			height = mc.fontRendererObj.FONT_HEIGHT;
-			mc.fontRendererObj.drawString(text, getX() + 1, getY() + 1, color);
-		}
-	}
+    public ClientCoordinateHud() {
+        super(10, 10, 98, 7);
+    }
 
-	@Override
-	public int getRawWidth() {
-		return width;
-	}
+    @Override
+    protected void draw(Minecraft mc, GuiIngame gui, float partialTicks) {
+        Entity player = mc.thePlayer;
+        String text = String.format("(%.1f, %.1f, %.1f [%c])", player.posX, player.posY, player.posZ, EnumFacing.fromAngle(player.rotationYaw).getName().toUpperCase().charAt(0));
+        drawString(mc, text);
+    }
 
-	@Override
-	public int getRawHeight() {
-		return height;
-	}
+    @Override
+    public void drawDummyObject(Minecraft mc, Gui gui, float partialTicks) {
+        String text = "(XX.X, YY.Y, ZZ.Z [D])";
+        drawString(mc, text);
+    }
 
-	@Override
-	public int getX() {
-		return x;
-	}
+    private void drawString(Minecraft mc, String text) {
+        int color = Coordinate.getColor().getValue();
+        mc.fontRendererObj.drawString(text, getDefaultX(), getDefaultY(), color);
+    }
 
-	@Override
-	public int getY() {
-		return y;
-	}
-	
-	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	@Override
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	@Override
-	public int getSerialId() {
-		return "COORDINATE_COMPONENT".hashCode();
-	}
+    @Override
+    public int getSerialId() {
+        return "COORDINATE_COMPONENT".hashCode();
+    }
 }

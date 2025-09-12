@@ -26,7 +26,7 @@ public class BlockOutline extends Module implements DrawSelectionBoxListener {
 	
 	private static final Icon ICON = Icon.getIconIgnoreException("module/block_icon.png");
 	
-	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, true);
+	private final ColorSetting color = new ColorSetting("Color", Color.getDefault(), true);
 	private final BooleanSetting fill = new BooleanSetting("Fill Block", false);
 	private final FloatSetting thickness = new FloatSetting("Thickness", 1.5, 0.5, 3.0);
 

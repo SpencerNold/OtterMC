@@ -8,12 +8,9 @@ import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.keybind.LWJGLKeyboard;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
-import io.github.ottermc.screen.hud.Component;
-import io.github.ottermc.screen.hud.GameDisplay;
 import io.github.ottermc.screen.hud.HudManager;
-import io.github.ottermc.screen.hud.Movable;
+import io.github.ottermc.screen.impl.EditHudScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
-import io.github.ottermc.screen.impl.MenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformers.EntityRendererTransformer;
@@ -65,9 +62,9 @@ public class Client implements Initializer {
 
 	@ReflectionRequired
 	public void onPostInit() {
+		registerKeybinds();
 		Display.setTitle(Client.NAME + " " + Client.VERSION);
 		Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
-		registerGameHuds();
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
 			mc.displayGuiScreen(new MainMenuScreen());
@@ -79,10 +76,10 @@ public class Client implements Initializer {
 		storage.clear();
 		for (Module module : getModuleManager().getModules())
 			storage.writable(module);
-		for (Component component : getHudManager().getComponents()) {
-			if (component instanceof Movable)
-				storage.writable((Movable) component);
-		}
+		//for (Component component : getHudManager().getComponents()) {
+		//	if (component instanceof Movable)
+		//		storage.writable((Movable) component);
+		//}
 		storage.read();
 	}
 
@@ -98,19 +95,13 @@ public class Client implements Initializer {
 		EventBus.add(hudManager);
 	}
 
-	private void registerGameHuds() {
-		// Default Minecraft HUD
-		hudManager.register(GameDisplay.PUMPKIN_OVERLAY);
-		hudManager.register(GameDisplay.NAUSEA_EFFECT);
-		hudManager.register(GameDisplay.TOOLTIP);
-		hudManager.register(GameDisplay.BOSS_BAR);
-		hudManager.register(GameDisplay.PLAYER_STATS);
-		hudManager.register(GameDisplay.SLEEP_MENU);
-		hudManager.register(GameDisplay.EXP_BAR);
-		hudManager.register(GameDisplay.OVERLAY_TEXT);
-		hudManager.register(GameDisplay.SCOREBOARD);
-		hudManager.register(GameDisplay.TITLE);
-		hudManager.register(GameDisplay.TAB);
+	private void registerKeybinds() {
+		KeybindManager manager = Client.getInstance().getKeyManager();
+		manager.register(Keyboard.KEY_RSHIFT, () -> {
+			Minecraft mc = Minecraft.getMinecraft();
+			if (mc.thePlayer != null && mc.currentScreen == null)
+				mc.displayGuiScreen(new EditHudScreen());
+		});
 	}
 
 	@Override

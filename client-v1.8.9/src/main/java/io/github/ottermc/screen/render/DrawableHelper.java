@@ -1,7 +1,5 @@
 package io.github.ottermc.screen.render;
 
-import org.lwjgl.opengl.GL11;
-
 import io.github.ottermc.screen.font.FontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -11,19 +9,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 public class DrawableHelper {
 
 	private final FontRenderer fontRenderer = FontRenderer.OMC_TTF_RENDERER;
 
-	private float scale = 1.0f;
-	
 	public void setupOverlayRendering() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 		GlStateManager.clear(256);
 		GlStateManager.matrixMode(GL11.GL_PROJECTION);
 		GlStateManager.loadIdentity();
-		GlStateManager.ortho(0.0D, res.getScaledWidth_double() * scale, res.getScaledHeight_double() * scale, 0.0D, 1000.0D, 3000.0D);
+		GlStateManager.ortho(0.0D, res.getScaledWidth_double(), res.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
 		GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 		GlStateManager.loadIdentity();
 		GlStateManager.translate(0.0F, 0.0F, -2000.0F);
@@ -34,7 +31,7 @@ public class DrawableHelper {
 	}
 
 	public void drawString(String text, int x, int y, float scale, int color) {
-		float ratio = this.scale * 0.25f * scale;
+		float ratio = 0.25f * scale;
 		float inv = 1.0f / ratio;
 		x = (int) ((float) x * inv);
 		y = (int) ((float) y * inv);
@@ -48,11 +45,11 @@ public class DrawableHelper {
 	}
 
 	public int getStringWidth(String text, float scale) {
-		return (int) (fontRenderer.getStringWidth(text) * (this.scale * 0.25f * scale));
+		return (int) (fontRenderer.getStringWidth(text) * (0.25f * scale));
 	}
 
 	public int getStringHeight(float scale) {
-		return (int) (fontRenderer.getStringHeight() * (this.scale * 0.25f * scale));
+		return (int) (fontRenderer.getStringHeight() * (0.25f * scale));
 	}
 
 	public int getStringWidth(String text) {
@@ -163,7 +160,7 @@ public class DrawableHelper {
 	}
 
 	public void drawIcon(Icon icon, int x, int y, float scale, int color) {
-		scale *= this.scale * 0.5f;
+		scale *= 0.5f;
 		GlStateManager.pushMatrix();
 		GlStateManager.enableAlpha();
 		GlStateManager.alphaFunc(516, 0.1F);
@@ -208,27 +205,17 @@ public class DrawableHelper {
 		drawIcon(icon, x, y, 1.0f, color);
 	}
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
-
-	public float getScale() {
-		return scale;
-	}
-
 	public double getWidth() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-		return res.getScaledWidth_double() * scale;
+		return res.getScaledWidth_double();
 	}
 
 	public double getHeight() {
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-		return res.getScaledHeight_double() * scale;
+		return res.getScaledHeight_double();
 	}
 
 	public boolean intersects(int x, int y, int width, int height, int mouseX, int mouseY) {
-		mouseX = (int) ((float) mouseX * scale);
-		mouseY = (int) ((float) mouseY * scale);
 		return intersectsRaw(x, y, width, height, mouseX, mouseY);
 	}
 

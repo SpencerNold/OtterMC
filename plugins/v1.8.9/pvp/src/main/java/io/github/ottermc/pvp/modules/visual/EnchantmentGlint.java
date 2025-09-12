@@ -17,7 +17,7 @@ public class EnchantmentGlint extends Module implements RenderEffectListener, Re
 	
 	private static final Icon ICON = Icon.getIconIgnoreException("module/armor_icon.png");
 	
-	private final ColorSetting color = new ColorSetting("Color", Color.DEFAULT, false);
+	private final ColorSetting color = new ColorSetting("Color", Color.getDefault(), false);
 	private final FloatSetting opacity = new FloatSetting("Opacity", 1.0, 0.0, 1.0);
 
 	public EnchantmentGlint() {

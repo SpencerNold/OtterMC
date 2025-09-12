@@ -19,6 +19,6 @@ public class ClientTheme {
     }
 
     public static Color getColor() {
-        return getColor(Color.DEFAULT);
+        return getColor(Color.getDefault());
     }
 }
