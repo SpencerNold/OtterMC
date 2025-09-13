@@ -15,9 +15,22 @@ procedure CurStepChanged(CurStep: TSetupStep);
 var
   LatestClientJarSrc, LatestClientJarDst: string;
   V189ClientJarSrc, V189ClientJarDst: string;
+  JRE8Path, JRE21Path: string;
 begin
   if CurStep = ssPostInstall then
   begin
+    JRE8Path := ExpandConstant('{app}\jre\8\bin\java.exe');
+    if not FileExists(JRE8Path) then
+    begin
+      MsgBox('Bundled JRE8 missing!', mbError, MB_OK);
+      Abort;
+    end;
+    JRE21Path := ExpandConstant('{app}\jre\21\bin\java.exe');
+    if not FileExists(JRE21Path) then
+    begin
+      MsgBox('Bundled JRE21 missing!', mbError, MB_OK);
+      Abort;
+    end;
     LatestClientJarSrc := ExpandConstant('{userappdata}\.minecraft\versions\1.21.8\1.21.8.jar');
     LatestClientJarDst := ExpandConstant('{userappdata}\.minecraft\versions\ottermc-latest\ottermc-latest.jar');
     if not FileExists(LatestClientJarSrc) then
