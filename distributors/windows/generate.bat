@@ -23,6 +23,9 @@ set "WRAPPER_DIR=%TARGET_DIR%\libraries\io\github\ottermc\wrapper\1.0.0"
 if not exist "%WRAPPER_DIR%" mkdir "%WRAPPER_DIR%"
 copy "wrapper\build\libs\wrapper.jar" "%WRAPPER_DIR%\wrapper-1.0.0.jar" /Y
 
+REM -------- Profiler JAR --------
+copy "distributors\profiler\build\libs\profiler-all.jar" "%TARGET_DIR%\profiler.jar"
+
 cd %TARGET_DIR%
 cd ..
 "C:\Program Files (x86)\Inno Setup 6\iscc.exe" installer.iss
