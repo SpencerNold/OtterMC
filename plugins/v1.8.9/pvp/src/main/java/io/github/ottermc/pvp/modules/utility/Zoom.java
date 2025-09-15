@@ -11,7 +11,6 @@ import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import org.lwjgl.input.Keyboard;
-
 public class Zoom extends Module implements RunTickListener {
 
 	private static final Icon ICON = Icon.getIconIgnoreException("module/zoom_icon.png");

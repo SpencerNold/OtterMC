@@ -1,8 +1,8 @@
 package io.github.ottermc.keybind;
 
+import io.github.ottermc.UniversalKeyboard;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,11 @@ public class KeybindManager implements RunTickListener {
 	@Override
 	public void onRunTick(RunTickEvent event) {
 		for (Keybind keybind : keybinds) {
-			if (Keyboard.isKeyDown(keybind.getCode()) && !keybind.isDown()) {
+			if (UniversalKeyboard.isKeyDown(keybind.getCode()) && !keybind.isDown()) {
 				keybind.setDown(true);
 				keybind.getRunnable().run();
 			}
-			if (!Keyboard.isKeyDown(keybind.getCode()) && keybind.isDown())
+			if (!UniversalKeyboard.isKeyDown(keybind.getCode()) && keybind.isDown())
 				keybind.setDown(false);
 		}
 	}

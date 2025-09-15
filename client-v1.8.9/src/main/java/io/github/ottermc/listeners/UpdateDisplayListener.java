@@ -1,9 +1,9 @@
 package io.github.ottermc.listeners;
 
-import java.util.List;
-
 import io.github.ottermc.events.Event;
 import io.github.ottermc.events.Listener;
+
+import java.util.List;
 
 public interface UpdateDisplayListener extends Listener {
 

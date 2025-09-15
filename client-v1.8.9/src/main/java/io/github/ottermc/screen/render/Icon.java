@@ -1,6 +1,6 @@
 package io.github.ottermc.screen.render;
 
-import io.github.ottermc.ClientLogger;
+import io.github.ottermc.logging.Logger;
 import io.github.ottermc.render.GenericImageObject;
 
 import javax.imageio.ImageIO;
@@ -49,7 +49,7 @@ public class Icon extends GenericImageObject {
 			((Buffer) buf).flip();
 			return buf;
 		} catch (IOException e) {
-			ClientLogger.display(e);
+			Logger.error(e);
 			return null;
 		}
 	}

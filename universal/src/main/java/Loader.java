@@ -1,5 +1,6 @@
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
+import me.spencernold.kwaf.logger.Logger;
 
 import java.io.File;
 import java.net.URISyntaxException;

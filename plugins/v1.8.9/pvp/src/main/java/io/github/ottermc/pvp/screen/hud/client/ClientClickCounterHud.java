@@ -1,8 +1,8 @@
 package io.github.ottermc.pvp.screen.hud.client;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.listeners.ClickMouseListener;
-import io.github.ottermc.listeners.RightClickMouseListener;
+import io.github.ottermc.pvp.listeners.ClickMouseListener;
+import io.github.ottermc.pvp.listeners.RightClickMouseListener;
 import io.github.ottermc.screen.hud.MovableComponent;
 import io.github.ottermc.screen.render.DrawableHelper;
 import net.minecraft.client.Minecraft;

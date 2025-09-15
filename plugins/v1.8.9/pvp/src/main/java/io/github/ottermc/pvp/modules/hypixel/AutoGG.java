@@ -1,17 +1,17 @@
 package io.github.ottermc.pvp.modules.hypixel;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.pvp.listeners.AddChatMessageListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
 import io.github.ottermc.modules.setting.StringSetting;
+import io.github.ottermc.pvp.listeners.AddChatMessageListener;
 import io.github.ottermc.screen.render.Icon;
 import net.minecraft.client.Minecraft;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AutoGG extends HypixelModule implements RunTickListener, AddChatMessageListener {
 

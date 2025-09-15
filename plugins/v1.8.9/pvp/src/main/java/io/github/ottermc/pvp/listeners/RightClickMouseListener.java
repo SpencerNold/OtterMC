@@ -1,4 +1,4 @@
-package io.github.ottermc.listeners;
+package io.github.ottermc.pvp.listeners;
 
 import io.github.ottermc.events.Event;
 import io.github.ottermc.events.Listener;

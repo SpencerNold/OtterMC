@@ -46,8 +46,12 @@ public class Agent {
     }
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
+        // Setup KWAF
+        // TODO
+        // Setup BTCLib
         Reflection reflection = new Reflection(MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class, MinecraftFieldNameAdapter.class);
         Reflection.setSystemReflectClass(reflection);
+        // Start
         File file = getJarFile();
         if (file == null)
             return;

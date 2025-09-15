@@ -2,9 +2,9 @@ package io.github.ottermc.pvp;
 
 import agent.ClassTransformer;
 import io.github.ottermc.Client;
-import io.github.ottermc.ClientLogger;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
+import io.github.ottermc.logging.Logger;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.pvp.modules.CategoryList;
@@ -32,6 +32,7 @@ public class Main implements Implementation {
         transformer.register(GuiScreenTransformer.class);
         transformer.register(ItemRendererTransformer.class);
         transformer.register(LayerArmorBaseTransformer.class);
+        transformer.register(MinecraftTransformer.class);
         transformer.register(PlayerControllerMPTransformer.class);
         transformer.register(RenderEntityItemTransformer.class);
         transformer.register(RenderGlobalTransformer.class);
@@ -50,7 +51,7 @@ public class Main implements Implementation {
         try {
             adapter.execute();
         } catch (UnmodifiableClassException e) {
-            ClientLogger.display(e);
+            Logger.error(e);
         }
         registerHuds();
         registerModules();

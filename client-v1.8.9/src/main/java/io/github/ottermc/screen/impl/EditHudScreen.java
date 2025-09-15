@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.impl;
 
 import io.github.ottermc.Client;
-import io.github.ottermc.ClientLogger;
+import io.github.ottermc.logging.Logger;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.AbstractScreen;
 import io.github.ottermc.screen.hud.Component;
@@ -40,7 +40,7 @@ public class EditHudScreen extends AbstractScreen {
         try {
             Client.getInstance().save();
         } catch (IOException e) {
-            ClientLogger.display(e);
+            Logger.error(e);
         }
     }
 

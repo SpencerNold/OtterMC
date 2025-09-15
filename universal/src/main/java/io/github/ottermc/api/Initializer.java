@@ -1,5 +1,6 @@
 package io.github.ottermc.api;
 
+import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
 
 import java.io.File;
@@ -18,5 +19,5 @@ public interface Initializer {
     File getClientDirectory();
 
     ModuleManager getModuleManager();
-
+    KeybindManager getKeybindManager();
 }

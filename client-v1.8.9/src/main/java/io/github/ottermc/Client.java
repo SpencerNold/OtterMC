@@ -39,7 +39,6 @@ public class Client implements Initializer {
 	private final KeybindManager keyManager = new KeybindManager();
 	private final ModuleManager modManager = new ModuleManager();
 	private final HudManager hudManager = new HudManager();
-	private final ClientLogger errorManager = new ClientLogger();
 
 	private final ClientStorage storage;
 	private final File clientDirectory;
@@ -66,11 +65,10 @@ public class Client implements Initializer {
 	public void onPostInit() {
 		registerKeybinds();
 		Display.setTitle(Client.NAME + " " + Client.VERSION);
-		Display.setIcon(new ByteBuffer[] { Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
+		Display.setIcon(new ByteBuffer[] {Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"), });
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
 			mc.displayGuiScreen(new MainMenuScreen());
-		errorManager.postInit();
 	}
 
 	@Override
@@ -98,7 +96,7 @@ public class Client implements Initializer {
 	}
 
 	private void registerKeybinds() {
-		KeybindManager manager = Client.getInstance().getKeyManager();
+		KeybindManager manager = Client.getInstance().getKeybindManager();
 		manager.register(Keyboard.KEY_RSHIFT, () -> {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (mc.thePlayer != null && mc.currentScreen == null)
@@ -120,16 +118,12 @@ public class Client implements Initializer {
 		return storage;
 	}
 
-	public KeybindManager getKeyManager() {
+	public KeybindManager getKeybindManager() {
 		return instance.keyManager;
 	}
 
 	public HudManager getHudManager() {
 		return instance.hudManager;
-	}
-
-	public ClientLogger getErrorManager() {
-		return instance.errorManager;
 	}
 
 	@ReflectionRequired

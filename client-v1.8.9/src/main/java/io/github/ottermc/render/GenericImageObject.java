@@ -1,12 +1,12 @@
 package io.github.ottermc.render;
 
+import io.github.ottermc.logging.Logger;
+import net.minecraft.client.renderer.texture.TextureUtil;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import net.minecraft.client.renderer.texture.TextureUtil;
 
 public class GenericImageObject {
 
@@ -27,6 +27,7 @@ public class GenericImageObject {
 		try {
 			return new GenericImageObject(clazz, name);
 		} catch (Exception e) {
+			Logger.error(e);
 			return null;
 		}
 	}

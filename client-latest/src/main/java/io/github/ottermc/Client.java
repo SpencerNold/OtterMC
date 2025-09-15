@@ -5,6 +5,7 @@ import agent.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.GLFWKeyboard;
+import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.transformers.InGameHudTransformer;
@@ -23,6 +24,7 @@ public class Client implements Initializer {
     private static Client instance;
 
     private final ModuleManager modManager = new ModuleManager();
+    private final KeybindManager keyManager = new KeybindManager();
 
     private final ClientStorage storage;
     private final File clientDirectory;
@@ -67,6 +69,11 @@ public class Client implements Initializer {
     @Override
     public ModuleManager getModuleManager() {
         return modManager;
+    }
+
+    @Override
+    public KeybindManager getKeybindManager() {
+        return keyManager;
     }
 
     @Override

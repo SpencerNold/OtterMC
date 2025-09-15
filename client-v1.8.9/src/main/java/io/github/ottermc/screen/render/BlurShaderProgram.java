@@ -1,14 +1,14 @@
 package io.github.ottermc.screen.render;
 
-import java.io.IOException;
-
-import io.github.ottermc.ClientLogger;
 import io.github.ottermc.listeners.RenderWorldListener;
 import io.github.ottermc.listeners.UpdateDisplayListener;
+import io.github.ottermc.logging.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
 
 public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayListener {
 
@@ -51,7 +51,7 @@ public class BlurShaderProgram implements RenderWorldListener, UpdateDisplayList
 			shader = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), RESOURCE);
 			shader.createBindFramebuffers(mc.displayWidth, mc.displayHeight);
 		} catch (IOException e) {
-			ClientLogger.display(e);
+			Logger.error(e);
 		}
 	}
 
