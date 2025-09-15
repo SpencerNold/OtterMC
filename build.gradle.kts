@@ -26,6 +26,7 @@ tasks.register<PackageTask>("package") {
     dependsOn(":plugins:latest:smp:build")
     dependsOn(":plugins:latest:smp-export:build")
     dependsOn(":wrapper:build")
+    dependsOn(":distributors:profiler:build")
 }
 
 tasks.register<VersionTask>("version")

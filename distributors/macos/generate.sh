@@ -24,4 +24,7 @@ WRAPPER_DIR="$TARGET_DIR/libraries/io/github/ottermc/wrapper/1.0.0"
 mkdir -p "$WRAPPER_DIR"
 cp "wrapper/build/libs/wrapper.jar" "$WRAPPER_DIR/wrapper-1.0.0.jar"
 
+# profiler
+cp "distributors/profiler/build/libs/profiler-all.jar" "$TARGET_DIR/profiler.jar"
+
 pkgbuild --identifier io.github.ottermc --version 1.0.0 --scripts "$THIS/scripts" --root "$THIS/staging" OtterMC.pkg
