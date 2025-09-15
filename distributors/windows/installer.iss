@@ -6,6 +6,7 @@ OutputBaseFilename=OtterMC
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
+SetupIconFile=icon.ico
 
 [Files]
 Source: "staging/**"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
