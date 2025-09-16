@@ -2,8 +2,8 @@ package io.github.ottermc.screen.impl;
 
 import io.github.ottermc.Client;
 import io.github.ottermc.logging.Logger;
-import io.github.ottermc.render.Color;
 import io.github.ottermc.screen.AbstractScreen;
+import io.github.ottermc.screen.ClientTheme;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.hud.MovableComponent;
@@ -61,7 +61,7 @@ public class EditHudScreen extends AbstractScreen {
             int y = component.getDefaultY() + component.getYOffset();
             int width = (int) (component.getRawWidth() * scale);
             int height = (int) (component.getRawHeight() * scale);
-            drawable.drawRectangle(x - 2, y - 2, width + 4, height + 4, lastClicked == c ? Color.getDefault().getValue() : 0xF5E4E4E4);
+            drawable.drawRectangle(x - 2, y - 2, width + 4, height + 4, lastClicked == c ? ClientTheme.getColor().getValue() : 0xF5E4E4E4);
         }
     }
 

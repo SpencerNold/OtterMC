@@ -20,6 +20,9 @@ public abstract class Module implements Renderable, Writable<ByteBuf> {
     public void onDisable() {
     }
 
+    public void update() {
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -33,6 +36,7 @@ public abstract class Module implements Renderable, Writable<ByteBuf> {
     public void toggle() {
         setActive(!active);
     }
+
 
     public String getName() {
         return name;

@@ -77,6 +77,7 @@ public class Main implements Implementation {
         manager.register(new EnchantmentGlint());
         manager.register(new LargeItems());
         manager.register(new OldAnimation());
+        manager.register(new UIScheme());
 
         // Hypixel
         manager.register(new AutoGG());

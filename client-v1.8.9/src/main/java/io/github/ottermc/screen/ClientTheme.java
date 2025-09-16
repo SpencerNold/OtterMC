@@ -2,23 +2,18 @@ package io.github.ottermc.screen;
 
 import io.github.ottermc.render.Color;
 
+import java.util.function.Supplier;
+
 public class ClientTheme {
 
-    private static Color theme;
+    private static final Supplier<Color> defaultSupplier = Color::getDefault;
+    private static Supplier<Color> supplier = defaultSupplier;
 
-    public static void setUseTheme(Color color) {
-        theme = color;
-    }
-
-    public static void setUseDefault() {
-        theme = null;
-    }
-
-    public static Color getColor(Color nvl) {
-        return theme == null ? nvl : theme;
+    public static void setClientTheme(Supplier<Color> supplier) {
+        ClientTheme.supplier = supplier == null ? defaultSupplier : supplier;
     }
 
     public static Color getColor() {
-        return getColor(Color.getDefault());
+        return supplier.get();
     }
 }
