@@ -18,8 +18,6 @@ import io.github.ottermc.pvp.screen.hud.ClientDisplay;
 import io.github.ottermc.pvp.transformers.*;
 import io.github.ottermc.screen.hud.HudManager;
 
-import java.lang.instrument.UnmodifiableClassException;
-
 @Plugin(name = "OtterMC Pvp", version = Client.VERSION, target = "1.8.9")
 public class Main implements Implementation {
 
@@ -50,7 +48,7 @@ public class Main implements Implementation {
         adapter.register(RendererLivingEntityTransformer.class);
         try {
             adapter.execute();
-        } catch (UnmodifiableClassException e) {
+        } catch (Exception e) {
             Logger.error(e);
         }
         registerHuds();

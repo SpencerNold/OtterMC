@@ -22,7 +22,7 @@ public class ClassTransformer implements ClassFileTransformer {
 
     public ClassTransformer(Instrumentation instrumentation) {
         this.instrumentation = instrumentation;
-        this.adapter = new ClassAdapter(Opcodes.V19, MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class);
+        this.adapter = new ClassAdapter(Opcodes.V19, Opcodes.ASM9, MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class);
         instance = this;
     }
 
@@ -34,12 +34,15 @@ public class ClassTransformer implements ClassFileTransformer {
         }
     }
 
-    public void execute() throws UnmodifiableClassException {
-        List<Class<?>> classes = adapter.getClassesToTransform();
-        if (classes.isEmpty())
+    public void execute() throws UnmodifiableClassException, ClassNotFoundException {
+        List<String> classNames = adapter.getClassesToTransform();
+        if (classNames.isEmpty())
             return;
+        Class<?>[] classes = new Class[classNames.size()];
+        for (int i = 0; i < classNames.size(); i++)
+            classes[i] = Class.forName(classNames.get(i));
         instrumentation.addTransformer(this, true);
-        instrumentation.retransformClasses(classes.toArray(new Class[0]));
+        instrumentation.retransformClasses(classes);
         instrumentation.removeTransformer(this);
     }
 

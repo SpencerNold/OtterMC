@@ -19,6 +19,7 @@ dependencies {
 	api("com.google.guava:guava:17.0")
 	api("org.lwjgl.lwjgl:lwjgl:2.9.2")
 	api("org.lwjgl.lwjgl:lwjgl_util:2.9.2")
+	implementation("org.apache.logging.log4j:log4j-core:2.0-beta9")
 
 
 	// Client dependencies
