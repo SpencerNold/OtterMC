@@ -1,4 +1,4 @@
-package io.ottermc.addon;
+package io.github.ottermc.addon;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

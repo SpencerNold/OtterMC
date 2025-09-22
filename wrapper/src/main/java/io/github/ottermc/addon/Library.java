@@ -1,4 +1,4 @@
-package io.ottermc.addon;
+package io.github.ottermc.addon;
 
 public class Library {
 
@@ -8,6 +8,10 @@ public class Library {
     public Library(String name, String url) {
         this.name = name;
         this.url = url;
+    }
+
+    public Library() {
+        this(null, null);
     }
 
     public String getName() {

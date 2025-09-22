@@ -1,4 +1,4 @@
-package io.ottermc.addon;
+package io.github.ottermc.addon;
 
 @FunctionalInterface
 public interface ExceptionHandler {

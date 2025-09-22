@@ -21,7 +21,7 @@ copy "client-v1.8.9\v1.8.9.json" "%V189_DIR%\ottermc-v1.8.9.json" /Y
 REM -------- Wrapper JAR --------
 set "WRAPPER_DIR=%TARGET_DIR%\libraries\io\github\ottermc\wrapper\1.0.0"
 if not exist "%WRAPPER_DIR%" mkdir "%WRAPPER_DIR%"
-copy "wrapper\build\libs\wrapper.jar" "%WRAPPER_DIR%\wrapper-1.0.0.jar" /Y
+copy "wrapper\build\libs\wrapper-all.jar" "%WRAPPER_DIR%\wrapper-1.0.0.jar" /Y
 
 REM -------- Profiler JAR --------
 copy "distributors\profiler\build\libs\profiler-all.jar" "%TARGET_DIR%\profiler.jar"

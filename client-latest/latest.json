@@ -106,10 +106,8 @@
           "${quickPlayRealms}"
         ]
       },
-      "--targetVersion",
-      "1.21.8",
-      "--ottermcVersion",
-      "latest"
+      "--addon",
+      "vanilla-latest-launch"
     ],
     "jvm": [
       {

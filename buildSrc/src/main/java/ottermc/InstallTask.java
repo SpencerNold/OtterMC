@@ -20,7 +20,7 @@ public class InstallTask extends DefaultTask {
         if (!pluginDir.exists() && !pluginDir.mkdir())
             throw new GradleScriptException("failed to create plugin directory", new IOException());
 
-        File wrapperSrc = new File(projectDir, String.join(File.separator, "wrapper", "build", "libs", "wrapper.jar"));
+        File wrapperSrc = new File(projectDir, String.join(File.separator, "wrapper", "build", "libs", "wrapper-all.jar"));
         File wrapperDst = new File(gameDir, String.join(File.separator, "libraries", "io", "github", "ottermc", "wrapper", "1.0.0", "wrapper-1.0.0.jar"));
         try {
             copy(wrapperSrc, wrapperDst);

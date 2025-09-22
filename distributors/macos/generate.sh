@@ -22,7 +22,7 @@ cp "client-v1.8.9/v1.8.9.json" "$V189_DIR/ottermc-v1.8.9.json"
 # wrapper
 WRAPPER_DIR="$TARGET_DIR/libraries/io/github/ottermc/wrapper/1.0.0"
 mkdir -p "$WRAPPER_DIR"
-cp "wrapper/build/libs/wrapper.jar" "$WRAPPER_DIR/wrapper-1.0.0.jar"
+cp "wrapper/build/libs/wrapper-all.jar" "$WRAPPER_DIR/wrapper-1.0.0.jar"
 
 # profiler
 cp "distributors/profiler/build/libs/profiler-all.jar" "$TARGET_DIR/profiler.jar"
