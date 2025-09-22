@@ -34,7 +34,7 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            e.printStackTrace(Logger.getLoggerErrorStream());
+            Logger.error(e);
         }
     }
 
@@ -43,7 +43,7 @@ public class Agent {
         try {
             launch(args, instrumentation);
         } catch (Exception e) {
-            e.printStackTrace(Logger.getLoggerErrorStream());
+            Logger.error(e);
         }
     }
 
