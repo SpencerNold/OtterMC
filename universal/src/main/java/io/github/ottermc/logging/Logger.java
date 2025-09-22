@@ -1,6 +1,8 @@
 package io.github.ottermc.logging;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.function.Consumer;
 
 // Very simple logging, may upgrade in future
@@ -34,7 +36,10 @@ public class Logger {
     }
 
     public static void error(Throwable throwable) {
-        error(throwable.getClass().getName() + ": " + throwable.getMessage());
+        StringWriter string = new StringWriter();
+        PrintWriter writer = new PrintWriter(string);
+        throwable.printStackTrace(writer);
+        error(string.toString());
     }
 
     public static void error(String message) {
@@ -47,7 +52,8 @@ public class Logger {
 
     private static void print(PrintStream stream, String prefix, String message) {
         String value = String.format("[OtterMC: %s] %s\n", prefix, message);
-        stream.print(value);
+        // stream.print(value);
+        UniversalLog4j.log(value); // TODO For now...
         if (logConsumer != null)
             logConsumer.accept(value);
     }
