@@ -8,7 +8,7 @@ java {
 
 dependencies {
     api("com.github.SpencerNold:KWAF:-SNAPSHOT")
-    api(project(":agent"))
+    api(project(":transformer"))
     if (JavaVersion.current().isJava8) {
         implementation(files("${System.getProperty("java.home")}/lib/tools.jar"))
     } else {

@@ -3,7 +3,7 @@
   "mainClass": "net.minecraft.launchwrapper.Launch",
   "arguments": [
     "--tweakClass",
-    "io.ottermc.forge.OMCTweaker"
+    "net.minecraftforge.fml.common.launcher.FMLTweaker"
   ],
   "libraries": [
     {

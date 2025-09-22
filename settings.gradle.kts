@@ -2,7 +2,7 @@ rootProject.name = "OtterMC"
 
 include("wrapper")
 include("universal")
-include("agent")
+include("transformer")
 include("client-v1.8.9")
 include("client-latest")
 
