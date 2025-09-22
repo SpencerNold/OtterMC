@@ -1,6 +1,6 @@
 package io.github.ottermc.modules;
 
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 
 public abstract class Module implements Renderable, Writable<ByteBuf> {
 

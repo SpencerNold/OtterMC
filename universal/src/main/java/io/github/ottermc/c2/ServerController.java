@@ -1,7 +1,7 @@
 package io.github.ottermc.c2;
 
 import agent.Agent;
-import agent.State;
+import io.ottermc.transformer.State;
 import me.spencernold.kwaf.*;
 import me.spencernold.kwaf.services.Service;
 

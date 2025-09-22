@@ -1,7 +1,7 @@
 package io.github.ottermc.events.listeners;
 
 import agent.Agent;
-import agent.State;
+import io.ottermc.transformer.State;
 import io.github.ottermc.events.Event;
 import io.github.ottermc.events.Listener;
 

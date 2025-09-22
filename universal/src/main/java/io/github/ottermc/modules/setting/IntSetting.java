@@ -1,6 +1,6 @@
 package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.NumericSetting;
 
 public class IntSetting extends NumericSetting<Integer> {

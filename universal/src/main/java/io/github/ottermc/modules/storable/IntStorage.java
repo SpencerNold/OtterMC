@@ -1,6 +1,6 @@
 package io.github.ottermc.modules.storable;
 
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.Storable;
 
 public class IntStorage extends Storable<Integer> {

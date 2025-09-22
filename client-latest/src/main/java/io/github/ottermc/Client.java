@@ -1,13 +1,15 @@
 package io.github.ottermc;
 
-import agent.ClassTransformer;
-import agent.ReflectionRequired;
+import io.ottermc.transformer.ClassTransformer;
+import io.ottermc.transformer.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.GLFWKeyboard;
 import io.github.ottermc.keybind.KeybindManager;
+import io.github.ottermc.logging.UniversalLog4j;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.tools.Log4j;
 import io.github.ottermc.transformers.InGameHudTransformer;
 import io.github.ottermc.transformers.MinecraftClientTransformer;
 import net.minecraft.client.MinecraftClient;
@@ -31,6 +33,7 @@ public class Client implements Initializer {
 
     @ReflectionRequired
     public Client(File file, ClassTransformer transformer) {
+        UniversalLog4j.register(new Log4j());
         instance = this;
         this.clientDirectory = file;
         this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));

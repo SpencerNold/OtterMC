@@ -1,7 +1,7 @@
 package io.github.ottermc;
 
-import io.github.ottermc.io.ByteBuf;
-import io.github.ottermc.io.Secure;
+import io.ottermc.transformer.io.ByteBuf;
+import io.ottermc.transformer.io.Secure;
 import io.github.ottermc.modules.Writable;
 
 import java.io.File;

@@ -26,6 +26,10 @@ public abstract class UniversalLog4j {
         instance.internalError(msg);
     }
 
+    public static boolean isActive() {
+        return instance != null;
+    }
+
     protected abstract void internalLog(String msg);
     protected abstract void internalWarn(String msg);
     protected abstract void internalError(String msg);

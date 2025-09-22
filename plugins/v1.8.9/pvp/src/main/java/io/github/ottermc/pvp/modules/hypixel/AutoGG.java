@@ -2,7 +2,7 @@ package io.github.ottermc.pvp.modules.hypixel;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
 import io.github.ottermc.modules.setting.StringSetting;

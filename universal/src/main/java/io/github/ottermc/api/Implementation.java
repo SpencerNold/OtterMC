@@ -1,6 +1,6 @@
 package io.github.ottermc.api;
 
-import agent.ClassTransformer;
+import io.ottermc.transformer.ClassTransformer;
 
 public interface Implementation {
 

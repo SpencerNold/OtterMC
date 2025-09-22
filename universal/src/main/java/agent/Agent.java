@@ -1,8 +1,10 @@
 package agent;
 
-import agent.adapters.MinecraftClassNameAdapter;
-import agent.adapters.MinecraftFieldNameAdapter;
-import agent.adapters.MinecraftMethodNameAdapter;
+import io.ottermc.transformer.ClassTransformer;
+import io.ottermc.transformer.State;
+import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
+import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
+import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.api.Plugin;
@@ -47,7 +49,7 @@ public class Agent {
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
         // Setup KWAF
-        // TODO
+        me.spencernold.kwaf.logger.Logger.Companion.setSystemLogger(Logger.KWAF_LOGGER_IMPLEMENTATION);
         // Setup BTCLib
         Reflection reflection = new Reflection(MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class, MinecraftFieldNameAdapter.class);
         Reflection.setSystemReflectClass(reflection);

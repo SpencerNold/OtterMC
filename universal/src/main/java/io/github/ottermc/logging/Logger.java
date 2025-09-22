@@ -52,8 +52,10 @@ public class Logger {
 
     private static void print(PrintStream stream, String prefix, String message) {
         String value = String.format("[OtterMC: %s] %s\n", prefix, message);
-        // stream.print(value);
-        UniversalLog4j.log(value); // TODO For now...
+        if (UniversalLog4j.isActive())
+            UniversalLog4j.log(value);
+        else
+            stream.print(value);
         if (logConsumer != null)
             logConsumer.accept(value);
     }

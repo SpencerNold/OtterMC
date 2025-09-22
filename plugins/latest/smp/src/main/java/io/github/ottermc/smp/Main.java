@@ -1,6 +1,6 @@
 package io.github.ottermc.smp;
 
-import agent.ClassTransformer;
+import io.ottermc.transformer.ClassTransformer;
 import io.github.ottermc.Client;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;

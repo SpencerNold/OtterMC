@@ -1,6 +1,6 @@
 package io.github.ottermc.screen.hud;
 
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.Writable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

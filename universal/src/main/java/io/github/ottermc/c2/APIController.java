@@ -1,7 +1,7 @@
 package io.github.ottermc.c2;
 
 import agent.Agent;
-import agent.State;
+import io.ottermc.transformer.State;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

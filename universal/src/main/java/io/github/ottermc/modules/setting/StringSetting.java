@@ -1,6 +1,6 @@
 package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.io.ByteBuf;
+import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.Setting;
 
 public class StringSetting extends Setting<String> {
