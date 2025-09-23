@@ -1,9 +1,7 @@
 package io.github.ottermc.keybind;
 
-import io.github.ottermc.UniversalKeyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 public class GLFWKeyboard extends UniversalKeyboard {

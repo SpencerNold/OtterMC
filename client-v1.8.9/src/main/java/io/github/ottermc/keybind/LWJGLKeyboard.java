@@ -1,6 +1,5 @@
 package io.github.ottermc.keybind;
 
-import io.github.ottermc.UniversalKeyboard;
 import org.lwjgl.input.Keyboard;
 
 public class LWJGLKeyboard extends UniversalKeyboard {

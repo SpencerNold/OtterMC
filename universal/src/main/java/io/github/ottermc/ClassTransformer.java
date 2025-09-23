@@ -1,5 +1,6 @@
-package io.ottermc.transformer;
+package io.github.ottermc;
 
+import io.ottermc.transformer.Transformable;
 import me.spencernold.transformer.ClassAdapter;
 import me.spencernold.transformer.ClassTransformException;
 import org.objectweb.asm.Opcodes;

@@ -1,6 +1,5 @@
 package io.github.ottermc.keybind;
 
-import io.github.ottermc.UniversalKeyboard;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
 

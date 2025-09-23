@@ -1,10 +1,8 @@
 package io.github.ottermc.pvp;
 
-import io.ottermc.transformer.ClassTransformer;
 import io.github.ottermc.Client;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Plugin;
-import io.github.ottermc.logging.Logger;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.pvp.modules.CategoryList;
@@ -17,24 +15,27 @@ import io.github.ottermc.pvp.modules.visual.*;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
 import io.github.ottermc.pvp.transformers.*;
 import io.github.ottermc.screen.hud.HudManager;
+import io.ottermc.transformer.TransformerRegistry;
 
 @Plugin(name = "OtterMC Pvp", version = Client.VERSION, target = "1.8.9")
 public class Main implements Implementation {
 
     @Override
-    public void onPreInit(ClassTransformer transformer) {
+    public void onPreInit(TransformerRegistry registry) {
         CategoryRegistry.register(CategoryList.values());
 
-        transformer.register(EntityPlayerSPTransformer.class);
-        transformer.register(EntityTransformer.class);
-        transformer.register(GuiScreenTransformer.class);
-        transformer.register(ItemRendererTransformer.class);
-        transformer.register(LayerArmorBaseTransformer.class);
-        transformer.register(MinecraftTransformer.class);
-        transformer.register(PlayerControllerMPTransformer.class);
-        transformer.register(RenderEntityItemTransformer.class);
-        transformer.register(RenderGlobalTransformer.class);
-        transformer.register(RenderItemTransformer.class);
+        registry.register(EntityPlayerSPTransformer.class);
+        registry.register(EntityTransformer.class);
+        registry.register(GuiScreenTransformer.class);
+        registry.register(ItemRendererTransformer.class);
+        registry.register(LayerArmorBaseTransformer.class);
+        registry.register(MinecraftTransformer.class);
+        registry.register(PlayerControllerMPTransformer.class);
+        registry.register(RenderEntityItemTransformer.class);
+        registry.register(RenderGlobalTransformer.class);
+        registry.register(RenderItemTransformer.class);
+
+        registry.registerPost(RendererLivingEntityTransformer.class);
     }
 
     @Override
@@ -43,14 +44,6 @@ public class Main implements Implementation {
 
     @Override
     public void onPostInit() {
-        ClassTransformer adapter = ClassTransformer.getInstance();
-        adapter.clear();
-        adapter.register(RendererLivingEntityTransformer.class);
-        try {
-            adapter.execute();
-        } catch (Exception e) {
-            Logger.error(e);
-        }
         registerHuds();
         registerModules();
     }

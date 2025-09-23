@@ -1,4 +1,4 @@
-package io.github.ottermc;
+package io.github.ottermc.keybind;
 
 public abstract class UniversalKeyboard {
 

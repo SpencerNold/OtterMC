@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class Loader {
@@ -55,8 +56,13 @@ public class Loader {
                     System.out.printf("[Wrapper] %s already exists, skipping!\n", name);
                     return;
                 }
-                System.out.printf("[Wrapper] installing %s from %s!\n", name, url);
-                download(destination, new URL(url));
+                if (url == null) {
+                    String b64 = library.getBase64();
+                    System.out.println("[Wrapper] unwrapping base64 dependency!");
+                } else {
+                    System.out.printf("[Wrapper] installing %s from %s!\n", name, url);
+                    download(destination, new URL(url));
+                }
             } catch (IOException e) {
                 handler.handle(e);
             }
@@ -85,6 +91,11 @@ public class Loader {
         input.close();
         output.flush();
         output.close();
+    }
+
+    private static void unwrap(File destination, String base64) throws IOException {
+        byte[] bytes = base64.getBytes(StandardCharsets.UTF_8);
+        Files.write(destination.toPath(), bytes);
     }
 
     private static File getLibraryPath(Library library, File gameDir) {

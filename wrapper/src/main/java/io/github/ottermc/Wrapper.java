@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Wrapper {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         Map<String, String> arguments = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
             if (i == (args.length - 1))
@@ -47,7 +47,7 @@ public class Wrapper {
         if (System.getProperty("os.name").toLowerCase().contains("mac") && !addon.getTargetVersion().equals("1.8.9")) {
             launch.add("-XstartOnFirstThread");
         }
-        launch.add("-javaagent:" + agentJar.getAbsolutePath());
+        launch.add("-javaagent:" + agentJar.getAbsolutePath() + "=" + addon.getName());
         launch.add("-cp");
         launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path"), Loader.getClassPath(addon, gameDir)));
         launch.add(addon.getMainClass());

@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.ottermc.UniversalKeyboard;
+import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;

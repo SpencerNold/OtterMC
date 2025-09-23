@@ -1,6 +1,6 @@
 package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.UniversalKeyboard;
+import io.github.ottermc.keybind.UniversalKeyboard;
 import io.ottermc.transformer.io.ByteBuf;
 import io.github.ottermc.modules.Setting;
 

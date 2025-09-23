@@ -1,15 +1,19 @@
 package agent;
 
-import io.ottermc.transformer.ClassTransformer;
-import io.ottermc.transformer.State;
-import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
-import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
-import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
+import io.github.ottermc.ClassTransformer;
 import io.github.ottermc.api.Implementation;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.c2.ServerController;
 import io.github.ottermc.logging.Logger;
+import io.github.ottermc.transformers.VanillaTransformerManager;
+import io.ottermc.transformer.State;
+import io.ottermc.transformer.Transformable;
+import io.ottermc.transformer.TransformableManager;
+import io.ottermc.transformer.TransformerRegistry;
+import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
+import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
+import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
 import me.spencernold.transformer.Reflection;
 
 import java.io.File;
@@ -32,6 +36,7 @@ public class Agent {
 
     public static void premain(String args, Instrumentation instrumentation) {
         try {
+            Logger.log(args);
             launch(args, instrumentation);
         } catch (Exception e) {
             Logger.error(e);
@@ -41,6 +46,7 @@ public class Agent {
     public static void agentmain(String args, Instrumentation instrumentation) {
         injectionLoad = true;
         try {
+            Logger.log(args);
             launch(args, instrumentation);
         } catch (Exception e) {
             Logger.error(e);
@@ -59,10 +65,10 @@ public class Agent {
             return;
         File dir = file.getParentFile();
         int version = getCompiledJarMajorVersion();
-        ClassTransformer transformer = new ClassTransformer(instrumentation);
+        TransformerRegistry registry = new TransformerRegistry();
         Class<?> main = Class.forName("io.github.ottermc.Client");
-        Constructor<?> constructor = main.getDeclaredConstructor(File.class, ClassTransformer.class);
-        client = (Initializer) constructor.newInstance(dir, transformer);
+        Constructor<?> constructor = main.getDeclaredConstructor(File.class, TransformerRegistry.class);
+        client = (Initializer) constructor.newInstance(dir, registry);
         Agent.setState(State.START);
         File plugins = new File("ottermc" + File.separator + "plugins");
         if (plugins.exists() && plugins.isDirectory()) {
@@ -116,9 +122,11 @@ public class Agent {
             Logger.log("Running vanilla client version, no plugins are installed!");
         setState(State.PRE_INIT);
         for (Implementation implementation : PLUGINS.values())
-            implementation.onPreInit(transformer);
-        transformer.execute();
-        transformer.clear();
+            implementation.onPreInit(registry);
+        ClassTransformer transformer = new ClassTransformer(instrumentation);
+        TransformableManager<Transformable> manager = new VanillaTransformerManager(registry);
+        manager.executePreTransform(transformer);
+        manager.executeInitialTransform(transformer);
         setState(State.INIT);
         client.start();
         for (Implementation implementation : PLUGINS.values())
@@ -176,7 +184,7 @@ public class Agent {
         try {
             return new File(Agent.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         } catch (URISyntaxException e) {
-            e.printStackTrace(Logger.getLoggerErrorStream());
+            Logger.error(e);
             return null;
         }
     }
