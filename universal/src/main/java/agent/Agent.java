@@ -36,7 +36,6 @@ public class Agent {
 
     public static void premain(String args, Instrumentation instrumentation) {
         try {
-            Logger.log(args);
             launch(args, instrumentation);
         } catch (Exception e) {
             Logger.error(e);
@@ -46,7 +45,6 @@ public class Agent {
     public static void agentmain(String args, Instrumentation instrumentation) {
         injectionLoad = true;
         try {
-            Logger.log(args);
             launch(args, instrumentation);
         } catch (Exception e) {
             Logger.error(e);
@@ -87,9 +85,6 @@ public class Agent {
                             JarEntry entry = entries.nextElement();
                             String name = entry.getName();
                             if (name.endsWith(".class")) {
-                                int ver = getMajorVersion(jar, entry);
-                                if (ver > version)
-                                    continue;
                                 name = name.replace('/', '.').substring(0, name.length() - 6);
                                 classNames.add(name);
                             }

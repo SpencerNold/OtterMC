@@ -5,15 +5,8 @@ import io.github.ottermc.modules.Setting;
 
 public class StringSetting extends Setting<String> {
 	
-	private final int lines;
-
 	public StringSetting(String name, String value, int lines) {
 		super(name, value, Type.STRING);
-		this.lines = lines;
-	}
-	
-	public int getLines() {
-		return lines;
 	}
 
 	@Override

@@ -20,6 +20,10 @@ public class Logger {
         print("LOG", message);
     }
 
+    public static void log(Object object) {
+        log(String.valueOf(object));
+    }
+
     public static void logf(String format, Object... args) {
         log(String.format(format, args));
     }
