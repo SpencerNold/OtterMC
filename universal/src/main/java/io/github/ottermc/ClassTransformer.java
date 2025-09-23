@@ -1,6 +1,7 @@
 package io.github.ottermc;
 
-import io.ottermc.transformer.Transformable;
+import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
+import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
 import me.spencernold.transformer.ClassAdapter;
 import me.spencernold.transformer.ClassTransformException;
 import org.objectweb.asm.Opcodes;
@@ -12,7 +13,7 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.security.ProtectionDomain;
 import java.util.List;
 
-public class ClassTransformer implements ClassFileTransformer, Transformable {
+public class ClassTransformer implements ClassFileTransformer {
 
     private static ClassTransformer instance;
 
@@ -21,7 +22,7 @@ public class ClassTransformer implements ClassFileTransformer, Transformable {
 
     public ClassTransformer(Instrumentation instrumentation) {
         this.instrumentation = instrumentation;
-        this.adapter = Transformable.createClassAdapter(Opcodes.V19, Opcodes.ASM9);
+        this.adapter = new ClassAdapter(Opcodes.V19, Opcodes.ASM9, MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class);
         instance = this;
     }
 
@@ -51,12 +52,7 @@ public class ClassTransformer implements ClassFileTransformer, Transformable {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        return transform(className, classfileBuffer);
-    }
-
-    @Override
-    public byte[] transform(String className, byte[] bytes) {
-        return adapter.transform(className, bytes);
+        return adapter.transform(className, classfileBuffer);
     }
 
     public static ClassTransformer getInstance() {

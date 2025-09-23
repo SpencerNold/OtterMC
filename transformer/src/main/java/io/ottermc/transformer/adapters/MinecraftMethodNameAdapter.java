@@ -14,6 +14,8 @@ public class MinecraftMethodNameAdapter extends MethodNameAdapter {
 
     @Override
     public String adapt(String methodName) {
+        if (clazz == null)
+            return methodName;
         Mapping.Method method = clazz.getMethod(methodName);
         if (method == null)
             return methodName;

@@ -14,6 +14,13 @@ public class Logger {
         }
     };
 
+    public static final me.spencernold.transformer.Logger BTCLIB_LOGGER_IMPLEMENTATION = new me.spencernold.transformer.Logger() {
+        @Override
+        public void print(String s) {
+            print(s);
+        }
+    };
+
     private static Consumer<String> logConsumer = null;
 
     public static void log(String message) {

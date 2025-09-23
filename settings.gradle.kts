@@ -2,9 +2,11 @@ rootProject.name = "OtterMC"
 
 include("wrapper")
 include("universal")
-include("transformer")
 include("client-v1.8.9")
 include("client-latest")
+
+include("transformer")
+include("transformer:fml-1.8.9")
 
 include("plugins:v1.8.9:pvp")
 include("plugins:v1.8.9:pvp-export")

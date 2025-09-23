@@ -1,5 +1,6 @@
 import ottermc.Compiler
 import ottermc.Constants
+import ottermc.VersionController
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -14,7 +15,8 @@ kotlin {
 tasks.named("build") {
     doLast {
         val client = file("build/libs/smp-export.jar")
-        Compiler.compile(client, Constants.VERSION_LATEST)
+        val file = Compiler.compile(client, Constants.VERSION_LATEST)
+        VersionController.handle(file, 65)
     }
     group = "plugins"
 }

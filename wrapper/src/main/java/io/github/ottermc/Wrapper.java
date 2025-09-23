@@ -47,11 +47,12 @@ public class Wrapper {
         if (System.getProperty("os.name").toLowerCase().contains("mac") && !addon.getTargetVersion().equals("1.8.9")) {
             launch.add("-XstartOnFirstThread");
         }
-        launch.add("-javaagent:" + agentJar.getAbsolutePath() + "=" + addon.getName());
+        launch.add("-javaagent:" + agentJar.getAbsolutePath() + "=" + addon.getTransformerManagerClass());
         launch.add("-cp");
         launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path"), Loader.getClassPath(addon, gameDir)));
         launch.add(addon.getMainClass());
         launch.addAll(Arrays.asList(args));
+        launch.addAll(Arrays.asList(addon.getArguments()));
         try {
             PrintStream out = System.out;
             PrintStream err = System.err;

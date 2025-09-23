@@ -1,11 +1,20 @@
 {
   "name": "forge-addon-v1.8.9",
   "mainClass": "net.minecraft.launchwrapper.Launch",
+  "targetVersion": "1.8.9",
+  "clientVersion": "v1.8.9",
+  "transformerManagerClass": "io.ottermc.fml189.FMLTransformerManager",
   "arguments": [
     "--tweakClass",
-    "net.minecraftforge.fml.common.launcher.FMLTweaker"
+    "net.minecraftforge.fml.common.launcher.FMLTweaker",
+    "--tweakClass",
+    "io.ottermc.fml189.OMCTweaker"
   ],
   "libraries": [
+    {
+      "name": "org.ow2.asm:asm-all:5.0.3",
+      "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-all/5.0.3/asm-all-5.0.3.jar"
+    },
     {
       "name": "net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9",
       "url": "https://maven.minecraftforge.net/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar"

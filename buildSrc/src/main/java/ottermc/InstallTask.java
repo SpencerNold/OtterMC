@@ -31,17 +31,17 @@ public class InstallTask extends DefaultTask {
             copyVersion(v189, projectDir, clientDir);
             copyVersion(vnew, projectDir, clientDir);
 
-            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", v189, "pvp", "build", "libs", "pvp-remapped.jar");
-            copyPlugin(projectDir, pluginDir, String.format("pvp-export-%s.jar", v189), "plugins", v189, "pvp-export", "build", "libs", "pvp-export-remapped.jar");
-            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", vnew, "smp", "build", "libs", "smp-remapped.jar");
-            copyPlugin(projectDir, pluginDir, String.format("smp-export-%s.jar", vnew), "plugins", vnew, "smp-export", "build", "libs", "smp-export-remapped.jar");
+            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", v189, "pvp", "build", "libs", "pvp-remapped-safe.jar");
+            copyPlugin(projectDir, pluginDir, String.format("pvp-export-%s.jar", v189), "plugins", v189, "pvp-export", "build", "libs", "pvp-export-remapped-safe.jar");
+            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", vnew, "smp", "build", "libs", "smp-remapped-safe.jar");
+            copyPlugin(projectDir, pluginDir, String.format("smp-export-%s.jar", vnew), "plugins", vnew, "smp-export", "build", "libs", "smp-export-remapped-safe.jar");
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }
     }
 
     private void copyVersion(String version, File projectDir, File clientDir) throws IOException {
-        File src = new File(projectDir, String.join(File.separator, "client-" + version, "build", "libs", String.format("client-%s-remapped-joined.jar", version)));
+        File src = new File(projectDir, String.join(File.separator, "client-" + version, "build", "libs", String.format("client-%s-remapped-joined-safe.jar", version)));
         File dst = new File(clientDir, String.format("client-%s.jar", version));
         copy(src, dst);
     }

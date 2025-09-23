@@ -3,6 +3,7 @@
   "mainClass": "net.minecraft.client.main.Main",
   "targetVersion": "1.21.8",
   "clientVersion": "latest",
+  "transformerManagerClass": "io.github.ottermc.transformers.VanillaTransformerManager",
   "arguments": [],
   "libraries": []
 }

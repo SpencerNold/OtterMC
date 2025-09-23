@@ -1,7 +1,4 @@
-import ottermc.Compiler
-import ottermc.Constants
-import ottermc.Joiner
-import ottermc.RunClientTask
+import ottermc.*
 
 plugins {
     `java-library`
@@ -53,6 +50,9 @@ tasks.named("build") {
     doLast {
         val client = file("build/libs/client-latest.jar")
         val mapped = Compiler.compile(client, Constants.VERSION_LATEST)
-        Joiner.joinJars(mapped, universal.asPath.split(File.pathSeparator))
+        var paths = universal.asPath.split(File.pathSeparator)
+        paths = UniversalDependencyHandler.filter(paths)
+        val joined = Joiner.joinJars(mapped, paths)
+        VersionController.handle(joined, 65)
     }
 }

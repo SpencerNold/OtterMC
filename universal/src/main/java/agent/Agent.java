@@ -6,10 +6,8 @@ import io.github.ottermc.api.Initializer;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.c2.ServerController;
 import io.github.ottermc.logging.Logger;
-import io.github.ottermc.transformers.VanillaTransformerManager;
+import io.ottermc.transformer.ReflectionRequired;
 import io.ottermc.transformer.State;
-import io.ottermc.transformer.Transformable;
-import io.ottermc.transformer.TransformableManager;
 import io.ottermc.transformer.TransformerRegistry;
 import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
 import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
@@ -18,7 +16,6 @@ import me.spencernold.transformer.Reflection;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
@@ -33,6 +30,7 @@ public class Agent {
     private static State state = State.BOOT;
     private static boolean injectionLoad = false;
     private static Initializer client;
+    private static TransformerRegistry registry;
 
     public static void premain(String args, Instrumentation instrumentation) {
         try {
@@ -62,8 +60,7 @@ public class Agent {
         if (file == null)
             return;
         File dir = file.getParentFile();
-        int version = getCompiledJarMajorVersion();
-        TransformerRegistry registry = new TransformerRegistry();
+        registry = new TransformerRegistry();
         Class<?> main = Class.forName("io.github.ottermc.Client");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, TransformerRegistry.class);
         client = (Initializer) constructor.newInstance(dir, registry);
@@ -119,43 +116,15 @@ public class Agent {
         for (Implementation implementation : PLUGINS.values())
             implementation.onPreInit(registry);
         ClassTransformer transformer = new ClassTransformer(instrumentation);
-        TransformableManager<Transformable> manager = new VanillaTransformerManager(registry);
-        manager.executePreTransform(transformer);
-        manager.executeInitialTransform(transformer);
+        registry.forEach(transformer::register);
+        transformer.execute();
+        transformer.clear();
         setState(State.INIT);
         client.start();
         for (Implementation implementation : PLUGINS.values())
             implementation.onEnable();
         ServerController.start();
         setState(State.POST_INIT);
-    }
-
-    private static int getCompiledJarMajorVersion() throws IOException {
-        File file = getJarFile();
-        if (file == null)
-            throw new IOException();
-        JarFile jar = new JarFile(file);
-        Enumeration<JarEntry> entries = jar.entries();
-        int version = -1;
-        while (entries.hasMoreElements()) {
-            JarEntry entry = entries.nextElement();
-            if (entry.getName().endsWith(".class")) {
-                version = getMajorVersion(jar, entry);
-                break;
-            }
-        }
-        jar.close();
-        return version;
-    }
-
-    private static int getMajorVersion(JarFile jar, JarEntry entry) throws IOException {
-        if (entry.getSize() < 8)
-            return -1;
-        InputStream input = jar.getInputStream(entry);
-        byte[] bytes = new byte[8];
-        if (input.read(bytes) != 8)
-            return -1;
-        return (((bytes[6] & 0xFF) << 8) | (bytes[7] & 0xFF));
     }
 
     private static Class<?> findClassOrNullUnloaded(String name) {
@@ -198,5 +167,10 @@ public class Agent {
 
     public static Initializer getClient() {
         return client;
+    }
+
+    @ReflectionRequired
+    public static TransformerRegistry getTransformerRegistry() {
+        return registry;
     }
 }
