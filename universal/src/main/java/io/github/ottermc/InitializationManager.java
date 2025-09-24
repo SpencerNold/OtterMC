@@ -1,6 +1,7 @@
 package io.github.ottermc;
 
 import agent.Agent;
+import agent.ClientFactory;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.events.listeners.RunTickListener;
@@ -42,12 +43,13 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
     }
 
     private void attemptPostInitializeProcess() {
-        Agent.PLUGINS.forEach(((plugin, implementation) -> {
+        ClientFactory.Client client = ClientFactory.Client.getInstance();
+        client.getPluginMap().forEach(((plugin, implementation) -> {
             implementation.onPostInit();
         }));
         postInitClient();
         try {
-            Agent.getClient().load();
+            client.getClient().load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

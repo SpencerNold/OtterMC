@@ -14,8 +14,6 @@ dependencies {
     } else {
         implementation(files("libs/tools.jar"))
     }
-    // Loaders
-    implementation(project(":transformer:fml-1.8.9"))
 }
 
 tasks.withType<Jar> {

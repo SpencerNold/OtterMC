@@ -1,18 +1,19 @@
 package io.github.ottermc.c2;
 
-import agent.Agent;
-import io.ottermc.transformer.State;
+import agent.ClientFactory;
+import agent.StateRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.api.Initializer;
+import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.Setting;
 import io.github.ottermc.modules.setting.*;
 import io.github.ottermc.render.Color;
+import io.ottermc.transformer.State;
 import me.spencernold.kwaf.Http;
 import me.spencernold.kwaf.Route;
 import me.spencernold.kwaf.http.HttpRequest;
@@ -27,7 +28,7 @@ public class APIController {
 
     @Route(method = Http.Method.GET, path = "/state")
     public State getState() {
-        return Agent.getState();
+        return StateRegistry.getState();
     }
 
     @Route(method = Http.Method.GET, path = "/modstat")
@@ -127,7 +128,7 @@ public class APIController {
         if (module.isActive() != state)
             module.setActive(state);
         try {
-            Agent.getClient().save();
+            ClientFactory.Client.getInstance().getClient().save();
         } catch (IOException e) {
             return -1;
         }

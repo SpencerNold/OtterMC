@@ -10,14 +10,14 @@ public class Logger {
     public static final me.spencernold.kwaf.logger.Logger KWAF_LOGGER_IMPLEMENTATION = new me.spencernold.kwaf.logger.Logger() {
         @Override
         public void log(Severity severity, String msg) {
-            print(severity.name(), msg);
+            Logger.print(severity.name(), msg);
         }
     };
 
     public static final me.spencernold.transformer.Logger BTCLIB_LOGGER_IMPLEMENTATION = new me.spencernold.transformer.Logger() {
         @Override
         public void print(String s) {
-            print(s);
+            Logger.print("BTCLib", s);
         }
     };
 
@@ -59,11 +59,11 @@ public class Logger {
     }
 
     private static void print(String prefix, String message) {
-        String value = String.format("[OtterMC: %s] %s\n", prefix, message);
+        String value = String.format("[OtterMC: %s] %s", prefix, message);
         if (UniversalLog4j.isActive())
             UniversalLog4j.log(value);
         else
-            System.out.print(value);
+            System.out.println(value);
         if (logConsumer != null)
             logConsumer.accept(value);
     }

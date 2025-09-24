@@ -3,7 +3,9 @@ package io.github.ottermc;
 import io.github.ottermc.addon.Addon;
 import io.github.ottermc.addon.Loader;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.*;
@@ -31,10 +33,10 @@ public class Wrapper {
             return;
         }
         File agentJar = findAgentJar(addon, gameDir);
-        startGame(addon, gameDir, agentJar, args);
+        startGame(addon, arguments.getOrDefault("plugins", null), gameDir, agentJar, args);
     }
 
-    private static void startGame(Addon addon, File gameDir, File agentJar, String[] args) {
+    private static void startGame(Addon addon, String plugins, File gameDir, File agentJar, String[] args) {
         String java = String.join(File.separator, System.getProperty("java.home"), "bin", "java");
         List<String> launch = new ArrayList<>();
         launch.add(java);
@@ -47,9 +49,10 @@ public class Wrapper {
         if (System.getProperty("os.name").toLowerCase().contains("mac") && !addon.getTargetVersion().equals("1.8.9")) {
             launch.add("-XstartOnFirstThread");
         }
-        launch.add("-javaagent:" + agentJar.getAbsolutePath() + "=" + addon.getTransformerManagerClass());
+        if (addon.isAgentic())
+            launch.add("-javaagent:" + agentJar.getAbsolutePath() + (plugins == null ? "" : "=" + plugins));
         launch.add("-cp");
-        launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path"), Loader.getClassPath(addon, gameDir)));
+        launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path") + File.pathSeparator + new File(agentJar.getParentFile(), "fml-1.8.9.jar").getAbsolutePath(), Loader.getClassPath(addon, gameDir)));
         launch.add(addon.getMainClass());
         launch.addAll(Arrays.asList(args));
         launch.addAll(Arrays.asList(addon.getArguments()));

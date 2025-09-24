@@ -6,13 +6,8 @@ import io.github.ottermc.api.Initializer;
 import io.github.ottermc.api.Plugin;
 import io.github.ottermc.c2.ServerController;
 import io.github.ottermc.logging.Logger;
-import io.ottermc.transformer.ReflectionRequired;
 import io.ottermc.transformer.State;
 import io.ottermc.transformer.TransformerRegistry;
-import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
-import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
-import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
-import me.spencernold.transformer.Reflection;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,12 +20,7 @@ import java.util.jar.JarFile;
 
 public class Agent {
 
-    public static final Map<Plugin, Implementation> PLUGINS = new HashMap<>();
-
-    private static State state = State.BOOT;
     private static boolean injectionLoad = false;
-    private static Initializer client;
-    private static TransformerRegistry registry;
 
     public static void premain(String args, Instrumentation instrumentation) {
         try {
@@ -50,127 +40,27 @@ public class Agent {
     }
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
-        // Setup KWAF
-        me.spencernold.kwaf.logger.Logger.Companion.setSystemLogger(Logger.KWAF_LOGGER_IMPLEMENTATION);
-        // Setup BTCLib
-        Reflection reflection = new Reflection(MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class, MinecraftFieldNameAdapter.class);
-        Reflection.setSystemReflectClass(reflection);
-        // Start
-        File file = getJarFile();
-        if (file == null)
-            return;
-        File dir = file.getParentFile();
-        registry = new TransformerRegistry();
-        Class<?> main = Class.forName("io.github.ottermc.Client");
-        Constructor<?> constructor = main.getDeclaredConstructor(File.class, TransformerRegistry.class);
-        client = (Initializer) constructor.newInstance(dir, registry);
-        Agent.setState(State.START);
-        File plugins = new File("ottermc" + File.separator + "plugins");
-        if (plugins.exists() && plugins.isDirectory()) {
-            String target = (String) main.getDeclaredField("TARGET").get(null);
-            File[] files = plugins.listFiles();
-            if (files != null) {
-                List<String> classNames = new ArrayList<>();
-                for (File f : files) {
-                    if (!f.getName().endsWith(".jar"))
-                        continue;
-                    try {
-                        JarFile jar = new JarFile(f);
-                        instrumentation.appendToSystemClassLoaderSearch(jar);
-                        Enumeration<JarEntry> entries = jar.entries();
-                        while (entries.hasMoreElements()) {
-                            JarEntry entry = entries.nextElement();
-                            String name = entry.getName();
-                            if (name.endsWith(".class")) {
-                                name = name.replace('/', '.').substring(0, name.length() - 6);
-                                classNames.add(name);
-                            }
-                        }
-                        jar.close();
-                    } catch (IOException ignored) {
-                        Logger.error("failed to load plugin: " + f.getName());
-                    }
-                }
-                for (String name : classNames) {
-                    Class<?> clazz = findClassOrNullUnloaded(name);
-                    if (clazz == null)
-                        continue;
-                    if (clazz.isAnnotationPresent(Plugin.class)) {
-                        Plugin plugin = clazz.getAnnotation(Plugin.class);
-                        if (!plugin.target().equals(target))
-                            continue;
-                        try {
-                            Implementation implementation = (Implementation) createSafeInstance(clazz);
-                            PLUGINS.put(plugin, implementation);
-                            Logger.log("loading plugin: " + plugin.name());
-                        } catch (Exception ignored) {
-                            Logger.errorf("failed to initialize plugin: %s (%s)\n", plugin.name(), plugin.version());
-                        }
-                    }
-                }
-            }
-        }
-        if (PLUGINS.isEmpty())
-            Logger.log("Running vanilla client version, no plugins are installed!");
-        setState(State.PRE_INIT);
-        for (Implementation implementation : PLUGINS.values())
-            implementation.onPreInit(registry);
+        ClientFactory.Client client = new ClientFactory()
+                .setPlugins((args == null || args.isEmpty()) ? new String[0] : args.split(","))
+                .setPluginLoader(new InstrumentationPluginLoader(instrumentation))
+                .setClassLoader(ClassLoader.getSystemClassLoader())
+                .create();
+        TransformerRegistry registry = client.getRegistry();
+        Initializer initializer = client.getClient();
+        Map<Plugin, Implementation> plugins = client.getPluginMap();
         ClassTransformer transformer = new ClassTransformer(instrumentation);
         registry.forEach(transformer::register);
         transformer.execute();
         transformer.clear();
-        setState(State.INIT);
-        client.start();
-        for (Implementation implementation : PLUGINS.values())
+        StateRegistry.setState(State.INIT);
+        initializer.start();
+        for (Implementation implementation : plugins.values())
             implementation.onEnable();
         ServerController.start();
-        setState(State.POST_INIT);
-    }
-
-    private static Class<?> findClassOrNullUnloaded(String name) {
-        try {
-            return Class.forName(name, false, ClassLoader.getSystemClassLoader());
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            return null;
-        }
-    }
-
-    private static Object createSafeInstance(Class<?> clazz) {
-        try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor();
-            return constructor.newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static File getJarFile() {
-        try {
-            return new File(Agent.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-        } catch (URISyntaxException e) {
-            Logger.error(e);
-            return null;
-        }
+        StateRegistry.setState(State.POST_INIT);
     }
 
     public static boolean isInjectionLoad() {
         return injectionLoad;
-    }
-
-    public static State getState() {
-        return state;
-    }
-
-    public static void setState(State state) {
-        Agent.state = state;
-    }
-
-    public static Initializer getClient() {
-        return client;
-    }
-
-    @ReflectionRequired
-    public static TransformerRegistry getTransformerRegistry() {
-        return registry;
     }
 }

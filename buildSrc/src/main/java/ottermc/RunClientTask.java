@@ -115,7 +115,7 @@ public class RunClientTask {
             classPath.add(gameJar.getAbsolutePath());
             if (libDirExists)
                 walk(libDir, f -> classPath.add(f.getAbsolutePath()));
-            String agent = String.format("-javaagent:%s=io.github.ottermc.transformers.VanillaTransformerManager", file.getAbsolutePath());
+            String agent = String.format("-javaagent:%s=pvp-v1.8.9,pvp-export-v1.8.9,smp-latest,smp-export-latest", file.getAbsolutePath());
             String nativePath = "-Djava.library.path=" + binDir.getAbsolutePath();
             String assetsDir = BuildTool.getJoinedWithSeparator(mcDir.getAbsolutePath(), "assets");
 

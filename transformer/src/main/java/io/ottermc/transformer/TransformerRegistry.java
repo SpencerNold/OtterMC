@@ -6,34 +6,22 @@ import java.util.function.Consumer;
 
 public class TransformerRegistry {
 
-    @ReflectionRequired
-    private final List<String> transformerRegistry = new ArrayList<>();
-    @ReflectionRequired
-    private final List<String> postTransformerRegistry = new ArrayList<>();
+    private final List<Class<?>> transformerRegistry = new ArrayList<>();
+    private final List<Class<?>> postTransformerRegistry = new ArrayList<>();
 
     public void register(Class<?> clazz) {
-        transformerRegistry.add(clazz.getName());
+        transformerRegistry.add(clazz);
     }
 
     public void registerPost(Class<?> clazz) {
-        postTransformerRegistry.add(clazz.getName());
+        postTransformerRegistry.add(clazz);
     }
 
     public void forEach(Consumer<? super Class<?>> consumer) {
-        try {
-            for (String name : transformerRegistry)
-                consumer.accept(Class.forName(name));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        transformerRegistry.forEach(consumer);
     }
 
     public void forEachPost(Consumer<? super Class<?>> consumer) {
-        try {
-            for (String name : postTransformerRegistry)
-                consumer.accept(Class.forName(name));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        postTransformerRegistry.forEach(consumer);
     }
 }

@@ -1,17 +1,13 @@
-// Export plugin, meant for updating plugins at runtime (future only!)
-
 import ottermc.Compiler
 import ottermc.Constants
 import ottermc.VersionController
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    java
 }
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
 tasks.named("build") {
@@ -23,17 +19,6 @@ tasks.named("build") {
     group = "plugins"
 }
 
-tasks.jar {
-    from({
-        configurations.runtimeClasspath.get()
-            .filter {
-                it.name.startsWith("kotlin-stdlib")
-            }.map { zipTree(it) }
-    })
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
 dependencies {
-    implementation(kotlin("stdlib"))
     implementation(project(":client-v1.8.9"))
 }

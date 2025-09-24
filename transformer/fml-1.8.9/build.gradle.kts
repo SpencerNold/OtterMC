@@ -7,6 +7,5 @@ java {
 }
 
 dependencies {
-    implementation(project(":transformer"))
     implementation(files("libs/launchwrapper-1.12.jar"))
 }
