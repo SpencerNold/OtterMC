@@ -68,14 +68,14 @@ public class BiomeFinder extends Module implements RunTickListener, DrawOverlayL
             int x = 0, y = 0, z = 0;
             long seed = 0L;
 
-            World world = client.world;
-            DynamicRegistryManager registries = world.getRegistryManager();
+            //World world = client.world;
+            //DynamicRegistryManager registries = world.getRegistryManager();
 
-            ChunkGenerator generator = new NoiseChunkGenerator(biomeSource, noiseSettings);
-            NoiseConfig config = NoiseConfig.create(generator, registries, seed);
-            MultiNoiseUtil.MultiNoiseSampler sampler = config.getMultiNoiseSampler();
-            int bx = x >> 2, by = y >> 2, bz = z >> 2;
-            RegistryEntry<Biome> biome = generator.getBiomeSource().getBiome(bx, by, bx, sampler);
+            //ChunkGenerator generator = new NoiseChunkGenerator(biomeSource, noiseSettings);
+            //NoiseConfig config = NoiseConfig.create(generator, registries, seed);
+            //MultiNoiseUtil.MultiNoiseSampler sampler = config.getMultiNoiseSampler();
+            //int bx = x >> 2, by = y >> 2, bz = z >> 2;
+            //RegistryEntry<Biome> biome = generator.getBiomeSource().getBiome(bx, by, bx, sampler);
 
             Arrays.fill(cells, 0xFFF509F5);
         }
