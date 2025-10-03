@@ -7,11 +7,8 @@ import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.pvp.modules.CategoryList;
 import io.github.ottermc.pvp.screen.hud.ClientDisplay;
 import io.github.ottermc.render.Color;
-import io.github.ottermc.screen.render.Icon;
 
 public class Coordinate extends Module {
-
-    private static final Icon ICON = Icon.getIconIgnoreException("module/map_icon.png");
 
     private static Coordinate instance;
 
@@ -31,11 +28,6 @@ public class Coordinate extends Module {
     @Override
     public void onDisable() {
         ClientDisplay.COORDINATE.setVisible(false);
-    }
-
-    @Override
-    public Icon getIcon() {
-        return ICON;
     }
 
     @Override

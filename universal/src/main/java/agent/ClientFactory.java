@@ -83,6 +83,10 @@ public class ClientFactory {
                         pluginLoader.load(pluginFile);
                         JarFile jar = new JarFile(pluginFile);
                         ZipEntry entry = jar.getEntry("MainClassManifest.txt");
+                        if (entry == null) {
+                            Logger.error("missing MainClassManifest.txt, skipping: " + pluginName);
+                            continue;
+                        }
                         InputStream input = jar.getInputStream(entry);
                         String className = new String(InputStreams.readAllBytes(input), StandardCharsets.UTF_8);
                         input.close();
@@ -95,7 +99,7 @@ public class ClientFactory {
                         if (clazz.isAnnotationPresent(Plugin.class)) {
                             Plugin plugin = clazz.getAnnotation(Plugin.class);
                             if (!plugin.target().equals(target)) {
-                                Logger.errorf("skipping %s (%s) as the client version is %s", plugin.name(), plugin.target(), target);
+                                Logger.warnf("skipping %s (%s) as the client version is %s", plugin.name(), plugin.target(), target);
                                 continue;
                             }
                             Implementation implementation = (Implementation) createSafeInstance(clazz);

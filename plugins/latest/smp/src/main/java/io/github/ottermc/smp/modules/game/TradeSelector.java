@@ -157,9 +157,4 @@ public class TradeSelector extends TradeModule implements RunTickListener, DrawO
         }
         return null;
     }
-
-    @Override
-    public Object getIcon() {
-        return null;
-    }
 }

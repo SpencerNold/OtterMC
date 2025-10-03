@@ -2,11 +2,8 @@ package io.github.ottermc.pvp.modules.hypixel;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.screen.render.Icon;
 
 public class GameMacro extends HypixelModule implements RunTickListener {
-
-    private static final Icon ICON = Icon.getIconIgnoreException("module/keyboard_icon.png");
 
     private static GameMacro instance;
 
@@ -30,11 +27,6 @@ public class GameMacro extends HypixelModule implements RunTickListener {
         if (!isConnectedToHypixel())
             return;
 
-    }
-
-    @Override
-    public Icon getIcon() {
-        return ICON;
     }
 
     public static boolean isModActive() {

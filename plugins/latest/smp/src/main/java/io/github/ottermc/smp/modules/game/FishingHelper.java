@@ -61,9 +61,4 @@ public class FishingHelper extends Module implements RunTickListener {
             }
         }
     }
-
-    @Override
-    public Object getIcon() {
-        return null;
-    }
 }

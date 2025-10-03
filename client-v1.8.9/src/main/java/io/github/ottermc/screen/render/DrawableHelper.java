@@ -159,35 +159,6 @@ public class DrawableHelper {
 		}
 	}
 
-	public void drawIcon(Icon icon, int x, int y, float scale, int color) {
-		scale *= 0.5f;
-		GlStateManager.pushMatrix();
-		GlStateManager.enableAlpha();
-		GlStateManager.alphaFunc(516, 0.1F);
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(770, 771);
-		GlStateManager.enableTexture2D();
-		if ((color & 0xFC000000) == 0)
-			color |= 0xFF000000;
-		float red = (color >> 16 & 0xFF) / 255.0F;
-		float green = (color >> 8 & 0xFF) / 255.0F;
-		float blue = (color & 0xFF) / 255.0F;
-		float alpha = (color >> 24 & 0xFF) / 255.0F;
-		GlStateManager.color(red, green, blue, alpha);
-		GlStateManager.bindTexture(icon.getTextureId());
-		GlStateManager.scale(scale, scale, scale);
-		float sinv = 1.0f / scale;
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		Gui.drawModalRectWithCustomSizedTexture((int) (x * sinv), (int) (y * sinv), 0, 0, 64, 64, 64, 64);
-		GlStateManager.scale(sinv, sinv, sinv);
-		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-		GlStateManager.disableTexture2D();
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
-		GlStateManager.popMatrix();
-	}
-
 	public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;
@@ -199,10 +170,6 @@ public class DrawableHelper {
 		renderer.pos(x + width, y, 100.0).tex((float) (textureX + width) * f, (float) (textureY) * f1).endVertex();
 		renderer.pos(x, y, 100.0).tex((float) (textureX) * f, (float) (textureY) * f1).endVertex();
 		tessellator.draw();
-	}
-
-	public void drawIcon(Icon icon, int x, int y, int color) {
-		drawIcon(icon, x, y, 1.0f, color);
 	}
 
 	public double getWidth() {

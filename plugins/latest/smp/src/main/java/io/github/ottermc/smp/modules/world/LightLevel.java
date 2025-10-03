@@ -33,9 +33,4 @@ public class LightLevel extends Module implements Listener {
 
         return world.getLightLevel(LightType.BLOCK, pos) < 1;
     }
-
-    @Override
-    public Object getIcon() {
-        return null;
-    }
 }

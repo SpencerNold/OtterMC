@@ -2,7 +2,7 @@ package io.github.ottermc.modules;
 
 import io.ottermc.transformer.io.ByteBuf;
 
-public abstract class Module implements Renderable, Writable<ByteBuf> {
+public abstract class Module implements Writable<ByteBuf> {
 
     protected final String name;
     protected final Category category;
