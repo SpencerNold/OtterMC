@@ -1,6 +1,7 @@
 package io.github.ottermc.keybind;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -8,7 +9,7 @@ public class GLFWKeyboard extends UniversalKeyboard {
 
     @Override
     protected String keyToName(int key) {
-        return InputUtil.fromKeyCode(key, 0).getTranslationKey();
+        return InputUtil.fromKeyCode(new KeyInput(key, 0, 0)).getTranslationKey();
     }
 
     @Override
