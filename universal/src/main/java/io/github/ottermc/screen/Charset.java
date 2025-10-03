@@ -1,4 +1,4 @@
-package io.github.ottermc.screen.font;
+package io.github.ottermc.screen;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,6 +18,8 @@ public class Charset {
 	
 	public Charset(String name) {
 		InputStream stream = getClass().getResourceAsStream(name);
+		if (stream == null)
+			return;
 		InputStreamReader reader = new InputStreamReader(stream);
 		Gson gson = new GsonBuilder().create();
 		JsonElement element = gson.fromJson(reader, JsonElement.class);

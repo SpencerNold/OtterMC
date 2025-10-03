@@ -1,22 +1,17 @@
 package io.github.ottermc.screen.font;
 
+import io.github.ottermc.screen.Charset;
+import io.github.ottermc.screen.UniversalFontRenderer;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GlStateManager;
 
-public class FontRenderer {
-
-	public static final FontRenderer OMC_TTF_RENDERER = new FontRenderer(Font.getFontIgnoreException("/font/omc_ttf_font.png"), new Charset("/font/omc_ttf_charset.json"));
-	
-	private final Font font;
-	private final Charset charset;
-
-	public FontRenderer(Font font, Charset charset) {
-		this.font = font;
-		this.charset = charset;
+public class FontRenderer extends UniversalFontRenderer {
+	public FontRenderer(ClientFont font, Charset charset) {
+		super(font, charset);
 	}
 	
-	public int getStringWidth(String text) {
+	public float getStringWidthI(String text) {
 		float width = 0;
 		for (char c : text.toCharArray()) {
 			if (c == ' ') {
@@ -28,11 +23,11 @@ public class FontRenderer {
 		return (int) width;
 	}
 	
-	public int getStringHeight() {
-		return 36;
+	public float getStringHeightI() {
+		return 36.0f;
 	}
 
-	public void renderText(String text, float x, float y, int color) {
+	public void drawTextI(String text, float x, float y, int color) {
 		if (text == null)
 			return;
 		GlStateManager.pushMatrix();
@@ -48,7 +43,7 @@ public class FontRenderer {
 		float alpha = (color >> 24 & 0xFF) / 255.0F;
 		GlStateManager.color(red, green, blue, alpha);
 		GlStateManager.bindTexture(font.getTextureId());
-		int width = 0;
+		float width = 0;
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 			if (c == ' ') {
@@ -89,8 +84,9 @@ public class FontRenderer {
 		GL11.glVertex2d((x + width), y);
 		GL11.glEnd();
 	}
-	
-	public boolean isCharacterSupported(char c) {
+
+	@Override
+	public boolean isCharacterSupportedI(char c) {
 		return charset.isCharacterSupported(c);
 	}
 }

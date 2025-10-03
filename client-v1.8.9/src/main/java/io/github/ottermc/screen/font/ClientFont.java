@@ -1,5 +1,6 @@
 package io.github.ottermc.screen.font;
 
+import io.github.ottermc.screen.Font;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
 import javax.imageio.ImageIO;
@@ -7,27 +8,21 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Font {
+public class ClientFont extends Font {
 
-	private final int texId;
-
-	public Font(String name) throws IOException {
-		texId = TextureUtil.glGenTextures();
+	public ClientFont(String name) throws IOException {
+		super(TextureUtil.glGenTextures());
 		InputStream input = getClass().getResourceAsStream(name);
 		if (input != null) {
 			BufferedImage image = ImageIO.read(input);
-			TextureUtil.uploadTextureImageAllocate(texId, image, true, true);
+			TextureUtil.uploadTextureImageAllocate(textureId, image, true, true);
 			input.close();
 		}
 	}
 
-	public int getTextureId() {
-		return texId;
-	}
-
-	public static Font getFontIgnoreException(String name) {
+	public static ClientFont getFontIgnoreException(String name) {
 		try {
-			return new Font(name);
+			return new ClientFont(name);
 		} catch (Exception e) {
 			return null;
 		}

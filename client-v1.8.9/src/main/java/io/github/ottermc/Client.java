@@ -8,6 +8,10 @@ import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.logging.UniversalLog4j;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.screen.Charset;
+import io.github.ottermc.screen.UniversalFontRenderer;
+import io.github.ottermc.screen.font.ClientFont;
+import io.github.ottermc.screen.font.FontRenderer;
 import io.github.ottermc.screen.hud.Component;
 import io.github.ottermc.screen.hud.HudManager;
 import io.github.ottermc.screen.hud.MovableComponent;
@@ -67,6 +71,7 @@ public class Client implements Initializer {
 
     @ReflectionRequired
     public void onPostInit() {
+        UniversalFontRenderer.register(new FontRenderer(ClientFont.getFontIgnoreException("/font/omc_ttf_font.png"), new Charset("/font/omc_ttf_charset.json")));
         registerKeybinds();
         Display.setTitle(Client.NAME + " " + Client.VERSION);
         Display.setIcon(new ByteBuffer[]{Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"),});
