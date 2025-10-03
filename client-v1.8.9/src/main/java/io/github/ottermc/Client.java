@@ -16,6 +16,9 @@ import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.tools.Log4j;
+import io.github.ottermc.transformers.EntityRendererTransformer;
+import io.github.ottermc.transformers.GameSettingsTransformer;
+import io.github.ottermc.transformers.GuiIngameTransformer;
 import io.github.ottermc.transformers.MinecraftTransformer;
 import io.ottermc.transformer.ReflectionRequired;
 import io.ottermc.transformer.TransformerRegistry;
@@ -50,9 +53,9 @@ public class Client implements Initializer {
         instance = this;
         this.clientDirectory = file;
         this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
-        //registry.register(EntityRendererTransformer.class);
-        //registry.register(GameSettingsTransformer.class);
-        //registry.register(GuiIngameTransformer.class);
+        registry.register(EntityRendererTransformer.class);
+        registry.register(GameSettingsTransformer.class);
+        registry.register(GuiIngameTransformer.class);
         registry.register(MinecraftTransformer.class);
     }
 

@@ -20,8 +20,8 @@ import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.jar.JarEntry;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,7 +67,7 @@ public class ClientFactory {
             Initializer client = (Initializer) constructor.newInstance(dir, registry);
             StateRegistry.setState(State.START);
             File plugins = new File("ottermc" + File.separator + "plugins");
-            if (plugins.exists() && plugins.isDirectory() && false) {
+            if (plugins.exists() && plugins.isDirectory()) {
                 String target = (String) main.getDeclaredField("TARGET").get(null);
                 for (String pluginName : pluginNames) {
                     File pluginFile = new File(plugins, pluginName + ".jar");
