@@ -9,14 +9,8 @@ import io.github.ottermc.logging.Logger;
 import io.ottermc.transformer.State;
 import io.ottermc.transformer.TransformerRegistry;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Constructor;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.Map;
 
 public class Agent {
 
@@ -40,7 +34,7 @@ public class Agent {
     }
 
     private static void launch(String args, Instrumentation instrumentation) throws Exception {
-        ClientFactory.Client client = new ClientFactory()
+        Client client = new ClientFactory()
                 .setPlugins((args == null || args.isEmpty()) ? new String[0] : args.split(","))
                 .setPluginLoader(new InstrumentationPluginLoader(instrumentation))
                 .setClassLoader(ClassLoader.getSystemClassLoader())
@@ -56,7 +50,6 @@ public class Agent {
         initializer.start();
         for (Implementation implementation : plugins.values())
             implementation.onEnable();
-        ServerController.start();
         StateRegistry.setState(State.POST_INIT);
     }
 

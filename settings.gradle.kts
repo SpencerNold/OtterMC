@@ -6,6 +6,7 @@ include("client-v1.8.9")
 include("client-latest")
 
 include("transformer")
+include("transformer:common")
 include("transformer:fml-1.8.9")
 
 include("plugins:v1.8.9:pvp")

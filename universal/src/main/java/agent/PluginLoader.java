@@ -1,8 +1,17 @@
 package agent;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.function.Consumer;
 
-public interface PluginLoader {
-    void load(File file) throws IOException;
+public class PluginLoader {
+
+    private final Consumer<File> pluginConsumer;
+
+    public PluginLoader(Consumer<File> pluginConsumer) {
+        this.pluginConsumer = pluginConsumer;
+    }
+
+    public void load(File file) {
+        this.pluginConsumer.accept(file);
+    }
 }

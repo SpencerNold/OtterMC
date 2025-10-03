@@ -1,6 +1,7 @@
 package io.github.ottermc;
 
 import agent.Agent;
+import agent.Client;
 import agent.ClientFactory;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
@@ -43,7 +44,7 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
     }
 
     private void attemptPostInitializeProcess() {
-        ClientFactory.Client client = ClientFactory.Client.getInstance();
+        Client client = Client.getInstance();
         client.getPluginMap().forEach(((plugin, implementation) -> {
             implementation.onPostInit();
         }));

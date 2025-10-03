@@ -1,6 +1,6 @@
 package io.github.ottermc.c2;
 
-import agent.ClientFactory;
+import agent.Client;
 import agent.StateRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -128,7 +128,7 @@ public class APIController {
         if (module.isActive() != state)
             module.setActive(state);
         try {
-            ClientFactory.Client.getInstance().getClient().save();
+            Client.getInstance().getClient().save();
         } catch (IOException e) {
             return -1;
         }

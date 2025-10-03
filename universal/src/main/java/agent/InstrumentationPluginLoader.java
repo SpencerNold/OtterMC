@@ -1,22 +1,26 @@
 package agent;
 
+import io.github.ottermc.logging.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.util.function.Consumer;
 import java.util.jar.JarFile;
 
-public class InstrumentationPluginLoader implements PluginLoader {
-
-    private final Instrumentation instrumentation;
+public class InstrumentationPluginLoader extends PluginLoader {
 
     public InstrumentationPluginLoader(Instrumentation instrumentation) {
-        this.instrumentation = instrumentation;
-    }
-
-    @Override
-    public void load(File file) throws IOException {
-        JarFile jar = new JarFile(file);
-        instrumentation.appendToSystemClassLoaderSearch(jar);
-        jar.close();
+        super(file -> {
+            try {
+                if (!file.exists())
+                    return;
+                JarFile jar = new JarFile(file);
+                instrumentation.appendToSystemClassLoaderSearch(jar);
+                jar.close();
+            } catch (IOException e) {
+                Logger.error(e);
+            }
+        });
     }
 }

@@ -1,39 +1,28 @@
 package io.ottermc.fml189;
 
+import io.ottermc.common.*;
 import net.minecraft.launchwrapper.ITweaker;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class OMCTweaker implements ITweaker {
-
-    private static final String[] mandatoryClassLoad = new String[]{
-            "me.spencernold.transformer.ClassAdapter",
-            "io.ottermc.transformer.adapters.MinecraftClassNameAdapter",
-            "io.ottermc.transformer.adapters.MinecraftMethodNameAdapter"
-    };
-
-    private File clientDir;
-
     @Override
-    public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profileName) {
-        this.clientDir = new File(clientDir, "ottermc");
+    public void acceptOptions(List<String> list, File file, File file1, String s) {
+
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void injectIntoClassLoader(LaunchClassLoader launchClassLoader) {
-        File client = new File(clientDir, "client-v1.8.9.jar");
-        try {
-            launchClassLoader.addURL(client.toURI().toURL());
-            for (String className : mandatoryClassLoad)
-                Class.forName(className, true, launchClassLoader);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-        launchClassLoader.registerTransformer("io.ottermc.fml189.OMCTransformer");
+        ((List<String>) Launch.blackboard.get("TweakClasses")).add("io.ottermc.fml189.LateInitTweaker");
     }
 
     @Override
