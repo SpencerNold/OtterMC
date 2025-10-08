@@ -6,10 +6,13 @@ import me.spencernold.transformer.ClassAdapter;
 import me.spencernold.transformer.ClassTransformException;
 import org.objectweb.asm.Opcodes;
 
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.ProtectionDomain;
 import java.util.List;
 

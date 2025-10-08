@@ -40,8 +40,8 @@ public abstract class UniversalFontRenderer  {
         this.charset = charset;
     }
 
-    public abstract boolean isCharacterSupportedI(char c);
-    public abstract float getStringWidthI(String text);
-    public abstract float getStringHeightI();
-    public abstract void drawTextI(String text, float x, float y, int color);
+    protected abstract boolean isCharacterSupportedI(char c);
+    protected abstract float getStringWidthI(String text);
+    protected abstract float getStringHeightI();
+    protected abstract void drawTextI(String text, float x, float y, int color);
 }

@@ -36,6 +36,7 @@ public class Main implements Implementation {
 
     private void registerModules() {
         ModuleManager manager = Client.getInstance().getModuleManager();
+        // Client
         // Game
         // Movement
         // World

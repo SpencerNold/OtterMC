@@ -15,6 +15,7 @@ dependencies {
     api("org.lwjgl:lwjgl-glfw:3.3.3")
     api("it.unimi.dsi:fastutil:8.5.15")
     api("com.google.code.gson:gson:2.11.0")
+    api("io.netty:netty-all:4.1.118.Final")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.24.1")
 
     // Client dependencies

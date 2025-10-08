@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -26,6 +27,8 @@ import org.lwjgl.glfw.GLFW;
 import java.util.Arrays;
 
 public class BiomeFinder extends Module implements RunTickListener, DrawOverlayListener {
+
+    private static final Identifier ID = Identifier.of("omc", "omc_ttf_font.png");
 
     private final StringSetting seedSetting = new StringSetting("Seed", "0", 1);
     private final BooleanSetting largeBiomesSetting = new BooleanSetting("Large Biomes", false);
@@ -104,6 +107,7 @@ public class BiomeFinder extends Module implements RunTickListener, DrawOverlayL
         context.drawVerticalLine(offsX + (width / 2), offsY - 1, offsY + height, -1);
 
         // Draw text
+        context.drawTexturedQuad(ID, 0, 0, 0, 0, 100, 100, 100, 100);
     }
 
     @Override

@@ -1,17 +1,16 @@
 package io.github.ottermc;
 
-import io.github.ottermc.keybind.UniversalKeyboard;
-import io.ottermc.transformer.ReflectionRequired;
 import io.github.ottermc.api.Initializer;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.GLFWKeyboard;
 import io.github.ottermc.keybind.KeybindManager;
+import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.logging.UniversalLog4j;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.tools.Log4j;
-import io.github.ottermc.transformers.InGameHudTransformer;
-import io.github.ottermc.transformers.MinecraftClientTransformer;
+import io.github.ottermc.transformers.*;
+import io.ottermc.transformer.ReflectionRequired;
 import io.ottermc.transformer.TransformerRegistry;
 import net.minecraft.client.MinecraftClient;
 
@@ -38,6 +37,9 @@ public class Client implements Initializer {
         instance = this;
         this.clientDirectory = file;
         this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
+        registry.register(ClientConnectionTransformer.class);
+        registry.register(DecoderHandlerTransformer.class);
+        registry.register(EncoderHandlerTransformer.class);
         registry.register(InGameHudTransformer.class);
         registry.register(MinecraftClientTransformer.class);
     }

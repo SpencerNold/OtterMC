@@ -71,7 +71,7 @@ public class Client implements Initializer {
 
     @ReflectionRequired
     public void onPostInit() {
-        UniversalFontRenderer.register(new FontRenderer(ClientFont.getFontIgnoreException("/font/omc_ttf_font.png"), new Charset("/font/omc_ttf_charset.json")));
+        UniversalFontRenderer.register(new FontRenderer(ClientFont.getFontIgnoreException("/assets/omc/omc_ttf_font.png"), new Charset("/assets/omc/omc_ttf_charset.json")));
         registerKeybinds();
         Display.setTitle(Client.NAME + " " + Client.VERSION);
         Display.setIcon(new ByteBuffer[]{Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"),});
