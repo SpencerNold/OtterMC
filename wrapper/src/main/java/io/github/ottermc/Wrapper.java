@@ -1,13 +1,10 @@
 package io.github.ottermc;
 
-import io.github.ottermc.addon.Addon;
-import io.github.ottermc.addon.Loader;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Wrapper {
@@ -22,71 +19,58 @@ public class Wrapper {
                 arguments.put(key.substring(2), args[i + 1]);
             i++;
         }
-        if (!arguments.containsKey("addon"))
-            error("no addon specification", 40);
         if (!arguments.containsKey("gameDir"))
-            error("no gameDir", 41);
+            error("no gameDir", 42);
         File gameDir = new File(arguments.get("gameDir"));
-        Addon addon = loadAddon(arguments.get("addon"), gameDir);
-        if (addon == null) {
-            error("addon failed to load", 42);
-            return;
-        }
-        File agentJar = findAgentJar(addon, gameDir);
-        startGame(addon, arguments.getOrDefault("plugins", null), gameDir, agentJar, args);
-    }
-
-    private static void startGame(Addon addon, String plugins, File gameDir, File agentJar, String[] args) {
-        String java = String.join(File.separator, System.getProperty("java.home"), "bin", "java");
-        List<String> launch = new ArrayList<>();
-        launch.add(java);
-        System.getProperties().forEach((key, value) -> {
-            launch.add(String.format("-D%s=%s", key, value));
-        });
-        RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
-        List<String> jvmArguments = runtimeBean.getInputArguments();
-        launch.addAll(jvmArguments);
-        if (System.getProperty("os.name").toLowerCase().contains("mac") && !addon.getTargetVersion().equals("1.8.9")) {
-            launch.add("-XstartOnFirstThread");
-        }
-        if (addon.isAgentic())
-            launch.add("-javaagent:" + agentJar.getAbsolutePath() + (plugins == null ? "" : "=" + plugins));
-        launch.add("-cp");
-        launch.add(String.join(File.pathSeparator, System.getProperty("java.class.path") + File.pathSeparator + new File(agentJar.getParentFile(), "fml-1.8.9.jar").getAbsolutePath(), Loader.getClassPath(addon, gameDir)));
-        launch.add(addon.getMainClass());
-        launch.addAll(Arrays.asList(args));
-        launch.addAll(Arrays.asList(addon.getArguments()));
         try {
-            PrintStream out = System.out;
-            PrintStream err = System.err;
-            System.getProperties().forEach((key, value) -> out.printf("%s=%s\n", key, value));
-            Process process = new ProcessBuilder(launch).start();
-            new Thread(() -> {
-                Scanner scanner = new Scanner(process.getErrorStream());
-                while (scanner.hasNextLine())
-                    err.println(scanner.nextLine());
-            }).start();
-            Scanner scanner = new Scanner(process.getInputStream());
-            while (scanner.hasNextLine())
-                out.println(scanner.nextLine());
-        } catch (IOException e) {
+            launchWindow(gameDir, args);
+        } catch (IOException | InterruptedException e) {
             error(e.getMessage(), -1);
         }
     }
 
-    private static Addon loadAddon(String name, File gameDir) {
-        Addon addon = Loader.loadAddonResource("/" + name + ".json");
-        if (addon == null)
-            return null;
-        Loader.install(addon, gameDir);
-        return addon;
+    private static void launchWindow(File gameDir, String[] args) throws IOException, InterruptedException {
+        List<String> arguments = new ArrayList<>();
+        arguments.add(getGameFile(gameDir, "jre", "8", "bin", "java"));
+        arguments.add("-cp");
+        arguments.add(getGameFile(gameDir, "ottermc", "window.jar"));
+        arguments.add("net.ottermc.window.Main");
+
+        arguments.add("--jvm");
+        arguments.add(encodeArguments(getVirtualMachineArguments()));
+        arguments.add("--properties");
+        arguments.add(encodeArguments(getJavaArguments()));
+        arguments.add("--classpath");
+        arguments.add(encodeArguments(System.getProperty("java.class.path")));
+        arguments.add("--arguments");
+        arguments.add(encodeArguments(args));
+
+        ProcessBuilder builder = new ProcessBuilder(arguments).inheritIO();
+        Process process = builder.start();
+        int code = process.waitFor();
+        System.exit(code);
     }
 
-    private static File findAgentJar(Addon addon, File gameDir) {
-        File agentJar = new File(gameDir, String.join(File.separator, "ottermc", String.format("client-%s.jar", addon.getClientVersion())));
-        if (!agentJar.exists())
-            error("failed to find client jar", 43);
-        return agentJar;
+    private static String[] getJavaArguments() {
+        List<String> list = new ArrayList<>();
+        System.getProperties().forEach((key, value) -> {
+            list.add(String.format("-D%s=%s", key, value));
+        });
+        return list.toArray(new String[0]);
+    }
+
+    private static String[] getVirtualMachineArguments() {
+        RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+        List<String> jvmArguments = runtimeBean.getInputArguments();
+        return jvmArguments.toArray(new String[0]);
+    }
+
+    private static String encodeArguments(String... arguments) {
+        return Base64.getEncoder().encodeToString(String.join(",", arguments).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String getGameFile(File gameDir, String... path) {
+        return new File(gameDir, String.join(File.separator, path)).getAbsolutePath();
     }
 
     private static void error(String message, int code) {

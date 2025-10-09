@@ -79,7 +79,7 @@ public class VersionTask extends DefaultTask {
         }
         File dir = getProject().getProjectDir();
         BuildTool.copy(mapping, new File(dir, "buildSrc/src/main/resources/mapping-" + ver + ".txt"));
-        BuildTool.copy(mapping, new File(dir, "client-" + ver + "/src/main/resources/mapping-latest.txt"));
+        BuildTool.copy(mapping, new File(dir, "client-" + ver + "/src/main/resources/mapping-1.21.9.txt"));
         BuildTool.copy(jar, new File(dir, "client-" + ver + "/libs/mc-clean.jar"));
         BuildTool.deleteDirectory(new File(dir, "client-" + ver + "/build"));
         if (latest != null) {

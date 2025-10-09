@@ -17,7 +17,7 @@ public class Mapping {
 	static {
 		try {
 			mappings.put(Constants.VERSION_1_8_9, read(Constants.VERSION_1_8_9));
-			mappings.put(Constants.VERSION_LATEST, read(Constants.VERSION_LATEST));
+			mappings.put(Constants.VERSION_1_21_10, read(Constants.VERSION_1_21_10));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GradleScriptException("failed to read mapping", e);

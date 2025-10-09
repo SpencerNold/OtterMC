@@ -16,40 +16,37 @@ public class InstallTask extends DefaultTask {
         File clientDir = new File(gameDir, "ottermc");
         if (!clientDir.exists() && !clientDir.mkdir())
             throw new GradleScriptException("failed to create client directory", new IOException());
-        File pluginDir = new File(clientDir, "plugins");
-        if (!pluginDir.exists() && !pluginDir.mkdir())
+        File versionsDir = new File(clientDir, "versions");
+        if (!versionsDir.exists() && !versionsDir.mkdir())
             throw new GradleScriptException("failed to create plugin directory", new IOException());
 
-        File wrapperSrc = new File(projectDir, String.join(File.separator, "wrapper", "build", "libs", "wrapper-all.jar"));
-        File wrapperDst = new File(gameDir, String.join(File.separator, "libraries", "io", "github", "ottermc", "wrapper", "1.0.0", "wrapper-1.0.0.jar"));
+        File wrapperSrc = getDirFile(projectDir, "wrapper", "build", "libs", "wrapper.jar");
+        File wrapperDst = getDirFile(gameDir, "libraries", "io", "github", "ottermc", "wrapper", "1.0.0", "wrapper-1.0.0.jar");
+
+        File windowSrc = getDirFile(projectDir, "window", "build", "libs", "window.jar");
+        File windowDst = getDirFile(gameDir, "ottermc", "window.jar");
+
+        File clientSrc = getDirFile(projectDir, "client", "build", "libs", "client-joined.jar");
+        File clientDst = getDirFile(gameDir, "ottermc", "client.jar");
+
+        File client189Src = getDirFile(projectDir, "versions", "vanilla-1.8.9", "build", "libs", "vanilla-1.8.9-remapped-joined-safe.jar");
+        File client189Dst = getDirFile(gameDir, "ottermc", "versions", "vanilla-1.8.9.jar");
+
+        File client12110Src = getDirFile(projectDir, "versions", "vanilla-1.21.10", "build", "libs", "vanilla-1.21.10-remapped-joined-safe.jar");
+        File client12110Dst = getDirFile(gameDir, "ottermc", "versions", "vanilla-1.21.10.jar");
         try {
             copy(wrapperSrc, wrapperDst);
-
-            String v189 = VersionRegistry.translateVersionToNameString(Constants.VERSION_1_8_9);
-            String vnew = VersionRegistry.translateVersionToNameString(Constants.VERSION_LATEST);
-
-            copyVersion(v189, projectDir, clientDir);
-            copyVersion(vnew, projectDir, clientDir);
-
-            copyPlugin(projectDir, pluginDir, String.format("pvp-%s.jar", v189), "plugins", v189, "pvp", "build", "libs", "pvp-remapped-safe.jar");
-            copyPlugin(projectDir, pluginDir, String.format("pvp-export-%s.jar", v189), "plugins", v189, "pvp-export", "build", "libs", "pvp-export-remapped-safe.jar");
-            copyPlugin(projectDir, pluginDir, String.format("smp-%s.jar", vnew), "plugins", vnew, "smp", "build", "libs", "smp-remapped-safe.jar");
-            copyPlugin(projectDir, pluginDir, String.format("smp-export-%s.jar", vnew), "plugins", vnew, "smp-export", "build", "libs", "smp-export-remapped-safe.jar");
+            copy(windowSrc, windowDst);
+            copy(clientSrc, clientDst);
+            copy(client189Src, client189Dst);
+            copy(client12110Src, client12110Dst);
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }
     }
 
-    private void copyVersion(String version, File projectDir, File clientDir) throws IOException {
-        File src = new File(projectDir, String.join(File.separator, "client-" + version, "build", "libs", String.format("client-%s-remapped-joined-safe.jar", version)));
-        File dst = new File(clientDir, String.format("client-%s.jar", version));
-        copy(src, dst);
-    }
-
-    private void copyPlugin(File projectDir, File pluginsDir, String name, String... path) throws IOException {
-        File src = new File(projectDir, String.join(File.separator, path));
-        File dst = new File(pluginsDir, name);
-        copy(src, dst);
+    private File getDirFile(File dir, String... paths) {
+        return new File(dir, String.join(File.separator, paths));
     }
 
     private void copy(File src, File dst) throws IOException {

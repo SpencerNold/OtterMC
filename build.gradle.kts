@@ -1,32 +1,13 @@
 import ottermc.InstallTask
-import ottermc.PackageTask
-import ottermc.VersionTask
 
 tasks.register<InstallTask>("install") {
     group = "client"
     description = "Prepares to run the client"
-    dependsOn(":universal:build")
-    dependsOn(":client-v1.8.9:build")
-    dependsOn(":plugins:v1.8.9:pvp:build")
-    dependsOn(":plugins:v1.8.9:pvp-export:build")
-    dependsOn(":client-latest:build")
-    dependsOn(":plugins:latest:smp:build")
-    dependsOn(":plugins:latest:smp-export:build")
+    dependsOn(":client:build")
+    dependsOn(":versions:agentic:build")
+    dependsOn(":versions:vanilla-1.8.9:build")
+    dependsOn(":versions:vanilla-1.21.10:build")
+    dependsOn(":versions:agentic:build")
     dependsOn(":wrapper:build")
+    dependsOn(":window:build")
 }
-
-tasks.register<PackageTask>("package") {
-    group = "client"
-    description = "Builds and packages the client code for production"
-    dependsOn(":universal:build")
-    dependsOn(":client-v1.8.9:build")
-    dependsOn(":plugins:v1.8.9:pvp:build")
-    dependsOn(":plugins:v1.8.9:pvp-export:build")
-    dependsOn(":client-latest:build")
-    dependsOn(":plugins:latest:smp:build")
-    dependsOn(":plugins:latest:smp-export:build")
-    dependsOn(":wrapper:build")
-    dependsOn(":distributors:profiler:build")
-}
-
-tasks.register<VersionTask>("version")

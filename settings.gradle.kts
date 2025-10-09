@@ -1,19 +1,13 @@
 rootProject.name = "OtterMC"
 
 include("wrapper")
-include("universal")
-include("client-v1.8.9")
-include("client-latest")
+include("window")
 
-include("transformer")
-include("transformer:common")
-include("transformer:fml-1.8.9")
+include("client")
 
-include("plugins:v1.8.9:pvp")
-include("plugins:v1.8.9:pvp-export")
-
-include("plugins:latest:smp")
-include("plugins:latest:smp-export")
+include("versions:agentic")
+include("versions:vanilla-1.8.9")
+include("versions:vanilla-1.21.10")
 
 include("distributors:profiler")
 
