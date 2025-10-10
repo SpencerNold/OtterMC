@@ -11,15 +11,10 @@ import java.util.List;
 public abstract class Version {
 
     private final String name;
-    protected final String javaVersion;
-    protected final String[] properties;
-    protected final String clientJar;
 
-    public Version(String name, String javaVersion, String[] properties, String clientJar) {
+    public Version(String name) {
         this.name = name;
-        this.javaVersion = javaVersion;
-        this.properties = properties;
-        this.clientJar = clientJar;
+
     }
 
     public String getName() {
@@ -27,10 +22,6 @@ public abstract class Version {
     }
 
     public abstract void start();
-
-    protected String getGameFile(File gameDir, String... path) {
-        return new File(gameDir, String.join(File.separator, path)).getAbsolutePath();
-    }
 
     @Override
     public String toString() {

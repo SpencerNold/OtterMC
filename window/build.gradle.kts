@@ -11,8 +11,6 @@ application {
     mainClass = "net.ottermc.window.Main"
 }
 
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = application.mainClass.get()
-    }
+dependencies {
+    implementation("com.google.code.gson:gson:2.11.0")
 }

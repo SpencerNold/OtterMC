@@ -30,18 +30,15 @@ public class Wrapper {
     }
 
     private static void launchWindow(File gameDir, String[] args) throws IOException, InterruptedException {
+        System.out.println("[OtterMC] wrapper opening launcher window...");
         List<String> arguments = new ArrayList<>();
         arguments.add(getGameFile(gameDir, "jre", "8", "bin", "java"));
         arguments.add("-cp");
-        arguments.add(getGameFile(gameDir, "ottermc", "window.jar"));
+        arguments.add(getGameFile(gameDir, "ottermc", "window.jar") + File.pathSeparator + System.getProperty("java.class.path"));
         arguments.add("net.ottermc.window.Main");
 
         arguments.add("--jvm");
         arguments.add(encodeArguments(getVirtualMachineArguments()));
-        arguments.add("--properties");
-        arguments.add(encodeArguments(getJavaArguments()));
-        arguments.add("--classpath");
-        arguments.add(encodeArguments(System.getProperty("java.class.path")));
         arguments.add("--arguments");
         arguments.add(encodeArguments(args));
 
@@ -49,14 +46,6 @@ public class Wrapper {
         Process process = builder.start();
         int code = process.waitFor();
         System.exit(code);
-    }
-
-    private static String[] getJavaArguments() {
-        List<String> list = new ArrayList<>();
-        System.getProperties().forEach((key, value) -> {
-            list.add(String.format("-D%s=%s", key, value));
-        });
-        return list.toArray(new String[0]);
     }
 
     private static String[] getVirtualMachineArguments() {
