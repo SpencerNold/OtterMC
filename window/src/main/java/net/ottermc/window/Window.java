@@ -1,12 +1,10 @@
 package net.ottermc.window;
 
+import net.ottermc.window.util.Frame;
 import net.ottermc.window.versions.Version;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class Window {
@@ -17,12 +15,13 @@ public class Window {
     private Window(String title, List<Version> versions) {
         this.versions = versions;
         frame = new JFrame(title);
-        frame.setIconImage(loadIcon());
+        frame.setIconImage(Frame.loadImage("/icon.png"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(getScreenSize());
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        frame.setContentPane(new Panel(this));
+        frame.setUndecorated(true);
+        frame.setContentPane(new LaunchFrame(this));
         frame.setVisible(true);
         EventQueue.invokeLater(() -> {
             frame.toFront();
@@ -46,30 +45,13 @@ public class Window {
         frame.dispose();
     }
 
-    private Image loadIcon() {
-        Image image = null;
-        try {
-            InputStream input = getClass().getResourceAsStream("/icon.png");
-            if (input != null) {
-                image = ImageIO.read(input);
-                input.close();
-            }
-        } catch (IOException e) {
-            return null;
-        }
-        return image;
-    }
-
     private Dimension getScreenSize() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        return new Dimension((int) (dimension.width * 0.75f), (int) (dimension.height * 0.75f));
+        return new Dimension((int) (dimension.width * 0.6f), (int) (dimension.height * 0.75f));
     }
 
-    public static Window create(List<Version> versions) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {
-        }
-        return new Window("OtterMC Launcher", versions);
+    public static void create(List<Version> versions) {
+        //FlatDarkLaf.setup();
+        new Window("OtterMC Launcher", versions);
     }
 }

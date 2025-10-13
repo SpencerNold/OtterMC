@@ -1,6 +1,7 @@
 package agent;
 
 import io.github.ottermc.AbstractSubClient;
+import io.github.ottermc.logging.Logger;
 import io.ottermc.transformer.ClassTransformer;
 import io.github.ottermc.StateRegistry;
 import io.github.ottermc.c2.ServerController;
@@ -10,6 +11,7 @@ import io.ottermc.transformer.adapters.MinecraftClassNameAdapter;
 import io.ottermc.transformer.adapters.MinecraftFieldNameAdapter;
 import io.ottermc.transformer.adapters.MinecraftMethodNameAdapter;
 import me.spencernold.transformer.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.lang.instrument.Instrumentation;
@@ -22,6 +24,20 @@ import java.util.regex.Pattern;
 public class Client {
 
     public static void start(String args, Instrumentation instrumentation) throws Exception {
+        Logger.log("Starting OtterMC Agentic Client...");
+        me.spencernold.transformer.Logger.instance = new me.spencernold.transformer.Logger() {
+            @Override
+            public void print(String s) {
+                Logger.log(s);
+            }
+        };
+        me.spencernold.kwaf.logger.Logger.Companion.setSystemLogger(new me.spencernold.kwaf.logger.Logger() {
+            @Override
+            public void log(@NotNull Severity severity, @NotNull String s) {
+                Logger.log("[" + severity.name() + "] " + s);
+            }
+        });
+
         Reflection reflection = new Reflection(MinecraftClassNameAdapter.class, MinecraftMethodNameAdapter.class, MinecraftFieldNameAdapter.class);
         Reflection.setSystemReflectClass(reflection);
 

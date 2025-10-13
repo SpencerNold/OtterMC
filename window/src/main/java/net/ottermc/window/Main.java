@@ -11,14 +11,14 @@ import java.util.Base64;
 public class Main {
 
     public static final Version VERSION189 = new VanillaVersion(
-            "1.8.9 (OtterMC)",
+            "Client 1.8.9",
             "1.8.9",
             "8",
             new String[]{},
             "vanilla-1.8.9.jar"
     );
     public static final Version VERSION12110 = new VanillaVersion(
-            "1.21.10 (OtterMC)",
+            "Client 1.21.10",
             "1.21.10",
             "21",
             new String[]{"-XstartOnFirstThread"},
@@ -28,8 +28,13 @@ public class Main {
     public static String[] flags;
     public static String[] arguments;
     public static File gameDir;
+    public static String username;
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            Window.create(Arrays.asList(VERSION189, VERSION12110));
+            return;
+        }
         ArgumentReader reader = new ArgumentReader(args);
         flags = decodeArguments(reader.get("jvm"));
         arguments = decodeArguments(reader.get("arguments"));
@@ -37,7 +42,7 @@ public class Main {
         if (!reader.has("gameDir"))
             Logger.error("no gameDir", 42);
         Main.gameDir = new File(reader.get("gameDir"));
-        // TODO Will pretty up UI later
+        Main.username = reader.has("username") ? reader.get("username") : "Player";
         Window.create(Arrays.asList(VERSION189, VERSION12110));
     }
 
