@@ -22,28 +22,34 @@ public class JsonTool {
     }
 
     public static JsonObject getChildObjectSafe(JsonElement element, String name) {
-        JsonElement child = getChildSafe(element, name, false);
-        if (child == null) {
-            Logger.error("json object parent is null", 5);
-            return null;
-        }
-        if (!child.isJsonObject()) {
+        JsonObject object = getChildObjectNullOnMissing(element, name);
+        if (object == null)
             Logger.error("json attribute not of object type", 5);
+        return object;
+    }
+
+    public static JsonObject getChildObjectNullOnMissing(JsonElement element, String name) {
+        JsonElement child = getChildSafe(element, name, true);
+        if (child == null)
             return null;
-        }
+        if (!child.isJsonObject())
+            return null;
         return child.getAsJsonObject();
     }
 
     public static JsonArray getChildArraySafe(JsonElement element, String name) {
-        JsonElement child = getChildSafe(element, name, false);
-        if (child == null) {
-            Logger.error("json array parent is null", 5);
-            return null;
-        }
-        if (!child.isJsonArray()) {
+        JsonArray array = getChildArrayNullOnMissing(element, name);
+        if (array == null)
             Logger.error("json attribute not of array type", 5);
+        return array;
+    }
+
+    public static JsonArray getChildArrayNullOnMissing(JsonElement element, String name) {
+        JsonElement child = getChildSafe(element, name, true);
+        if (child == null)
             return null;
-        }
+        if (!child.isJsonArray())
+            return null;
         return child.getAsJsonArray();
     }
 

@@ -1,40 +1,23 @@
 package net.ottermc.window;
 
-import net.ottermc.window.versions.VanillaVersion;
 import net.ottermc.window.versions.Version;
+import net.ottermc.window.versions.VersionLoader;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class Main {
-
-    public static final Version VERSION189 = new VanillaVersion(
-            "Client 1.8.9",
-            "1.8.9",
-            "8",
-            new String[]{},
-            "vanilla-1.8.9.jar"
-    );
-    public static final Version VERSION12110 = new VanillaVersion(
-            "Client 1.21.10",
-            "1.21.10",
-            "21",
-            new String[]{"-XstartOnFirstThread"},
-            "vanilla-1.21.10.jar"
-    );
 
     public static String[] flags;
     public static String[] arguments;
     public static File gameDir;
     public static String username;
+    public static final List<Version> versions = new ArrayList<>();
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            Window.create(Arrays.asList(VERSION189, VERSION12110));
-            return;
-        }
         ArgumentReader reader = new ArgumentReader(args);
         flags = decodeArguments(reader.get("jvm"));
         arguments = decodeArguments(reader.get("arguments"));
@@ -43,7 +26,8 @@ public class Main {
             Logger.error("no gameDir", 42);
         Main.gameDir = new File(reader.get("gameDir"));
         Main.username = reader.has("username") ? reader.get("username") : "Player";
-        Window.create(Arrays.asList(VERSION189, VERSION12110));
+        VersionLoader.loadManifest();
+        Window.create();
     }
 
     private static String[] decodeArguments(String s) {

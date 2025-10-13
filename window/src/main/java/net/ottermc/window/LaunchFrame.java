@@ -84,7 +84,7 @@ public class LaunchFrame extends Panel {
     }
 
     private void addStaticComponents() {
-        JComboBox<Version> versionDropdown = new FancyDropdown<>(window.versions.toArray(new Version[0]));
+        JComboBox<Version> versionDropdown = new FancyDropdown<>(Main.versions.toArray(new Version[0]));
         {
             int width = 218, height = 45;
             int x = (window.getWidth() / 2) - (width / 2);

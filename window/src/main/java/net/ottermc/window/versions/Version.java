@@ -11,14 +11,19 @@ import java.util.List;
 public abstract class Version {
 
     private final String name;
+    private final long lastPlayed;
 
-    public Version(String name) {
+    public Version(String name, long lastPlayed) {
         this.name = name;
-
+        this.lastPlayed = lastPlayed;
     }
 
     public String getName() {
         return name;
+    }
+
+    public long getLastPlayed() {
+        return lastPlayed;
     }
 
     public abstract void start();

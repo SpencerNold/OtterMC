@@ -16,10 +16,8 @@ public interface PostInitializeListener extends Listener {
         public void fire(List<Listener> listeners) {
             for (int i = 0; i < listeners.size(); i++) {
                 Listener l = listeners.get(i);
-                if (l instanceof PostInitializeListener) {
+                if (l instanceof PostInitializeListener)
                     ((PostInitializeListener) l).onPostInitializeListener(this);
-                    StateRegistry.setState(State.RUNNING);
-                }
             }
         }
     }

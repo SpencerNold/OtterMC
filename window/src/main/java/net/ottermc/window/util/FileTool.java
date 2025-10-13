@@ -79,4 +79,15 @@ public class FileTool {
         }
         jar.close();
     }
+
+    public static String getOperatingSystemSimpleString() {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win"))
+            return "win";
+        else if (os.contains("mac"))
+            return "mac";
+        else if (os.contains("nux"))
+            return "nux";
+        return null;
+    }
 }

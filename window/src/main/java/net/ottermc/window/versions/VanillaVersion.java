@@ -22,8 +22,8 @@ public class VanillaVersion extends Version {
     private final String[] properties;
     private final String clientJar;
 
-    public VanillaVersion(String name, String inheritedVersion, String javaVersion, String[] properties, String clientJar) {
-        super(name);
+    public VanillaVersion(String name, long lastPlayed, String inheritedVersion, String javaVersion, String[] properties, String clientJar) {
+        super(name, lastPlayed);
         this.inheritedVersion = inheritedVersion;
         this.javaVersion = javaVersion;
         this.properties = properties;

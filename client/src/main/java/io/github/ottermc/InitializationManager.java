@@ -8,12 +8,10 @@ import java.io.IOException;
 
 public class InitializationManager implements PostInitializeListener, RunTickListener {
 
-    private final Object client;
     private boolean hasPostInitialized;
     private int timer;
 
-    public InitializationManager(Object client) {
-        this.client = client;
+    public InitializationManager() {
         this.hasPostInitialized = false;
         this.timer = 20;
     }
@@ -42,6 +40,7 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
         if (client == null)
             return;
         client.onPostInit();
+        StateRegistry.setState(State.RUNNING);
         try {
             client.load();
         } catch (IOException e) {

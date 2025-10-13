@@ -117,7 +117,7 @@ public class SubClient extends AbstractSubClient {
     }
 
     private void registerEvents() {
-        EventBus.add(new InitializationManager(this));
+        EventBus.add(new InitializationManager());
         EventBus.add(keyManager);
         EventBus.add(new BlurShaderProgram());
         EventBus.add(hudManager);

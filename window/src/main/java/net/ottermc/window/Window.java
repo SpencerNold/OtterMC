@@ -10,10 +10,8 @@ import java.util.List;
 public class Window {
 
     private final JFrame frame;
-    final List<Version> versions;
 
-    private Window(String title, List<Version> versions) {
-        this.versions = versions;
+    private Window(String title) {
         frame = new JFrame(title);
         frame.setIconImage(Frame.loadImage("/icon.png"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,8 +48,8 @@ public class Window {
         return new Dimension((int) (dimension.width * 0.6f), (int) (dimension.height * 0.75f));
     }
 
-    public static void create(List<Version> versions) {
+    public static void create() {
         //FlatDarkLaf.setup();
-        new Window("OtterMC Launcher", versions);
+        new Window("OtterMC Launcher");
     }
 }
