@@ -1,0 +1,130 @@
+{
+  "arguments": {
+    "game": [
+      "--username",
+      "${auth_player_name}",
+      "--version",
+      "${version_name}",
+      "--gameDir",
+      "${game_directory}",
+      "--assetsDir",
+      "${assets_root}",
+      "--assetIndex",
+      "${assets_index_name}",
+      "--uuid",
+      "${auth_uuid}",
+      "--accessToken",
+      "${auth_access_token}",
+      "--clientId",
+      "${clientid}",
+      "--xuid",
+      "${auth_xuid}",
+      "--userType",
+      "${user_type}",
+      "--versionType",
+      "${version_type}"
+    ],
+    "jvm": [
+      {
+        "rules": [
+          {
+            "action": "allow",
+            "os": {
+              "name": "osx"
+            }
+          }
+        ],
+        "value": [
+          "-XstartOnFirstThread"
+        ]
+      },
+      {
+        "rules": [
+          {
+            "action": "allow",
+            "os": {
+              "name": "windows"
+            }
+          }
+        ],
+        "value": "-XX:HeapDumpPath\u003dMojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump"
+      },
+      {
+        "rules": [
+          {
+            "action": "allow",
+            "os": {
+              "arch": "x86"
+            }
+          }
+        ],
+        "value": "-Xss1M"
+      },
+      "-Djava.library.path\u003d${natives_directory}",
+      "-Djna.tmpdir\u003d${natives_directory}",
+      "-Dorg.lwjgl.system.SharedLibraryExtractPath\u003d${natives_directory}",
+      "-Dio.netty.native.workdir\u003d${natives_directory}",
+      "-Dminecraft.launcher.brand\u003d${launcher_name}",
+      "-Dminecraft.launcher.version\u003d${launcher_version}",
+      "-cp",
+      "${classpath}"
+    ]
+  },
+  "assetIndex": {
+    "id": "26",
+    "sha1": "60eae637445c1e038915118b883757481f25a13c",
+    "size": 491076,
+    "totalSize": 434468948,
+    "url": "https://piston-meta.mojang.com/v1/packages/60eae637445c1e038915118b883757481f25a13c/26.json"
+  },
+  "assets": "26",
+  "complianceLevel": 1,
+  "downloads": {
+    "client": {
+      "sha1": "a19d9badbea944a4369fd0059e53bf7286597576",
+      "size": 29525242,
+      "url": "https://piston-data.mojang.com/v1/objects/a19d9badbea944a4369fd0059e53bf7286597576/client.jar"
+    },
+    "client_mappings": {
+      "sha1": "bdeb624c3aefba11d9d40f34bc96176350b549b6",
+      "size": 10989738,
+      "url": "https://piston-data.mojang.com/v1/objects/bdeb624c3aefba11d9d40f34bc96176350b549b6/client.txt"
+    },
+    "server": {
+      "sha1": "6bce4ef400e4efaa63a13d5e6f6b500be969ef81",
+      "size": 57555044,
+      "url": "https://piston-data.mojang.com/v1/objects/6bce4ef400e4efaa63a13d5e6f6b500be969ef81/server.jar"
+    },
+    "server_mappings": {
+      "sha1": "eb1e1eb47cb740012fc82eacc394859463684132",
+      "size": 8186232,
+      "url": "https://piston-data.mojang.com/v1/objects/eb1e1eb47cb740012fc82eacc394859463684132/server.txt"
+    }
+  },
+  "id": "ottermc-client",
+  "javaVersion": {
+    "component": "java-runtime-delta",
+    "majorVersion": 21
+  },
+  "libraries": [
+      {
+      "downloads": {
+        "artifact": {
+          "path": "com/google/code/gson/gson/2.11.0/gson-2.11.0.jar",
+          "sha1": "527175ca6d81050b53bdd4c457a6d6e017626b0e",
+          "size": 298435,
+          "url": "https://libraries.minecraft.net/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar"
+        }
+      },
+      "name": "com.google.code.gson:gson:2.11.0"
+    },
+    {
+      "name": "io.github.ottermc:wrapper:1.0.0"
+    }
+  ],
+  "mainClass": "io.github.ottermc.Wrapper",
+  "minimumLauncherVersion": 21,
+  "releaseTime": "2025-07-17T12:04:02+00:00",
+  "time": "2025-07-17T12:04:02+00:00",
+  "type": "release"
+}

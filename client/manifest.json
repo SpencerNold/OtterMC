@@ -1,0 +1,25 @@
+{
+  "versions": [
+    {
+      "type": "vanilla",
+      "lastPlayed": 0,
+      "name": "Client 1.8.9",
+      "inherits": "1.8.9",
+      "java": 8,
+      "client": "vanilla-1.8.9.jar"
+    },
+    {
+      "type": "vanilla",
+      "lastPlayed": 0,
+      "name": "Client 1.21.10",
+      "inherits": "1.21.10",
+      "java": 21,
+      "client": "vanilla-1.21.10.jar",
+      "args": {
+        "mac": [
+          "-XstartOnFirstThread"
+        ]
+      }
+    }
+  ]
+}
