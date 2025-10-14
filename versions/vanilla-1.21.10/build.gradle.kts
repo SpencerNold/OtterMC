@@ -15,6 +15,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("io.netty:netty-all:4.1.118.Final")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.24.1")
+    implementation("org.joml:joml:1.10.8")
+    implementation("com.mojang:brigadier:1.3.10")
 
     // Client dependencies
     implementation(files("libs/mc-clean.jar"))

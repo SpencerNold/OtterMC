@@ -1,9 +1,10 @@
 package io.github.ottermc.transformers;
 
 import io.github.ottermc.events.EventBus;
+import io.github.ottermc.events.listeners.ClickMouseListener;
 import io.github.ottermc.events.listeners.PostInitializeListener;
+import io.github.ottermc.events.listeners.RightClickMouseListener;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.logging.Logger;
 import me.spencernold.transformer.Callback;
 import me.spencernold.transformer.Injector;
 import me.spencernold.transformer.Target;
@@ -17,6 +18,17 @@ public class MinecraftClientTransformer {
     public void onTick(MinecraftClient client, Callback callback) {
         RunTickListener.RunTickEvent event = new RunTickListener.RunTickEvent(client);
         EventBus.fire(event);
+    }
+
+    @Injector(target = Target.HEAD, name = "doAttack()Z")
+    public boolean onDoAttack(MinecraftClient client, Callback callback) {
+        EventBus.fire(new ClickMouseListener.ClickMouseEvent());
+        return false;
+    }
+
+    @Injector(target = Target.HEAD, name = "doItemUse()V")
+    public void onDoItemUse(MinecraftClient client, Callback callback) {
+        EventBus.fire(new RightClickMouseListener.RightClickMouseEvent());
     }
 
     @Injector(target = Target.HEAD, name = "onInitFinished(Lnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/lang/Runnable;")

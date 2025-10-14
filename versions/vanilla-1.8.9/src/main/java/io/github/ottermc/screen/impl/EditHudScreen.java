@@ -2,11 +2,11 @@ package io.github.ottermc.screen.impl;
 
 import io.github.ottermc.SubClient;
 import io.github.ottermc.logging.Logger;
+import io.github.ottermc.render.hud.Component;
+import io.github.ottermc.render.hud.HudManager;
+import io.github.ottermc.render.hud.MovableComponent;
 import io.github.ottermc.screen.AbstractScreen;
 import io.github.ottermc.screen.ClientTheme;
-import io.github.ottermc.screen.hud.Component;
-import io.github.ottermc.screen.hud.HudManager;
-import io.github.ottermc.screen.hud.MovableComponent;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.DrawableHelper;
 import net.minecraft.client.Minecraft;
@@ -53,9 +53,9 @@ public class EditHudScreen extends AbstractScreen {
                 continue;
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             MovableComponent component = (MovableComponent) c;
-            component.enableTranslate();
-            component.drawDummyObject(Minecraft.getMinecraft(), this, partialTicks);
-            component.disableTranslate(); // TODO For now...
+            component.enableTranslate(null);
+            component.drawDummyObject(new DrawableHelper());
+            component.disableTranslate(null); // TODO For now...
             float scale = component.getScale();
             int x = component.getDefaultX() + component.getXOffset();
             int y = component.getDefaultY() + component.getYOffset();

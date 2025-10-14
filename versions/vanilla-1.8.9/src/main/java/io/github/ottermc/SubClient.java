@@ -1,19 +1,18 @@
 package io.github.ottermc;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.hud.ClientDisplay;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
-import io.github.ottermc.modules.hud.*;
+import io.github.ottermc.modules.hud.GuiBlur;
 import io.github.ottermc.modules.visual.*;
-import io.github.ottermc.screen.Charset;
-import io.github.ottermc.screen.UniversalFontRenderer;
+import io.github.ottermc.render.hud.Component;
+import io.github.ottermc.render.hud.HudManager;
+import io.github.ottermc.render.hud.MovableComponent;
+import io.github.ottermc.render.screen.Charset;
+import io.github.ottermc.render.screen.UniversalFontRenderer;
 import io.github.ottermc.screen.font.ClientFont;
 import io.github.ottermc.screen.font.FontRenderer;
-import io.github.ottermc.screen.hud.Component;
-import io.github.ottermc.screen.hud.HudManager;
-import io.github.ottermc.screen.hud.MovableComponent;
 import io.github.ottermc.screen.impl.EditHudScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
@@ -21,6 +20,7 @@ import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformer.TransformerRegistry;
 import io.github.ottermc.transformers.*;
 import io.github.ottermc.universal.*;
+import io.github.ottermc.universal.hud.*;
 import io.ottermc.transformer.ReflectionRequired;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -40,7 +40,7 @@ public class SubClient extends AbstractSubClient {
 
     private final KeybindManager keyManager = new KeybindManager();
     private final ModuleManager modManager = new ModuleManager();
-    private final HudManager hudManager = new HudManager();
+    private final HudManager hudManager = new ClientHudManager();
 
     private final ClientStorage storage;
     private final File clientDirectory;
@@ -68,7 +68,7 @@ public class SubClient extends AbstractSubClient {
     public void onPostInit() {
         UniversalFontRenderer.register(new FontRenderer(ClientFont.getFontIgnoreException("/assets/omc/omc_ttf_font.png"), new Charset("/assets/omc/omc_ttf_charset.json")));
         registerKeybinds();
-        registerHuds();
+        registerDisplays();
         registerModules();
         Display.setTitle(SubClient.NAME + " " + SubClient.VERSION);
         Display.setIcon(new ByteBuffer[]{Icon.readIconToBuffer("otter_icon_16x16.png"), Icon.readIconToBuffer("otter_icon_32x32.png"),});
@@ -97,6 +97,7 @@ public class SubClient extends AbstractSubClient {
     private void registerBindings() {
         UniversalLog4j.register(new Log4j());
         UKeyboard.register(new LWJGLKeyboard());
+        UDrawable.register(new ClientDrawable());
         UGameSettings.register(new ClientGameSettings());
         UKeyRegistry.register(new ClientKeyRegistry());
         UMinecraft.register(new ClientMinecraft());
@@ -119,6 +120,14 @@ public class SubClient extends AbstractSubClient {
         registry.register(RenderItemTransformer.class);
     }
 
+    private void registerDisplays() {
+        hudManager.register(new ClientArmorStatusHud());
+        hudManager.register(new ClientPotionEffectHud());
+        hudManager.register(new ClientKeyStrokeHud());
+        hudManager.register(new ClientCoordinateHud());
+        hudManager.register(new ClientClickCounterHud());
+    }
+
     private void registerEvents() {
         EventBus.add(new InitializationManager());
         EventBus.add(keyManager);
@@ -137,12 +146,7 @@ public class SubClient extends AbstractSubClient {
 
     private void registerModules() {
         // HUD
-        modManager.register(new ArmorStatus());
-        modManager.register(new ClickCounter());
-        modManager.register(new Coordinate());
         modManager.register(new GuiBlur());
-        modManager.register(new KeyStroke());
-        modManager.register(new PotionEffect());
 
         // Visual
         modManager.register(new BlockOutline());
@@ -151,15 +155,6 @@ public class SubClient extends AbstractSubClient {
         modManager.register(new LargeItems());
         modManager.register(new OldAnimation());
         modManager.register(new UIScheme());
-    }
-
-    void registerHuds() {
-        // Client HUD
-        hudManager.register(ClientDisplay.ARMOR_STATUS);
-        hudManager.register(ClientDisplay.CLICK_COUNTER);
-        hudManager.register(ClientDisplay.COORDINATE);
-        hudManager.register(ClientDisplay.KEYSTROKE);
-        hudManager.register(ClientDisplay.POTION_EFFECT);
     }
 
     @Override

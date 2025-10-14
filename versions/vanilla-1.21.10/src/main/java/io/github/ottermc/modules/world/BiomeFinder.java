@@ -1,15 +1,15 @@
 package io.github.ottermc.modules.world;
 
 import io.github.ottermc.events.EventBus;
+import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.universal.UKeyboard;
-import io.github.ottermc.listeners.DrawOverlayListener;
+import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.KeyboardSetting;
 import io.github.ottermc.modules.setting.StringSetting;
-import io.github.ottermc.modules.CategoryList;
+import io.github.ottermc.universal.UKeyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
 
-public class BiomeFinder extends Module implements RunTickListener, DrawOverlayListener {
+public class BiomeFinder extends Module implements RunTickListener, RenderGameOverlayListener {
 
     private static final Identifier ID = Identifier.of("omc", "omc_ttf_font.png");
 
@@ -77,11 +77,11 @@ public class BiomeFinder extends Module implements RunTickListener, DrawOverlayL
     }
 
     @Override
-    public void onDrawOverlay(DrawOverlayEvent event) {
+    public void onRenderGameOverlay(RenderGameOverlayEvent event) {
         if (!UKeyboard.isKeyDown(mapKeyboardSetting.getValue()))
             return;
         MinecraftClient client = MinecraftClient.getInstance();
-        DrawContext context = event.getContext();
+        DrawContext context = (DrawContext) event.getContext();
         int width = cols * 16;
         int height = rows * 16;
         // Draw cells

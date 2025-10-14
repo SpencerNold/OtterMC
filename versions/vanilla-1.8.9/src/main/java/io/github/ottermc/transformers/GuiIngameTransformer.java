@@ -1,7 +1,7 @@
 package io.github.ottermc.transformers;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.listeners.RenderGameOverlayListener;
+import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 import me.spencernold.transformer.Callback;
 import me.spencernold.transformer.Injector;
 import me.spencernold.transformer.Target;

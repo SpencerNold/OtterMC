@@ -128,7 +128,7 @@ public abstract class Module implements Writable<ByteBuf> {
         return null;
     }
 
-    public boolean shouldRenderInMenu() {
+    public boolean isValid() {
         return true;
     }
 }

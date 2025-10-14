@@ -1,6 +1,6 @@
 package io.github.ottermc.screen.font;
 
-import io.github.ottermc.screen.Font;
+import io.github.ottermc.render.screen.Font;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
 import javax.imageio.ImageIO;

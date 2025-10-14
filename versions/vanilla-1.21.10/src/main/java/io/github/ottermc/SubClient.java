@@ -5,9 +5,14 @@ import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.world.BiomeFinder;
+import io.github.ottermc.render.hud.Component;
+import io.github.ottermc.render.hud.HudManager;
+import io.github.ottermc.render.hud.MovableComponent;
 import io.github.ottermc.transformer.TransformerRegistry;
-import io.github.ottermc.transformers.*;
+import io.github.ottermc.transformers.InGameHudTransformer;
+import io.github.ottermc.transformers.MinecraftClientTransformer;
 import io.github.ottermc.universal.*;
+import io.github.ottermc.universal.hud.*;
 import io.ottermc.transformer.ReflectionRequired;
 import net.minecraft.client.MinecraftClient;
 
@@ -24,6 +29,7 @@ public class SubClient extends AbstractSubClient {
 
     private final ModuleManager modManager = new ModuleManager();
     private final KeybindManager keyManager = new KeybindManager();
+    private final HudManager hudManager = new ClientHudManager();
 
     private final ClientStorage storage;
     private final File clientDirectory;
@@ -47,6 +53,7 @@ public class SubClient extends AbstractSubClient {
     @ReflectionRequired
     public void onPostInit() {
         registerModules();
+        registerDisplays();
         MinecraftClient.getInstance().getWindow().setTitle(NAME + " " + VERSION);
     }
 
@@ -55,6 +62,10 @@ public class SubClient extends AbstractSubClient {
         storage.clear();
         for (Module module : getModuleManager().getModules())
             storage.writable(module);
+        for (Component component : getHudManager().getComponents()) {
+            if (component instanceof MovableComponent)
+                storage.writable((MovableComponent) component);
+        }
         storage.read();
     }
 
@@ -66,6 +77,7 @@ public class SubClient extends AbstractSubClient {
     private void registerBindings() {
         UniversalLog4j.register(new Log4j());
         UKeyboard.register(new GLFWKeyboard());
+        UDrawable.register(new ClientDrawable());
         UGameSettings.register(new ClientGameSettings());
         UKeyRegistry.register(new ClientKeyRegistry());
         UMinecraft.register(new ClientMinecraft());
@@ -73,16 +85,21 @@ public class SubClient extends AbstractSubClient {
     }
 
     private void registerTransformers(TransformerRegistry registry) {
-        registry.register(ClientConnectionTransformer.class);
-        registry.register(DecoderHandlerTransformer.class);
-        registry.register(EncoderHandlerTransformer.class);
         registry.register(InGameHudTransformer.class);
         registry.register(MinecraftClientTransformer.class);
-        registry.register(GameRendererTransformer.class);
+    }
+
+    private void registerDisplays() {
+        hudManager.register(new ClientArmorStatusHud());
+        hudManager.register(new ClientPotionEffectHud());
+        hudManager.register(new ClientKeyStrokeHud());
+        hudManager.register(new ClientCoordinateHud());
+        hudManager.register(new ClientClickCounterHud());
     }
 
     private void registerEvents() {
         EventBus.add(new InitializationManager());
+        EventBus.add(hudManager);
     }
 
     private void registerModules() {
@@ -100,17 +117,21 @@ public class SubClient extends AbstractSubClient {
     }
 
     @Override
-    public KeybindManager getKeybindManager() {
-        return keyManager;
-    }
-
-    @Override
     public File getClientDirectory() {
         return clientDirectory;
     }
 
     public ClientStorage getStorage() {
         return storage;
+    }
+
+    @Override
+    public KeybindManager getKeybindManager() {
+        return instance.keyManager;
+    }
+
+    public HudManager getHudManager() {
+        return instance.hudManager;
     }
 
     @ReflectionRequired

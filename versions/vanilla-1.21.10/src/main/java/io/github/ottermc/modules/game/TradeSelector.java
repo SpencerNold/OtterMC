@@ -1,8 +1,8 @@
 package io.github.ottermc.modules.game;
 
 import io.github.ottermc.events.EventBus;
+import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.listeners.DrawOverlayListener;
 import io.github.ottermc.modules.CategoryList;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TradeSelector extends TradeModule implements RunTickListener, DrawOverlayListener {
+public class TradeSelector extends TradeModule implements RunTickListener, RenderGameOverlayListener {
 
     private final List<Trade> targettedBookTrades = new ArrayList<>();
 
@@ -37,8 +37,7 @@ public class TradeSelector extends TradeModule implements RunTickListener, DrawO
     }
 
     @Override
-    public void onDrawOverlay(DrawOverlayEvent event) {
-
+    public void onRenderGameOverlay(RenderGameOverlayEvent event) {
     }
 
     @Override

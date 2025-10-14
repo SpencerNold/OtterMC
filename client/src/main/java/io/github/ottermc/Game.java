@@ -4,6 +4,7 @@ import io.github.ottermc.c2.ServerController;
 import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.modules.impl.hud.*;
 import io.github.ottermc.modules.impl.utility.Fullbright;
 import io.github.ottermc.modules.impl.utility.Zoom;
 
@@ -41,8 +42,18 @@ public class Game {
 
     private void registerModules() {
         ModuleManager manager = client.getModuleManager();
-
+        // Hud
+        manager.register(new ArmorStatus());
+        manager.register(new ClickCounter());
+        manager.register(new Coordinate());
+        manager.register(new KeyStroke());
+        manager.register(new PotionEffect());
+        // Utility
         manager.register(new Fullbright());
         manager.register(new Zoom());
+    }
+
+    private void registerEvents() {
+
     }
 }

@@ -1,7 +1,7 @@
 package io.github.ottermc.transformers;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.listeners.DrawOverlayListener;
+import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 import me.spencernold.transformer.Callback;
 import me.spencernold.transformer.Injector;
 import me.spencernold.transformer.Target;
@@ -15,6 +15,6 @@ public class InGameHudTransformer {
 
     @Injector(target = Target.TAIL, name = "render(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
     public void onRender(InGameHud inGameHud, DrawContext context, RenderTickCounter tickCounter, Callback callback) {
-        EventBus.fire(new DrawOverlayListener.DrawOverlayEvent(context));
+        EventBus.fire(new RenderGameOverlayListener.RenderGameOverlayEvent(context, 0.0f));
     }
 }

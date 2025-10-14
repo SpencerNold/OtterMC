@@ -1,7 +1,7 @@
 package io.github.ottermc.screen.font;
 
-import io.github.ottermc.screen.Charset;
-import io.github.ottermc.screen.UniversalFontRenderer;
+import io.github.ottermc.render.screen.Charset;
+import io.github.ottermc.render.screen.UniversalFontRenderer;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GlStateManager;

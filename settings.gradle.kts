@@ -15,6 +15,11 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenCentral()
+        // BTCLib and KWAF
         maven { url = uri("https://jitpack.io") }
+        // Used by Mojang?
+        maven("https://repo.azisaba.net/repository/maven-public/") {
+            name = "AzisabaPublic"
+        }
     }
 }

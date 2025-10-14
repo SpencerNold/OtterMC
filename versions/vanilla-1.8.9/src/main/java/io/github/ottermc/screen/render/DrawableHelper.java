@@ -1,6 +1,6 @@
 package io.github.ottermc.screen.render;
 
-import io.github.ottermc.screen.UniversalFontRenderer;
+import io.github.ottermc.render.screen.UniversalFontRenderer;
 import io.github.ottermc.screen.font.FontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

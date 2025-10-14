@@ -1,7 +1,5 @@
 package io.github.ottermc.universal;
 
-import io.github.ottermc.universal.UKeyboard;
-
 public class LWJGLKeyboard extends UKeyboard {
 
     @Override
