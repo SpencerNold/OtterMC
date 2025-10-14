@@ -1,6 +1,6 @@
 package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.keybind.UniversalKeyboard;
+import io.github.ottermc.universal.UKeyboard;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Setting;
 
@@ -11,7 +11,7 @@ public class KeyboardSetting extends Setting<Integer> {
 	}
 	
 	public String getKeyName() {
-		return value == -1 ? "" : UniversalKeyboard.translateKeyToName(value);
+		return value == -1 ? "" : UKeyboard.translateKeyToName(value);
 	}
 
 

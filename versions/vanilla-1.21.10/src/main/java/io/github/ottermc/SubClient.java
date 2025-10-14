@@ -1,18 +1,13 @@
 package io.github.ottermc;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.keybind.GLFWKeyboard;
 import io.github.ottermc.keybind.KeybindManager;
-import io.github.ottermc.keybind.UniversalKeyboard;
-import io.github.ottermc.logging.UniversalLog4j;
-import io.github.ottermc.modules.CategoryList;
-import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.world.BiomeFinder;
-import io.github.ottermc.tools.Log4j;
 import io.github.ottermc.transformer.TransformerRegistry;
 import io.github.ottermc.transformers.*;
+import io.github.ottermc.universal.*;
 import io.ottermc.transformer.ReflectionRequired;
 import net.minecraft.client.MinecraftClient;
 
@@ -35,23 +30,16 @@ public class SubClient extends AbstractSubClient {
 
     @ReflectionRequired
     public SubClient(File file, TransformerRegistry registry) {
-        CategoryRegistry.register(CategoryList.values());
-        UniversalLog4j.register(new Log4j());
+        registerBindings();
         instance = this;
         this.clientDirectory = file;
         this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
-        registry.register(ClientConnectionTransformer.class);
-        registry.register(DecoderHandlerTransformer.class);
-        registry.register(EncoderHandlerTransformer.class);
-        registry.register(InGameHudTransformer.class);
-        registry.register(MinecraftClientTransformer.class);
-        registry.register(GameRendererTransformer.class);
+        registerTransformers(registry);
     }
 
     @Override
     @ReflectionRequired
     public void start() {
-        UniversalKeyboard.register(new GLFWKeyboard());
         registerEvents();
     }
 
@@ -73,6 +61,24 @@ public class SubClient extends AbstractSubClient {
     @Override
     public void save() throws IOException {
         storage.write();
+    }
+
+    private void registerBindings() {
+        UniversalLog4j.register(new Log4j());
+        UKeyboard.register(new GLFWKeyboard());
+        UGameSettings.register(new ClientGameSettings());
+        UKeyRegistry.register(new ClientKeyRegistry());
+        UMinecraft.register(new ClientMinecraft());
+        UVersion.register(new ClientVersion());
+    }
+
+    private void registerTransformers(TransformerRegistry registry) {
+        registry.register(ClientConnectionTransformer.class);
+        registry.register(DecoderHandlerTransformer.class);
+        registry.register(EncoderHandlerTransformer.class);
+        registry.register(InGameHudTransformer.class);
+        registry.register(MinecraftClientTransformer.class);
+        registry.register(GameRendererTransformer.class);
     }
 
     private void registerEvents() {

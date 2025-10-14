@@ -1,11 +1,12 @@
-package io.github.ottermc.keybind;
+package io.github.ottermc.universal;
 
+import io.github.ottermc.universal.UKeyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
-public class GLFWKeyboard extends UniversalKeyboard {
+public class GLFWKeyboard extends UKeyboard {
 
     @Override
     protected String keyToName(int key) {

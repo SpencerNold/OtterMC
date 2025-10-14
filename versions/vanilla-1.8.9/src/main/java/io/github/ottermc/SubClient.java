@@ -3,16 +3,9 @@ package io.github.ottermc;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.hud.ClientDisplay;
 import io.github.ottermc.keybind.KeybindManager;
-import io.github.ottermc.keybind.LWJGLKeyboard;
-import io.github.ottermc.keybind.UniversalKeyboard;
-import io.github.ottermc.logging.UniversalLog4j;
-import io.github.ottermc.modules.CategoryList;
-import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.hud.*;
-import io.github.ottermc.modules.utility.Fullbright;
-import io.github.ottermc.modules.utility.Zoom;
 import io.github.ottermc.modules.visual.*;
 import io.github.ottermc.screen.Charset;
 import io.github.ottermc.screen.UniversalFontRenderer;
@@ -25,13 +18,12 @@ import io.github.ottermc.screen.impl.EditHudScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
-import io.github.ottermc.tools.Log4j;
 import io.github.ottermc.transformer.TransformerRegistry;
 import io.github.ottermc.transformers.*;
+import io.github.ottermc.universal.*;
 import io.ottermc.transformer.ReflectionRequired;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
@@ -56,24 +48,11 @@ public class SubClient extends AbstractSubClient {
 
     @ReflectionRequired
     public SubClient(File file, TransformerRegistry registry) {
-        CategoryRegistry.register(CategoryList.values());
-        UniversalLog4j.register(new Log4j());
+        registerBindings();
         instance = this;
         this.clientDirectory = file;
         this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
-        registry.register(EntityRendererTransformer.class);
-        registry.register(GameSettingsTransformer.class);
-        registry.register(GuiIngameTransformer.class);
-        registry.register(EntityPlayerSPTransformer.class);
-        registry.register(EntityTransformer.class);
-        registry.register(GuiScreenTransformer.class);
-        registry.register(ItemRendererTransformer.class);
-        registry.register(LayerArmorBaseTransformer.class);
-        registry.register(MinecraftTransformer.class);
-        registry.register(PlayerControllerMPTransformer.class);
-        registry.register(RenderEntityItemTransformer.class);
-        registry.register(RenderGlobalTransformer.class);
-        registry.register(RenderItemTransformer.class);
+        registerTransformers(registry);
 
         registry.registerPost(RendererLivingEntityTransformer.class);
     }
@@ -81,7 +60,6 @@ public class SubClient extends AbstractSubClient {
     @Override
     @ReflectionRequired
     public void start() {
-        UniversalKeyboard.register(new LWJGLKeyboard());
         registerEvents();
     }
 
@@ -116,6 +94,31 @@ public class SubClient extends AbstractSubClient {
         storage.write();
     }
 
+    private void registerBindings() {
+        UniversalLog4j.register(new Log4j());
+        UKeyboard.register(new LWJGLKeyboard());
+        UGameSettings.register(new ClientGameSettings());
+        UKeyRegistry.register(new ClientKeyRegistry());
+        UMinecraft.register(new ClientMinecraft());
+        UVersion.register(new ClientVersion());
+    }
+
+    private void registerTransformers(TransformerRegistry registry) {
+        registry.register(EntityRendererTransformer.class);
+        registry.register(GameSettingsTransformer.class);
+        registry.register(GuiIngameTransformer.class);
+        registry.register(EntityPlayerSPTransformer.class);
+        registry.register(EntityTransformer.class);
+        registry.register(GuiScreenTransformer.class);
+        registry.register(ItemRendererTransformer.class);
+        registry.register(LayerArmorBaseTransformer.class);
+        registry.register(MinecraftTransformer.class);
+        registry.register(PlayerControllerMPTransformer.class);
+        registry.register(RenderEntityItemTransformer.class);
+        registry.register(RenderGlobalTransformer.class);
+        registry.register(RenderItemTransformer.class);
+    }
+
     private void registerEvents() {
         EventBus.add(new InitializationManager());
         EventBus.add(keyManager);
@@ -125,7 +128,7 @@ public class SubClient extends AbstractSubClient {
 
     private void registerKeybinds() {
         KeybindManager manager = SubClient.getInstance().getKeybindManager();
-        manager.register(Keyboard.KEY_RSHIFT, () -> {
+        manager.register(org.lwjgl.input.Keyboard.KEY_RSHIFT, () -> {
             Minecraft mc = Minecraft.getMinecraft();
             if (mc.thePlayer != null && mc.currentScreen == null)
                 mc.displayGuiScreen(new EditHudScreen());
@@ -140,10 +143,6 @@ public class SubClient extends AbstractSubClient {
         modManager.register(new GuiBlur());
         modManager.register(new KeyStroke());
         modManager.register(new PotionEffect());
-
-        // Utility
-        modManager.register(new Fullbright());
-        modManager.register(new Zoom());
 
         // Visual
         modManager.register(new BlockOutline());

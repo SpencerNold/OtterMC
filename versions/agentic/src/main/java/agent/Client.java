@@ -1,6 +1,7 @@
 package agent;
 
 import io.github.ottermc.AbstractSubClient;
+import io.github.ottermc.Game;
 import io.github.ottermc.logging.Logger;
 import io.ottermc.transformer.ClassTransformer;
 import io.github.ottermc.StateRegistry;
@@ -47,15 +48,13 @@ public class Client {
         Class<?> main = Class.forName("io.github.ottermc.SubClient");
         Constructor<?> constructor = main.getDeclaredConstructor(File.class, TransformerRegistry.class);
         AbstractSubClient client = (AbstractSubClient) constructor.newInstance(dir, registry);
-        AbstractSubClient.instance = client;
-        StateRegistry.setState(State.START);
-        ServerController.start();
+        Game.game = new Game(client);
         ClassTransformer transformer = new ClassTransformer(instrumentation);
         registry.forEach(transformer::register);
         transformer.execute();
         transformer.clear();
         StateRegistry.setState(State.INIT);
-        client.start();
+        Game.game.start();
         StateRegistry.setState(State.POST_INIT);
     }
 

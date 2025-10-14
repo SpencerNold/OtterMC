@@ -2,7 +2,7 @@ package io.github.ottermc.modules.world;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.RunTickListener;
-import io.github.ottermc.keybind.UniversalKeyboard;
+import io.github.ottermc.universal.UKeyboard;
 import io.github.ottermc.listeners.DrawOverlayListener;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
@@ -78,7 +78,7 @@ public class BiomeFinder extends Module implements RunTickListener, DrawOverlayL
 
     @Override
     public void onDrawOverlay(DrawOverlayEvent event) {
-        if (!UniversalKeyboard.isKeyDown(mapKeyboardSetting.getValue()))
+        if (!UKeyboard.isKeyDown(mapKeyboardSetting.getValue()))
             return;
         MinecraftClient client = MinecraftClient.getInstance();
         DrawContext context = event.getContext();

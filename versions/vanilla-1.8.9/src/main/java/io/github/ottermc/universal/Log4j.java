@@ -1,6 +1,6 @@
-package io.github.ottermc.tools;
+package io.github.ottermc.universal;
 
-import io.github.ottermc.logging.UniversalLog4j;
+import io.github.ottermc.universal.UniversalLog4j;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

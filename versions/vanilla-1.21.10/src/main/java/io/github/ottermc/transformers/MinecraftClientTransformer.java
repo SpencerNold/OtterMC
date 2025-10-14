@@ -21,7 +21,6 @@ public class MinecraftClientTransformer {
 
     @Injector(target = Target.HEAD, name = "onInitFinished(Lnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/lang/Runnable;")
     public Runnable onInitFinished(MinecraftClient client, Object loadingContext, Callback callback) {
-        Logger.log("Post init?");
         PostInitializeListener.PostInitializeEvent event = new PostInitializeListener.PostInitializeEvent();
         EventBus.fire(event);
         return null;

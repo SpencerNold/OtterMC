@@ -36,13 +36,10 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
     }
 
     private void attemptPostInitializeProcess() {
-        AbstractSubClient client = AbstractSubClient.instance;
-        if (client == null)
-            return;
-        client.onPostInit();
+        Game.game.onPostInit();
         StateRegistry.setState(State.RUNNING);
         try {
-            client.load();
+            Game.game.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

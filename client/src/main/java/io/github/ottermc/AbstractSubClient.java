@@ -8,8 +8,6 @@ import java.io.IOException;
 
 public abstract class AbstractSubClient {
 
-    public static AbstractSubClient instance;
-
     public abstract void start();
     public abstract void onPostInit();
 

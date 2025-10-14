@@ -1,4 +1,4 @@
-package io.github.ottermc.logging;
+package io.github.ottermc.universal;
 
 public abstract class UniversalLog4j {
 
@@ -9,20 +9,17 @@ public abstract class UniversalLog4j {
     }
 
     public static void log(String msg) {
-        if (instance == null)
-            throw new IllegalStateException("UniversalLog4j must be registered before it can be used");
+        assertNotNull(instance);
         instance.internalLog(msg);
     }
 
     public static void warn(String msg) {
-        if (instance == null)
-            throw new IllegalStateException("UniversalLog4j must be registered before it can be used");
+        assertNotNull(instance);
         instance.internalWarn(msg);
     }
 
     public static void error(String msg) {
-        if (instance == null)
-            throw new IllegalStateException("UniversalLog4j must be registered before it can be used");
+        assertNotNull(instance);
         instance.internalError(msg);
     }
 
@@ -33,4 +30,9 @@ public abstract class UniversalLog4j {
     protected abstract void internalLog(String msg);
     protected abstract void internalWarn(String msg);
     protected abstract void internalError(String msg);
+
+    private static void assertNotNull(Object object) {
+        if (object == null)
+            throw new IllegalStateException("UniversalLog4j must be registered before it can be used");
+    }
 }

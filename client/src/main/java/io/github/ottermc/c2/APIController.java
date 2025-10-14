@@ -5,14 +5,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.github.ottermc.AbstractSubClient;
+import io.github.ottermc.Game;
 import io.github.ottermc.State;
 import io.github.ottermc.StateRegistry;
-import io.github.ottermc.keybind.UniversalKeyboard;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.Setting;
 import io.github.ottermc.modules.setting.*;
 import io.github.ottermc.render.Color;
+import io.github.ottermc.universal.UKeyboard;
 import me.spencernold.kwaf.Http;
 import me.spencernold.kwaf.Route;
 import me.spencernold.kwaf.http.HttpRequest;
@@ -113,7 +114,7 @@ public class APIController {
                     }
                     break;
                     case KEYBOARD: {
-                        int code = UniversalKeyboard.translateNameToKey(val.getAsString());
+                        int code = UKeyboard.translateNameToKey(val.getAsString());
                         ((KeyboardSetting) setting).setValue(code);
                     }
                     break;
@@ -127,9 +128,7 @@ public class APIController {
         if (module.isActive() != state)
             module.setActive(state);
         try {
-            AbstractSubClient client = AbstractSubClient.instance;
-            if (client != null)
-                client.save();
+            Game.game.save();
         } catch (IOException e) {
             return -1;
         }

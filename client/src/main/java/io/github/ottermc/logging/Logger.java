@@ -1,5 +1,7 @@
 package io.github.ottermc.logging;
 
+import io.github.ottermc.universal.UniversalLog4j;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.function.Consumer;

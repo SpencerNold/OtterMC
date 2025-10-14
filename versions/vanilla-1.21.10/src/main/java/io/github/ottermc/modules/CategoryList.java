@@ -1,7 +1,5 @@
 package io.github.ottermc.modules;
 
-import io.github.ottermc.modules.Category;
-
 public class CategoryList {
 
     public static final Category CLIENT = new Category("Client");

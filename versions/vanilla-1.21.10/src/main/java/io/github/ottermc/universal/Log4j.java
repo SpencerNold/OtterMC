@@ -1,6 +1,6 @@
-package io.github.ottermc.tools;
+package io.github.ottermc.universal;
 
-import io.github.ottermc.logging.UniversalLog4j;
+import io.github.ottermc.universal.UniversalLog4j;
 import me.spencernold.transformer.Reflection;
 import org.slf4j.Logger;
 
