@@ -106,10 +106,7 @@ public class SubClient extends AbstractSubClient {
     }
 
     private void registerEvents() {
-        EventBus.add(new InitializationManager());
-        EventBus.add(keyManager);
         EventBus.add(new BlurShaderProgram());
-        EventBus.add(hudManager);
     }
 
     private void registerModules() {
@@ -143,6 +140,11 @@ public class SubClient extends AbstractSubClient {
     @Override
     public HudManager getHudManager() {
         return instance.hudManager;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return String.join("%s (%s) v%s", NAME, TARGET, VERSION);
     }
 
     @ReflectionRequired

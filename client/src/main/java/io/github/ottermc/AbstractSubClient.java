@@ -16,5 +16,5 @@ public abstract class AbstractSubClient {
     public abstract KeybindManager getKeybindManager();
     public abstract HudManager getHudManager();
     public abstract File getClientDirectory();
-
+    public abstract String getIdentifier();
 }

@@ -1,6 +1,7 @@
 package io.github.ottermc;
 
 import io.github.ottermc.c2.ServerController;
+import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.logging.Logger;
 import io.github.ottermc.modules.CategoryList;
@@ -27,7 +28,7 @@ public class Game {
 
     public Game(AbstractSubClient client) {
         this.client = client;
-        this.clientStorage = new PersistentStorage(client.getClientDirectory().getParentFile(), "OtterMC");
+        this.clientStorage = new PersistentStorage(client.getClientDirectory().getParentFile(), client.getIdentifier());
     }
 
     public void start() {
@@ -35,6 +36,7 @@ public class Game {
         CategoryRegistry.register(CategoryList.values());
         StateRegistry.setState(State.START);
         ServerController.start();
+        registerEvents();
     }
 
     public void onPostInit() {
@@ -82,7 +84,9 @@ public class Game {
     }
 
     private void registerEvents() {
-
+        EventBus.add(new InitializationManager());
+        EventBus.add(client.getHudManager());
+        EventBus.add(client.getKeybindManager());
     }
 
     public ModuleManager getModManager() {

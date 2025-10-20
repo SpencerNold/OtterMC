@@ -19,7 +19,7 @@ public class PersistentStorage {
 
     public PersistentStorage(File directory, String identifier) {
         String name = String.valueOf(identifier.hashCode());
-        this.file = new File(directory, name);
+        this.file = new File(directory, name + ".lock");
     }
 
     public void write() throws IOException {

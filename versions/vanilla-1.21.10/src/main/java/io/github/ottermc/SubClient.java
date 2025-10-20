@@ -1,6 +1,5 @@
 package io.github.ottermc;
 
-import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.KeybindManager;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.world.BiomeFinder;
@@ -40,7 +39,6 @@ public class SubClient extends AbstractSubClient {
     @Override
     @ReflectionRequired
     public void start() {
-        registerEvents();
     }
 
     @Override
@@ -75,11 +73,6 @@ public class SubClient extends AbstractSubClient {
         hudManager.register(new ClientClickCounterHud());
     }
 
-    private void registerEvents() {
-        EventBus.add(new InitializationManager());
-        EventBus.add(hudManager);
-    }
-
     private void registerModules() {
         ModuleManager manager = SubClient.getInstance().getModuleManager();
         // Client
@@ -107,6 +100,11 @@ public class SubClient extends AbstractSubClient {
     @Override
     public HudManager getHudManager() {
         return instance.hudManager;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return String.join("%s (%s) v%s", NAME, TARGET, VERSION);
     }
 
     @ReflectionRequired
