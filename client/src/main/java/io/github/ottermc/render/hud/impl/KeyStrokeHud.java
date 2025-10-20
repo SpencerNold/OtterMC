@@ -6,8 +6,8 @@ public abstract class KeyStrokeHud extends MovableComponent {
 
     public static KeyStrokeHud INSTANCE;
 
-    public KeyStrokeHud() {
-        super(10, 10, 58, 51);
+    public KeyStrokeHud(int width, int height) {
+        super(10, 10, width, height);
         INSTANCE = this;
     }
 

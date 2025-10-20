@@ -3,7 +3,7 @@ package io.github.ottermc.screen.impl;
 import io.github.ottermc.SubClient;
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.listeners.DrawMainMenuScreenListener;
-import io.github.ottermc.screen.ClientTheme;
+import io.github.ottermc.render.ClientTheme;
 import io.github.ottermc.screen.render.DrawableHelper;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;

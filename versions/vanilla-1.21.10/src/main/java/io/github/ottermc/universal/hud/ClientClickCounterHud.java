@@ -19,7 +19,7 @@ public class ClientClickCounterHud extends ClickCounterHud implements ClickMouse
     }
 
     public ClientClickCounterHud() {
-        super();
+        super(60, 19);
         EventBus.add(this);
     }
 
@@ -35,8 +35,8 @@ public class ClientClickCounterHud extends ClickCounterHud implements ClickMouse
 
     private void drawCounter(DrawContext drawable, MinecraftClient mc) {
         int color = io.github.ottermc.modules.impl.hud.ClickCounter.getColor().getValue();
-        draw(LEFT, mc, mc.options.attackKey, drawable, getDefaultX(), getDefaultY(), 29, getRawHeight() + 1, color);
-        draw(RIGHT, mc, mc.options.useKey, drawable, getDefaultX() + 31, getDefaultY(), 29, getRawHeight() + 1, color);
+        draw(LEFT, mc, mc.options.attackKey, drawable, getDefaultX(), getDefaultY(), 29, getRawHeight(), color);
+        draw(RIGHT, mc, mc.options.useKey, drawable, getDefaultX() + 31, getDefaultY(), 29, getRawHeight(), color);
     }
 
     private void draw(ClickCounter counter, MinecraftClient mc, KeyBinding binding, DrawContext context, int x, int y, int width, int height, int color) {

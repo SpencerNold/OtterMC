@@ -6,8 +6,8 @@ public abstract class ArmorStatusHud extends MovableComponent {
 
     public static ArmorStatusHud INSTANCE;
 
-    public ArmorStatusHud() {
-        super(10, 10, 64, 16);
+    public ArmorStatusHud(int width, int height) {
+        super(10, 10, width, height);
         INSTANCE = this;
     }
 

@@ -23,7 +23,7 @@ public class TradeSelector extends TradeModule implements RunTickListener, Rende
     private boolean workstation = false;
 
     public TradeSelector() {
-        super("Trade Selector", CategoryList.GAME);
+        super("Trade Selector", CategoryList.UTILITY);
     }
 
     @Override

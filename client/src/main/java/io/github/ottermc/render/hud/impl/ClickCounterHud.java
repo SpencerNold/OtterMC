@@ -9,8 +9,8 @@ public abstract class ClickCounterHud extends MovableComponent {
 
     public static ClickCounterHud INSTANCE;
 
-    public ClickCounterHud() {
-        super(10, 10, 58, 18);
+    public ClickCounterHud(int width, int height) {
+        super(10, 10, width, height);
         INSTANCE = this;
     }
 

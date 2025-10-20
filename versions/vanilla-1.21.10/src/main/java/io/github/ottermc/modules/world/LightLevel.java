@@ -2,8 +2,8 @@ package io.github.ottermc.modules.world;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.Listener;
-import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.CategoryList;
+import io.github.ottermc.modules.Module;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnRestriction;

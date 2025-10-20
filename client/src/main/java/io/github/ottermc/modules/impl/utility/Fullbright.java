@@ -7,7 +7,7 @@ import io.github.ottermc.universal.UGameSettings;
 public class Fullbright extends Module {
 
     public Fullbright() {
-        super("Fullbright", CategoryList.GAME);
+        super("Fullbright", CategoryList.UTILITY);
     }
 
     @Override

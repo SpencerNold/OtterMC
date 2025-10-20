@@ -7,23 +7,23 @@ import io.github.ottermc.universal.UDrawable;
 
 public abstract class MovableComponent extends Component implements Writable<ByteBuf> {
 
-    protected int offsetX = 0, offsetY = 0;
+    protected float offsetX = 0, offsetY = 0;
     protected float scale = 1.0f;
 
     public MovableComponent(int defaultX, int defaultY, int width, int height) {
         super(defaultX, defaultY, width, height);
     }
 
-    public void setOffset(int x, int y) {
+    public void setOffset(float x, float y) {
         this.offsetX = x;
         this.offsetY = y;
     }
 
-    public int getXOffset() {
+    public float getXOffset() {
         return offsetX;
     }
 
-    public int getYOffset() {
+    public float getYOffset() {
         return offsetY;
     }
 
@@ -60,14 +60,14 @@ public abstract class MovableComponent extends Component implements Writable<Byt
     public abstract void drawDummyObject(Object context);
 
     public void write(ByteBuf buf) {
-        buf.writeInt(offsetX);
-        buf.writeInt(offsetY);
+        buf.writeFloat(offsetX);
+        buf.writeFloat(offsetY);
         buf.writeFloat(scale);
     }
 
     public void read(ByteBuf buf) {
-        offsetX = buf.readInt();
-        offsetY = buf.readInt();
+        offsetX = buf.readFloat();
+        offsetY = buf.readFloat();
         scale = buf.readFloat();
     }
 }

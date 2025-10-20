@@ -16,7 +16,7 @@ public class Zoom extends Module implements RunTickListener {
     private float lastFov;
 
     public Zoom() {
-        super("Zoom", CategoryList.GAME);
+        super("Zoom", CategoryList.UTILITY);
         setActive(true);
     }
 

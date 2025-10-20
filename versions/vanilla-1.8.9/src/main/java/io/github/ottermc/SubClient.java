@@ -2,23 +2,21 @@ package io.github.ottermc;
 
 import io.github.ottermc.events.EventBus;
 import io.github.ottermc.keybind.KeybindManager;
-import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.hud.GuiBlur;
+import io.github.ottermc.modules.impl.display.UIScheme;
 import io.github.ottermc.modules.visual.*;
-import io.github.ottermc.render.hud.Component;
 import io.github.ottermc.render.hud.HudManager;
-import io.github.ottermc.render.hud.MovableComponent;
 import io.github.ottermc.render.screen.Charset;
 import io.github.ottermc.render.screen.UniversalFontRenderer;
 import io.github.ottermc.screen.font.ClientFont;
 import io.github.ottermc.screen.font.FontRenderer;
-import io.github.ottermc.screen.impl.EditHudScreen;
 import io.github.ottermc.screen.impl.MainMenuScreen;
 import io.github.ottermc.screen.render.BlurShaderProgram;
 import io.github.ottermc.screen.render.Icon;
 import io.github.ottermc.transformer.TransformerRegistry;
 import io.github.ottermc.transformers.*;
+import io.github.ottermc.universal.Math;
 import io.github.ottermc.universal.*;
 import io.github.ottermc.universal.hud.*;
 import io.ottermc.transformer.ReflectionRequired;
@@ -27,13 +25,11 @@ import net.minecraft.client.gui.GuiMainMenu;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class SubClient extends AbstractSubClient {
 
     public static final String NAME = "OtterMC", VERSION = "ALPHA-1.0.0 (1.8.9)";
-    @ReflectionRequired
     public static final String TARGET = "1.8.9";
 
     private static SubClient instance;
@@ -42,7 +38,6 @@ public class SubClient extends AbstractSubClient {
     private final ModuleManager modManager = new ModuleManager();
     private final HudManager hudManager = new ClientHudManager();
 
-    private final ClientStorage storage;
     private final File clientDirectory;
 
 
@@ -51,7 +46,6 @@ public class SubClient extends AbstractSubClient {
         registerBindings();
         instance = this;
         this.clientDirectory = file;
-        this.storage = new ClientStorage(clientDirectory, String.join(" ", NAME, VERSION, TARGET));
         registerTransformers(registry);
 
         registry.registerPost(RendererLivingEntityTransformer.class);
@@ -67,7 +61,6 @@ public class SubClient extends AbstractSubClient {
     @ReflectionRequired
     public void onPostInit() {
         UniversalFontRenderer.register(new FontRenderer(ClientFont.getFontIgnoreException("/assets/omc/omc_ttf_font.png"), new Charset("/assets/omc/omc_ttf_charset.json")));
-        registerKeybinds();
         registerDisplays();
         registerModules();
         Display.setTitle(SubClient.NAME + " " + SubClient.VERSION);
@@ -75,23 +68,6 @@ public class SubClient extends AbstractSubClient {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null && mc.currentScreen != null && mc.currentScreen.getClass() == GuiMainMenu.class)
             mc.displayGuiScreen(new MainMenuScreen());
-    }
-
-    @Override
-    public void load() throws IOException {
-        storage.clear();
-        for (Module module : getModuleManager().getModules())
-            storage.writable(module);
-        for (Component component : getHudManager().getComponents()) {
-            if (component instanceof MovableComponent)
-                storage.writable((MovableComponent) component);
-        }
-        storage.read();
-    }
-
-    @Override
-    public void save() throws IOException {
-        storage.write();
     }
 
     private void registerBindings() {
@@ -102,6 +78,7 @@ public class SubClient extends AbstractSubClient {
         UKeyRegistry.register(new ClientKeyRegistry());
         UMinecraft.register(new ClientMinecraft());
         UVersion.register(new ClientVersion());
+        Mth.register(new Math());
     }
 
     private void registerTransformers(TransformerRegistry registry) {
@@ -135,15 +112,6 @@ public class SubClient extends AbstractSubClient {
         EventBus.add(hudManager);
     }
 
-    private void registerKeybinds() {
-        KeybindManager manager = SubClient.getInstance().getKeybindManager();
-        manager.register(org.lwjgl.input.Keyboard.KEY_RSHIFT, () -> {
-            Minecraft mc = Minecraft.getMinecraft();
-            if (mc.thePlayer != null && mc.currentScreen == null)
-                mc.displayGuiScreen(new EditHudScreen());
-        });
-    }
-
     private void registerModules() {
         // HUD
         modManager.register(new GuiBlur());
@@ -167,15 +135,12 @@ public class SubClient extends AbstractSubClient {
         return clientDirectory;
     }
 
-    public ClientStorage getStorage() {
-        return storage;
-    }
-
     @Override
     public KeybindManager getKeybindManager() {
         return instance.keyManager;
     }
 
+    @Override
     public HudManager getHudManager() {
         return instance.hudManager;
     }

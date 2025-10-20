@@ -1,14 +1,14 @@
-package io.github.ottermc.modules.visual;
+package io.github.ottermc.modules.impl.display;
 
 import io.github.ottermc.io.ByteBuf;
+import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.Writable;
 import io.github.ottermc.modules.setting.EnumSetting;
-import io.github.ottermc.modules.CategoryList;
+import io.github.ottermc.render.ClientTheme;
 import io.github.ottermc.render.Color;
-import io.github.ottermc.screen.ClientTheme;
-import net.minecraft.util.MathHelper;
+import io.github.ottermc.universal.Mth;
 
 public class UIScheme extends Module {
 
@@ -81,7 +81,7 @@ public class UIScheme extends Module {
         }
 
         private static float sin(float x) {
-            return MathHelper.sin(x);
+            return Mth.sin(x);
         }
     }
 }

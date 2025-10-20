@@ -4,8 +4,6 @@ import io.github.ottermc.events.EventBus;
 import io.github.ottermc.events.listeners.PostInitializeListener;
 import io.github.ottermc.events.listeners.RunTickListener;
 
-import java.io.IOException;
-
 public class InitializationManager implements PostInitializeListener, RunTickListener {
 
     private boolean hasPostInitialized;
@@ -37,12 +35,6 @@ public class InitializationManager implements PostInitializeListener, RunTickLis
 
     private void attemptPostInitializeProcess() {
         Game.game.onPostInit();
-        StateRegistry.setState(State.RUNNING);
-        try {
-            Game.game.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         hasPostInitialized = true;
     }
 }

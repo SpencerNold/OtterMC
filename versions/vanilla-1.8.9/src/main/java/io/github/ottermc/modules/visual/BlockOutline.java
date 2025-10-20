@@ -1,13 +1,13 @@
 package io.github.ottermc.modules.visual;
 
 import io.github.ottermc.events.EventBus;
+import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.Storable;
 import io.github.ottermc.modules.setting.BooleanSetting;
 import io.github.ottermc.modules.setting.ColorSetting;
 import io.github.ottermc.modules.setting.FloatSetting;
 import io.github.ottermc.listeners.DrawSelectionBoxListener;
-import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.render.Color;
 import io.github.ottermc.render.VoxelRenderer;
 import net.minecraft.block.Block;

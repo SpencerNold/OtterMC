@@ -24,8 +24,10 @@ dependencies {
 tasks.named("build") {
     doLast {
         val client = file("build/libs/vanilla-1.8.9.jar")
-        val mapped = Compiler.compile(client, Constants.VERSION_1_8_9)
+        val mc = file("libs/mc-clean.jar")
         val agentic = file("../agentic/build/libs/agentic-joined.jar")
+        val common = file("../../client/build/libs/client-joined.jar")
+        val mapped = Compiler.compile(client, arrayOf(agentic, common), Constants.VERSION_1_8_9, mc)
         val joined = Joiner.joinJars(mapped, listOf(agentic.absolutePath))
         VersionController.handle(joined, 52)
     }

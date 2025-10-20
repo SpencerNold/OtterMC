@@ -9,6 +9,10 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientKeyStrokeHud extends KeyStrokeHud {
 
+    public ClientKeyStrokeHud() {
+        super(58, 51);
+    }
+
     @Override
     public void draw(@Type(DrawableHelper.class) Object context) {
         drawKeys((DrawableHelper) context, Minecraft.getMinecraft(), true);

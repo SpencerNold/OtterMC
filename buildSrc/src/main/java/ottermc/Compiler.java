@@ -1,23 +1,28 @@
 package ottermc;
 
+import org.gradle.api.GradleScriptException;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import ottermc.asm.Hierarchy;
+import ottermc.asm.TClassVisitor;
+
 import java.io.*;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-
-import org.gradle.api.GradleScriptException;
-
 public class Compiler {
 
-    public static File compile(File file, int version) {
+    public static File compile(File file, File[] dependencies, int version, File minecraft) {
     	try {
+			if (!minecraft.exists())
+				return null;
+			Hierarchy.create(minecraft, false);
+			Hierarchy.create(file, true);
+			for (File f : dependencies)
+				Hierarchy.create(f, true);
+			Hierarchy.finish();
     		if (!file.exists())
     			return null;
     		File output = new File(file.getParentFile(), file.getName().replace(".jar", "-remapped.jar"));

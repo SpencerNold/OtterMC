@@ -1,9 +1,9 @@
 package io.github.ottermc.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.modules.Module;
 import io.github.ottermc.listeners.GetItemScaleListener;
 import io.github.ottermc.modules.CategoryList;
+import io.github.ottermc.modules.Module;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

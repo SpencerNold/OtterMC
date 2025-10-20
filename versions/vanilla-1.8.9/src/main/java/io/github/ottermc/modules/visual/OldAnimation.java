@@ -1,9 +1,9 @@
 package io.github.ottermc.modules.visual;
 
 import io.github.ottermc.events.EventBus;
-import io.github.ottermc.modules.Module;
 import io.github.ottermc.listeners.RenderItemInFirstPersonListener;
 import io.github.ottermc.modules.CategoryList;
+import io.github.ottermc.modules.Module;
 import me.spencernold.transformer.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

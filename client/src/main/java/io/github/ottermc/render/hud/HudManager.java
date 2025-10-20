@@ -2,7 +2,9 @@ package io.github.ottermc.render.hud;
 
 import io.github.ottermc.events.listeners.RenderGameOverlayListener;
 
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public abstract class HudManager implements RenderGameOverlayListener {
 
@@ -14,6 +16,10 @@ public abstract class HudManager implements RenderGameOverlayListener {
 
     public LinkedList<Component> getComponents() {
         return components;
+    }
+
+    public Collection<MovableComponent> getMovableComponents() {
+        return components.stream().filter(c -> c instanceof MovableComponent).map(c -> (MovableComponent) c).collect(Collectors.toList());
     }
 
     @Override

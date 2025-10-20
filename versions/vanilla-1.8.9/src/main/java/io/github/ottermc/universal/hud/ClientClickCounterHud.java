@@ -19,7 +19,7 @@ public class ClientClickCounterHud extends ClickCounterHud implements ClickMouse
     }
 
     public ClientClickCounterHud() {
-        super();
+        super(58, 18);
         EventBus.add(this);
     }
 

@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableHelper {
@@ -75,89 +74,6 @@ public class DrawableHelper {
         drawRectangle(x, y, width, height, outerColor);
     }
 
-    public void fillRoundedRectangle(int posX, int posY, int width, int height, int radius, int color) {
-        fillRectangle(posX + radius, posY, width - (radius * 2), radius, color);
-        fillRectangle(posX, posY + radius, width, height - (radius * 2), color);
-        fillRectangle(posX + radius, posY + height - radius, width - (radius * 2), radius, color);
-        for (int x = 0; x < radius; x++) {
-            for (int y = 0; y < radius; y++) {
-                // Corner 1
-                int dx = x - radius + 1;
-                int dy = y - radius + 1;
-                int dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + x, posY + y, color);
-                // Corner 2
-                dx = x;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + width + x - radius, posY + y, color);
-                // Corner 3
-                dy = y;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + width + x - radius, posY + height + y - radius, color);
-                // Corner 4
-                dx = x - radius + 1;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + x, posY + height + y - radius, color);
-            }
-        }
-    }
-
-    public void fillTopRoundedRectangle(int posX, int posY, int width, int height, int radius, int color) {
-        fillRectangle(posX + radius, posY, width - (radius * 2), radius, color);
-        fillRectangle(posX, posY + radius, width, height - radius, color);
-        for (int x = 0; x < radius; x++) {
-            for (int y = 0; y < radius; y++) {
-                // Corner 1
-                int dx = x - radius + 1;
-                int dy = y - radius + 1;
-                int dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + x, posY + y, color);
-                // Corner 2
-                dx = x;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist < radius)
-                    fillPixel(posX + width + x - radius, posY + y, color);
-            }
-        }
-    }
-
-    public void drawRoundedRectangle(int posX, int posY, int width, int height, int radius, int color) {
-        drawHorizontalLine(posX + radius, posX + width - radius, posY, color);
-        drawHorizontalLine(posX + radius, posX + width - radius, posY + height - 1, color);
-        drawVerticalLine(posX, posY + radius, posY + height - radius, color);
-        drawVerticalLine(posX + width - 1, posY + radius, posY + height - radius, color);
-        for (int x = 0; x < radius; x++) {
-            for (int y = 0; y < radius; y++) {
-                // Corner 1
-                int dx = x - radius + 1;
-                int dy = y - radius + 1;
-                int dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist == radius - 1)
-                    fillPixel(posX + x, posY + y, color);
-                // Corner 2
-                dx = x;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist == radius - 1)
-                    fillPixel(posX + width + x - radius, posY + y, color);
-                // Corner 3
-                dy = y;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist == radius - 1)
-                    fillPixel(posX + width + x - radius, posY + height + y - radius, color);
-                // Corner 4
-                dx = x - radius + 1;
-                dist = MathHelper.floor_float(MathHelper.sqrt_float(dx * dx + dy * dy));
-                if (dist == radius - 1)
-                    fillPixel(posX + x, posY + height + y - radius, color);
-            }
-        }
-    }
-
     public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
@@ -181,24 +97,12 @@ public class DrawableHelper {
         return res.getScaledHeight_double();
     }
 
-    public boolean intersects(int x, int y, int width, int height, float scale, int mouseX, int mouseY) {
-        x = (int) (x * scale);
-        y = (int) (y * scale);
-        width = (int) (width * scale);
-        height = (int) (height * scale);
-        return intersects(x, y, width, height, mouseX, mouseY);
-    }
-
     public boolean intersects(int x, int y, int width, int height, int mouseX, int mouseY) {
         return mouseX >= x && mouseX <= (x + width) && mouseY >= y && mouseY <= (y + height);
     }
 
     public int middle(int x1, int x2) {
         return (x1 / 2) - (x2 / 2);
-    }
-
-    private void fillPixel(int x, int y, int color) {
-        Gui.drawRect(x, y, x + 1, y + 1, color);
     }
 
     public void drawHorizontalLine(int startX, int endX, int y, int color) {

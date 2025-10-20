@@ -1,6 +1,7 @@
-package ottermc;
+package ottermc.asm;
 
 import org.objectweb.asm.*;
+import ottermc.Mapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +19,7 @@ public class TClassVisitor extends ClassVisitor {
 	
 	@Override
 	public void visit(int v, int access, String name, String signature, String superName, String[] interfaces) {
-		transformOverrideMethods.add(superName);
-		transformOverrideMethods.addAll(Arrays.asList(interfaces));
+		transformOverrideMethods.addAll(Hierarchy.getParentsOfClass(name));
 		if (Mapping.contains(superName, version))
 			superName = Mapping.get(superName, version).getName1();
 		for (int i = 0; i < interfaces.length; i++) {
@@ -49,7 +49,7 @@ public class TClassVisitor extends ClassVisitor {
 			}
 		}
 		descriptor = RemapVisitor.sanitizeDescriptor(descriptor, version);
-		return new RemapVisitor(super.visitMethod(access, name, descriptor, signature, exceptions), version);
+		return new RemapVisitor(super.visitMethod(access, name, descriptor, signature, exceptions), transformOverrideMethods, version);
 	}
 
 	@Override

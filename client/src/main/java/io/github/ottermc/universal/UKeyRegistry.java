@@ -10,10 +10,22 @@ public abstract class UKeyRegistry {
 
     public static int getKeyC() {
         assertNotNull(instance);
-        return instance.getRegKeyC();
+        return instance._getKeyC();
     }
 
-    protected abstract int getRegKeyC();
+    public static int getKeyLShift() {
+        assertNotNull(instance);
+        return instance._getKeyLShift();
+    }
+
+    public static int getKeyRShift() {
+        assertNotNull(instance);
+        return instance._getKeyRShift();
+    }
+
+    protected abstract int _getKeyC();
+    protected abstract int _getKeyLShift();
+    protected abstract int _getKeyRShift();
 
     private static void assertNotNull(Object object) {
         if (object == null)

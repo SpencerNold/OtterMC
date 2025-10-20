@@ -21,6 +21,9 @@ public class ClientArmorStatusHud extends ArmorStatusHud {
     private static final ResourceLocation EMPTY_BOOTS = new ResourceLocation("textures/items/empty_armor_slot_boots.png");
     private static final ResourceLocation[] RESOURCES = new ResourceLocation[] { EMPTY_HELMET, EMPTY_CHESTPLATE, EMPTY_LEGGINGS, EMPTY_BOOTS };
 
+    public ClientArmorStatusHud() {
+        super(64, 16);
+    }
 
     @Override
     public void draw(@Type(DrawableHelper.class) Object context) {

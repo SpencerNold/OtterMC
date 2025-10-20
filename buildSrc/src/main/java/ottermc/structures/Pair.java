@@ -1,4 +1,4 @@
-package ottermc;
+package ottermc.structures;
 
 public class Pair<K, V> {
 

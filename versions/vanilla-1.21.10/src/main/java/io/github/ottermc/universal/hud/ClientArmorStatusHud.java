@@ -19,6 +19,10 @@ public class ClientArmorStatusHud extends ArmorStatusHud {
     private static final Identifier EMPTY_SHIELD = Identifier.ofVanilla("textures/gui/sprites/container/slot/shield.png");
     private static final Identifier[] RESOURCES = new Identifier[] { EMPTY_HELMET, EMPTY_CHESTPLATE, EMPTY_LEGGINGS, EMPTY_BOOTS, EMPTY_SHIELD };
 
+    public ClientArmorStatusHud() {
+        super(80, 16);
+    }
+
     @Override
     public void draw(Object context) {
         MinecraftClient mc = MinecraftClient.getInstance();

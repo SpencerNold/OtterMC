@@ -1,6 +1,4 @@
-package io.github.ottermc.screen;
-
-import io.github.ottermc.render.Color;
+package io.github.ottermc.render;
 
 import java.util.function.Supplier;
 
