@@ -21,7 +21,9 @@ import java.io.IOException;
 
 public class Game {
 
-    public static Game game;
+    public static final String CLIENT_NAME = "OtterMC";
+
+    public static Game game = null;
 
     private final AbstractSubClient client;
     private final PersistentStorage clientStorage;

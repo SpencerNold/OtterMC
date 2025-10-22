@@ -34,12 +34,18 @@ public class InstallTask extends DefaultTask {
 
         File client12110Src = getDirFile(projectDir, "versions", "vanilla-1.21.10", "build", "libs", "vanilla-1.21.10-remapped-joined-safe.jar");
         File client12110Dst = getDirFile(gameDir, "ottermc", "versions", "vanilla-1.21.10.jar");
+
+        File fabric12110Src = getDirFile( projectDir,"versions", "fabric-1.21.10", "build", "libs", "omc-1.0.0.jar");
+        File fabric12110Dst = getDirFile(gameDir, "mods", "fabric-1.21.10.jar");
+        File fabricClientDst = getDirFile(projectDir, "versions", "fabric-1.21.10", "libs", "client.jar");
         try {
             copy(wrapperSrc, wrapperDst);
             copy(windowSrc, windowDst);
             copy(clientSrc, clientDst);
             copy(client189Src, client189Dst);
             copy(client12110Src, client12110Dst);
+            copy(fabric12110Src, fabric12110Dst);
+            copy(clientSrc, fabricClientDst);
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }

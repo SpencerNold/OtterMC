@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "io.github.fabric.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"InGameHudMixin",
+		"MinecraftClientMixin",
+		"KeyBindingAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

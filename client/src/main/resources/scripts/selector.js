@@ -25,7 +25,12 @@ function loadModules() {
         }
     }
     xhr.onerror = () => {
-        console.error("Network error")
+        console.error("Error in GET from /api/modules")
+        console.error("XHR error:", event)
+        console.error("Status:", xhr.status)
+        console.error("Status text:", xhr.statusText)
+        console.error("Ready state:", xhr.readyState)
+        console.error("Response URL:", xhr.responseURL)
     }
     xhr.send()
 }

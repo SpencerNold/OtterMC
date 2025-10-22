@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.ottermc.AbstractSubClient;
 import io.github.ottermc.Game;
 import io.github.ottermc.State;
 import io.github.ottermc.StateRegistry;
@@ -20,7 +19,6 @@ import me.spencernold.kwaf.http.HttpRequest;
 import me.spencernold.kwaf.services.Service;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 @Service.Controller(path = "/api")
@@ -45,11 +43,15 @@ public class APIController {
 
     @Route(method = Http.Method.GET, path = "/modules")
     public JsonArray getModules() {
+        System.out.println("Bruh what");
         JsonArray modules = new JsonArray();
         for (Module mod : getModuleManager().getModules()) {
+            System.out.println("A" + mod.getName());
             JsonObject module = jsonize(mod);
             modules.add(module);
+            System.out.println("B" + mod.getName());
         }
+        System.out.println(modules);
         return modules;
     }
 
@@ -193,13 +195,6 @@ public class APIController {
     }
 
     private ModuleManager getModuleManager() {
-        try {
-            Class<?> clazz = Class.forName("io.github.ottermc.SubClient");
-            Method method = clazz.getDeclaredMethod("getInstance");
-            AbstractSubClient client = (AbstractSubClient) method.invoke(null);
-            return client.getModuleManager();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return Game.game.getModManager();
     }
 }

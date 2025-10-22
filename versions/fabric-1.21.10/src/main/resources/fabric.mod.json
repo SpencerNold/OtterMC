@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "omc",
+	"version": "${version}",
+	"name": "OtterMC (Fabric)",
+	"description": "Fabric internal loader for the OtterMC client",
+	"authors": [
+		"DJCowGaming",
+		"ILostAChromosome"
+	],
+	"contact": {
+		"homepage": "https://github.com/SpencerNold/OtterMC",
+		"sources": "https://github.com/SpencerNold/OtterMC"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/omc/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [],
+		"client": [
+			"io.github.fabric.Client"
+		]
+	},
+	"mixins": [
+		"omc.client.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

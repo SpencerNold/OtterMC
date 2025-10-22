@@ -10,6 +10,7 @@ if not exist "%OMC_DIR%" mkdir "%OMC_DIR%"
 if not exist "%OMC_DIR%\versions" mkdir "%OMC_DIR%\versions"
 copy "versions\vanilla-1.8.9\build\libs\vanilla-1.8.9-remapped-joined-safe.jar" "%OMC_DIR%\versions\vanilla-1.8.9.jar" /Y
 copy "versions\vanilla-1.21.10\build\libs\vanilla-1.21.10-remapped-joined-safe.jar" "%OMC_DIR%\versions\vanilla-1.21.10.jar" /Y
+copy "versions\fabric-1.21.10\build\libs\omc-1.0.0.jar" "%TARGET_DIR%\mods\fabric-1.21.10.jar"
 
 REM -------- Client JAR --------
 copy "client\build\libs\client-joined.jar" "%OMC_DIR%\client.jar" /Y

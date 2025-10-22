@@ -1,5 +1,6 @@
 package net.ottermc.window.versions;
 
+import com.google.gson.JsonElement;
 import net.ottermc.window.Logger;
 import net.ottermc.window.Main;
 
@@ -27,6 +28,7 @@ public abstract class Version {
     }
 
     public abstract void start();
+    public abstract void load(JsonElement element);
 
     @Override
     public String toString() {

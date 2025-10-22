@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Enumeration;
+import java.util.function.Function;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -89,5 +90,23 @@ public class FileTool {
         else if (os.contains("nux"))
             return "nux";
         return null;
+    }
+
+    public static File resolveLibraryPath(File gameDir, String mavenNotation) {
+        String[] parts = mavenNotation.split(":");
+        if (parts.length < 3)
+            return null;
+        String group = parts[0].replace('.', '/');
+        String artifact = parts[1];
+        String version = parts[2];
+        String fileName = artifact + "-" + version + ".jar";
+        return new File(gameDir, "libraries/" + group + "/" + artifact + "/" + version + "/" + fileName);
+    }
+
+    public static String[] transform(File[] files, Function<File, String> function) {
+        String[] paths = new String[files.length];
+        for (int i = 0; i < files.length; i++)
+            paths[i] = function.apply(files[i]);
+        return paths;
     }
 }

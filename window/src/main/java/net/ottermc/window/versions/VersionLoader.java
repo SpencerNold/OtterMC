@@ -8,13 +8,32 @@ import net.ottermc.window.util.JsonTool;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VersionLoader {
 
     private static final Gson GSON = new Gson();
 
-    public static void loadManifest() {
+    private final Map<String, Class<? extends Version>> registry = new HashMap<>();
+
+    public void register(String type, Class<? extends Version> clazz) {
+        registry.put(type, clazz);
+    }
+
+    private Version newInstanceSafe(String type, String name, long lastPlayed) {
+        try {
+            Class<? extends Version> clazz = registry.get(type);
+            Constructor<? extends Version> constructor = clazz.getDeclaredConstructor(String.class, long.class);
+            return constructor.newInstance(name, lastPlayed);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void loadManifest() {
         File file = FileTool.getFilePath(Main.gameDir, "ottermc", "manifest.json");
         JsonElement element = readElementIgnoreError(file);
         if (element == null)
@@ -35,42 +54,13 @@ public class VersionLoader {
             String type = typePrimitive.getAsString();
             String name = namePrimitive.getAsString();
             long lastPlayed = lastPlayedPrimitive.getAsLong();
-            if (type.equals("vanilla")) {
-                loadVanillaVersion(name, lastPlayed, e);
-            }
+            Version version = newInstanceSafe(type, name, lastPlayed);
+            if (version == null)
+                return;
+            version.load(e);
+            Main.versions.add(version);
         }
         Main.versions.sort(Comparator.comparingLong(v -> ((Version) v).getLastPlayed()).reversed());
-    }
-
-    private static void loadVanillaVersion(String name, long lastPlayed, JsonElement element) {
-        JsonPrimitive inheritsPrimitive = JsonTool.getChildPrimitiveSafe(element, "inherits");
-        if (inheritsPrimitive == null)
-            return;
-        JsonPrimitive javaPrimitive = JsonTool.getChildPrimitiveSafe(element, "java");
-        if (javaPrimitive == null)
-            return;
-        JsonPrimitive clientPrimitive = JsonTool.getChildPrimitiveSafe(element, "client");
-        if (clientPrimitive == null)
-            return;
-        JsonObject argsObject = JsonTool.getChildObjectNullOnMissing(element, "args");
-        String[] args = new String[] {};
-        if (argsObject != null) {
-            String os = FileTool.getOperatingSystemSimpleString();
-            JsonArray osArray = JsonTool.getChildArrayNullOnMissing(argsObject, os);
-            if (osArray != null) {
-                args = new String[osArray.size()];
-                int index = 0;
-                for (JsonElement e : osArray) {
-                    args[index] = e.getAsJsonPrimitive().getAsString();
-                    index++;
-                }
-            }
-        }
-        String inherits = inheritsPrimitive.getAsString();
-        String java = String.valueOf(javaPrimitive.getAsInt());
-        String client = clientPrimitive.getAsString();
-        VanillaVersion version = new VanillaVersion(name, lastPlayed, inherits, java, args, client);
-        Main.versions.add(version);
     }
 
     private static JsonElement readElementIgnoreError(File file) {

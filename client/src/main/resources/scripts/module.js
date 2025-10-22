@@ -61,7 +61,12 @@ function loadModule() {
         }
     }
     xhr.onerror = () => {
-        console.error("Network error")
+        console.error("Error in GET from /api/modstat")
+        console.error("XHR error:", event)
+        console.error("Status:", xhr.status)
+        console.error("Status text:", xhr.statusText)
+        console.error("Ready state:", xhr.readyState)
+        console.error("Response URL:", xhr.responseURL)
     }
     xhr.send()
 }
@@ -86,7 +91,12 @@ function saveModule() {
         window.location.href = "/selector"
     }
     xhr.onerror = () => {
-        console.error("Network error")
+        console.error("Error in POST to /api/toggle")
+        console.error("XHR error:", event)
+        console.error("Status:", xhr.status)
+        console.error("Status text:", xhr.statusText)
+        console.error("Ready state:", xhr.readyState)
+        console.error("Response URL:", xhr.responseURL)
     }
     var settingValues = []
     for (let s of settings) {

@@ -8,6 +8,7 @@ tasks.register<InstallTask>("install") {
     dependsOn(":versions:agentic:build")
     dependsOn(":versions:vanilla-1.8.9:build")
     dependsOn(":versions:vanilla-1.21.10:build")
+    dependsOn(":versions:fabric-1.21.10:build")
     dependsOn(":wrapper:build")
     dependsOn(":window:build")
 }
@@ -19,6 +20,7 @@ tasks.register<PackageTask>("distribute") {
     dependsOn(":versions:agentic:build")
     dependsOn(":versions:vanilla-1.8.9:build")
     dependsOn(":versions:vanilla-1.21.10:build")
+    dependsOn(":versions:fabric-1.21.10:build")
     dependsOn(":wrapper:build")
     dependsOn(":window:build")
     dependsOn(":distributors:profiler:build")

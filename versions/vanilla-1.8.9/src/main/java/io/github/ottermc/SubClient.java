@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 
 public class SubClient extends AbstractSubClient {
 
-    public static final String NAME = "OtterMC", VERSION = "ALPHA-1.0.0 (1.8.9)";
+    public static final String NAME = "OtterMC", VERSION = "ALPHA-1.0.0";
     public static final String TARGET = "1.8.9";
 
     private static SubClient instance;

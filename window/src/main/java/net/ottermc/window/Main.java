@@ -1,5 +1,7 @@
 package net.ottermc.window;
 
+import net.ottermc.window.versions.impl.FabricVersion;
+import net.ottermc.window.versions.impl.VanillaVersion;
 import net.ottermc.window.versions.Version;
 import net.ottermc.window.versions.VersionLoader;
 
@@ -26,7 +28,10 @@ public class Main {
             Logger.error("no gameDir", 42);
         Main.gameDir = new File(reader.get("gameDir"));
         Main.username = reader.has("username") ? reader.get("username") : "Player";
-        VersionLoader.loadManifest();
+        VersionLoader loader = new VersionLoader();
+        loader.register("vanilla", VanillaVersion.class);
+        loader.register("fabric", FabricVersion.class);
+        loader.loadManifest();
         Window.create();
     }
 

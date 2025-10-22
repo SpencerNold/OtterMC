@@ -1,10 +1,12 @@
-package net.ottermc.window.versions;
+package net.ottermc.window.versions.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import net.ottermc.window.Logger;
 import net.ottermc.window.Main;
 import net.ottermc.window.util.FileTool;
+import net.ottermc.window.util.JsonTool;
+import net.ottermc.window.versions.GameLoader;
+import net.ottermc.window.versions.Version;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,17 +19,13 @@ public class VanillaVersion extends Version {
 
     private static final Gson GSON = new Gson();
 
-    private final String inheritedVersion;
-    private final String javaVersion;
-    private final String[] properties;
-    private final String clientJar;
+    protected String inheritedVersion;
+    protected String javaVersion;
+    protected String[] properties;
+    protected String clientJar;
 
-    public VanillaVersion(String name, long lastPlayed, String inheritedVersion, String javaVersion, String[] properties, String clientJar) {
+    public VanillaVersion(String name, long lastPlayed) {
         super(name, lastPlayed);
-        this.inheritedVersion = inheritedVersion;
-        this.javaVersion = javaVersion;
-        this.properties = properties;
-        this.clientJar = clientJar;
     }
 
     @Override
@@ -47,7 +45,39 @@ public class VanillaVersion extends Version {
         }
     }
 
-    private List<String> generateLaunchArguments(List<String> libraries) {
+    @Override
+    public void load(JsonElement element) {
+        JsonPrimitive inheritsPrimitive = JsonTool.getChildPrimitiveSafe(element, "inherits");
+        if (inheritsPrimitive == null)
+            return;
+        JsonPrimitive javaPrimitive = JsonTool.getChildPrimitiveSafe(element, "java");
+        if (javaPrimitive == null)
+            return;
+        JsonPrimitive clientPrimitive = JsonTool.getChildPrimitiveSafe(element, "client");
+        if (clientPrimitive == null)
+            return;
+        JsonObject argsObject = JsonTool.getChildObjectNullOnMissing(element, "args");
+        List<String> properties = new ArrayList<>();
+        if (argsObject != null) {
+            String os = FileTool.getOperatingSystemSimpleString();
+            JsonArray osArray = JsonTool.getChildArrayNullOnMissing(argsObject, os);
+            if (osArray != null) {
+                for (JsonElement e : osArray)
+                    properties.add(e.getAsJsonPrimitive().getAsString());
+            }
+            JsonArray allArray = JsonTool.getChildArrayNullOnMissing(argsObject, "all");
+            if (allArray != null) {
+                for (JsonElement e : allArray)
+                    properties.add(e.getAsJsonPrimitive().getAsString());
+            }
+        }
+        this.properties = properties.toArray(new String[0]);
+        inheritedVersion = inheritsPrimitive.getAsString();
+        javaVersion = String.valueOf(javaPrimitive.getAsInt());
+        clientJar = clientPrimitive.getAsString();
+    }
+
+    protected List<String> generateLaunchArguments(List<String> libraries) {
         List<String> arguments = new ArrayList<>();
         arguments.add(FileTool.getFilePath(Main.gameDir, "jre", javaVersion, "bin", "java").getAbsolutePath());
         arguments.addAll(Arrays.asList(Main.flags));
@@ -60,7 +90,7 @@ public class VanillaVersion extends Version {
         return arguments;
     }
 
-    private List<String> ensureProperInstallation(JsonElement element) {
+    protected List<String> ensureProperInstallation(JsonElement element) {
         List<String> list = new ArrayList<>();
         File nativeDir = GameLoader.ensureSafeNativesDirectory(inheritedVersion);
         GameLoader.ensureProperAssetsIndex(element);
@@ -70,7 +100,7 @@ public class VanillaVersion extends Version {
         return list;
     }
 
-    private JsonElement readInheritedJson() {
+    protected JsonElement readInheritedJson() {
         File file = FileTool.getFilePath(Main.gameDir, "versions", inheritedVersion, inheritedVersion + ".json");
         if (!file.exists()) {
             Logger.error("failed to find " + inheritedVersion + " json file, please run the game first", 3);

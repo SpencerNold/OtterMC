@@ -9,10 +9,12 @@ include("versions:agentic")
 include("versions:vanilla-1.8.9")
 include("versions:vanilla-1.21.10")
 
+include("versions:fabric-1.21.10")
+
 include("distributors:profiler")
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         mavenCentral()
         // BTCLib and KWAF
@@ -21,5 +23,16 @@ dependencyResolutionManagement {
         maven("https://repo.azisaba.net/repository/maven-public/") {
             name = "AzisabaPublic"
         }
+    }
+}
+
+// FabricMC for versions:fabric-1.21.10
+pluginManagement {
+    repositories {
+        maven("https://maven.fabricmc.net/") {
+            name = "Fabric"
+        }
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
