@@ -36,7 +36,7 @@ public class Zoom extends Module implements RunTickListener {
         if (currentScreen != null)
             return;
         boolean down = UKeyboard.isKeyDown(setting.getValue());
-        if (down && !zooming) {
+        if (down && !zooming && UMinecraft.getCurrentScreen() == null) {
             float fov = getTargetFovFromVersion();
             zooming = true;
             UGameSettings.setSmoothCamera(true);

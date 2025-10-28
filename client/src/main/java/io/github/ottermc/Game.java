@@ -11,6 +11,7 @@ import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.impl.hud.*;
 import io.github.ottermc.modules.impl.utility.Fullbright;
 import io.github.ottermc.modules.impl.utility.Zoom;
+import io.github.ottermc.modules.impl.world.AutoSprint;
 import io.github.ottermc.render.hud.HudManager;
 import io.github.ottermc.render.hud.MovableComponent;
 import io.github.ottermc.render.screen.impl.EditHudScreen;
@@ -83,6 +84,8 @@ public class Game {
         // Utility
         manager.register(new Fullbright());
         manager.register(new Zoom());
+        // World
+        manager.register(new AutoSprint());
     }
 
     private void registerEvents() {

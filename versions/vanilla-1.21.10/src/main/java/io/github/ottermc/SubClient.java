@@ -58,6 +58,7 @@ public class SubClient extends AbstractSubClient {
         UMinecraft.register(new ClientMinecraft());
         UVersion.register(new ClientVersion());
         Mth.register(new Math());
+        UPlayer.register(new ClientPlayer());
     }
 
     private void registerTransformers(TransformerRegistry registry) {

@@ -22,8 +22,7 @@ bin
 libs
 build-*.zip
 
-plugins/v1.8.9/pvp-export/src/main
-plugins/latest/smp-export/src/main
+hidden/
 
 distributors/macos/staging/Library/Application Support/structure
 distributors/windows/staging

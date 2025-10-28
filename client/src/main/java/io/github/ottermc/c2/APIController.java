@@ -43,15 +43,11 @@ public class APIController {
 
     @Route(method = Http.Method.GET, path = "/modules")
     public JsonArray getModules() {
-        System.out.println("Bruh what");
         JsonArray modules = new JsonArray();
         for (Module mod : getModuleManager().getModules()) {
-            System.out.println("A" + mod.getName());
             JsonObject module = jsonize(mod);
             modules.add(module);
-            System.out.println("B" + mod.getName());
         }
-        System.out.println(modules);
         return modules;
     }
 
