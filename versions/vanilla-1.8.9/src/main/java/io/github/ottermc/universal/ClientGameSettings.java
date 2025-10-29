@@ -25,6 +25,11 @@ public class ClientGameSettings extends UGameSettings {
         return getGameSettings().fovSetting;
     }
 
+    @Override
+    protected boolean _isSprintKeyDown() {
+        return getGameSettings().keyBindSprint.isKeyDown();
+    }
+
     private GameSettings getGameSettings() {
         return Minecraft.getMinecraft().gameSettings;
     }

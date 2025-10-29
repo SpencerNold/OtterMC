@@ -28,10 +28,16 @@ public abstract class UGameSettings {
         return instance._getFieldOfView();
     }
 
+    public static boolean isSprintKeyDown() {
+        assertNotNull(instance);
+        return instance._isSprintKeyDown();
+    }
+
     protected abstract void _setGamma(float gamma);
     protected abstract void _setSmoothCamera(boolean smooth);
     protected abstract void _setFieldOfView(float fov);
     protected abstract float _getFieldOfView();
+    protected abstract boolean _isSprintKeyDown();
 
     private static void assertNotNull(Object object) {
         if (object == null)

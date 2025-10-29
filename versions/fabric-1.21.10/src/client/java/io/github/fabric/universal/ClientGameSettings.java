@@ -25,6 +25,11 @@ public class ClientGameSettings extends UGameSettings {
         return getGameSettings().getFov().getValue();
     }
 
+    @Override
+    protected boolean _isSprintKeyDown() {
+        return getGameSettings().sprintKey.isPressed();
+    }
+
     private GameOptions getGameSettings() {
         return MinecraftClient.getInstance().options;
     }

@@ -11,9 +11,10 @@ import io.github.ottermc.modules.ModuleManager;
 import io.github.ottermc.modules.impl.hud.*;
 import io.github.ottermc.modules.impl.utility.Fullbright;
 import io.github.ottermc.modules.impl.utility.Zoom;
-import io.github.ottermc.modules.impl.world.AutoSprint;
+import io.github.ottermc.modules.impl.world.ToggleSprint;
 import io.github.ottermc.render.hud.HudManager;
 import io.github.ottermc.render.hud.MovableComponent;
+import io.github.ottermc.render.hud.impl.ToggleSprintHud;
 import io.github.ottermc.render.screen.impl.EditHudScreen;
 import io.github.ottermc.universal.UDrawable;
 import io.github.ottermc.universal.UKeyRegistry;
@@ -46,6 +47,7 @@ public class Game {
         client.onPostInit();
         registerKeybinds();
         registerModules();
+        registerDisplays();
         for (Module mod : getModManager().getModules())
             clientStorage.register(mod);
         for (MovableComponent hud : getHudManager().getMovableComponents())
@@ -85,13 +87,18 @@ public class Game {
         manager.register(new Fullbright());
         manager.register(new Zoom());
         // World
-        manager.register(new AutoSprint());
+        manager.register(new ToggleSprint());
     }
 
     private void registerEvents() {
         EventBus.add(new InitializationManager());
         EventBus.add(client.getHudManager());
         EventBus.add(client.getKeybindManager());
+    }
+
+    private void registerDisplays() {
+        HudManager manager = getHudManager();
+        manager.register(new ToggleSprintHud());
     }
 
     public ModuleManager getModManager() {

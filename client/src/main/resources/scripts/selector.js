@@ -4,6 +4,7 @@ const moduleMap = {}
 
 function run() {
     document.getElementById("settings-button").addEventListener("click", () => {
+        savePersistentCategoryAndModule()
         const selectedModule = document.getElementById("module").value
         window.location.href = `module?name=${selectedModule}`
     })
@@ -20,19 +21,44 @@ function loadModules() {
                 insertModule(module)
             }
             initSelection()
+            loadPersistentCategory()
+            updateSelection()
+
         } else {
             console.error("Failed to fetch modules: ", xhr.statusText)
         }
     }
     xhr.onerror = () => {
         console.error("Error in GET from /api/modules")
-        console.error("XHR error:", event)
         console.error("Status:", xhr.status)
         console.error("Status text:", xhr.statusText)
-        console.error("Ready state:", xhr.readyState)
         console.error("Response URL:", xhr.responseURL)
     }
     xhr.send()
+}
+
+function loadPersistentCategory() {
+    let selectedCategory = getSessionCookie("selected-category")
+    if (selectedCategory == null) return
+    let selectedCategoryIndex = Number(selectedCategory)
+    if (selectedCategoryIndex == NaN) return
+    document.getElementById("category").selectedIndex = selectedCategoryIndex
+}
+
+function loadPersistentModule() {
+    let selectedModule = getSessionCookie("category-" + document.getElementById("category").selectedIndex)
+    if (selectedModule == null)
+        selectedModule = "0"
+    let selectedModuleIndex = Number(selectedModule)
+    if (selectedModuleIndex == NaN) return
+    document.getElementById("module").selectedIndex = selectedModuleIndex
+}
+
+function savePersistentCategoryAndModule() {
+    let selectedCategoryIndex = document.getElementById("category").selectedIndex
+    let selectedModuleIndex = document.getElementById("module").selectedIndex
+    setSessionCookie("selected-category", selectedCategoryIndex)
+    setSessionCookie("category-" + selectedCategoryIndex, selectedModuleIndex)
 }
 
 function insertModule(module) {
@@ -50,7 +76,6 @@ function initSelection() {
         option.text = category
         categorySelect.appendChild(option)
     }
-    updateSelection()
     categorySelect.addEventListener("change", updateSelection)
 }
 
@@ -66,6 +91,7 @@ function updateSelection() {
         option.text = module
         moduleSelect.appendChild(option)
     }
+    loadPersistentModule()
 }
 
 function getCategoryByIndex(target) {
@@ -77,4 +103,19 @@ function getCategoryByIndex(target) {
         index++
     }
     return null
+}
+
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax`;
+}
+
+function getSessionCookie(name) {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+        const [key, value] = cookie.split("=");
+        if (key == name) {
+            return decodeURIComponent(value);
+        }
+    }
+  return null;
 }
