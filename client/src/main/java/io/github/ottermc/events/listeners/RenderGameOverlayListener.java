@@ -1,6 +1,6 @@
 package io.github.ottermc.events.listeners;
 
-import io.github.ottermc.events.Event;
+import io.github.ottermc.events.CancelableEvent;
 import io.github.ottermc.events.Listener;
 
 import java.util.List;
@@ -9,12 +9,10 @@ public interface RenderGameOverlayListener extends Listener {
 
 	void onRenderGameOverlay(RenderGameOverlayEvent event);
 	
-	class RenderGameOverlayEvent extends Event {
+	class RenderGameOverlayEvent extends CancelableEvent {
 
 		private final Object context;
 		private final float partialTicks;
-		private boolean canceled;
-		
 		public RenderGameOverlayEvent(Object context, float partialTicks) {
 			this.context = context;
 			this.partialTicks = partialTicks;
@@ -26,14 +24,6 @@ public interface RenderGameOverlayListener extends Listener {
 		
 		public float getPartialTicks() {
 			return partialTicks;
-		}
-		
-		public void setCanceled(boolean canceled) {
-			this.canceled = canceled;
-		}
-		
-		public boolean isCanceled() {
-			return canceled;
 		}
 		
 		@Override

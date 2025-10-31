@@ -49,11 +49,13 @@ public class MinecraftTransformer {
     public void onClickMouse(Minecraft mc, Callback callback) {
         ClickMouseListener.ClickMouseEvent event = new ClickMouseListener.ClickMouseEvent();
         EventBus.fire(event);
+        callback.setCanceled(event.isCanceled());
     }
 
     @Injector(target = Target.HEAD, name = "rightClickMouse()V")
     public void onRightClickMouse(Minecraft mc, Callback callback) {
         RightClickMouseListener.RightClickMouseEvent event = new RightClickMouseListener.RightClickMouseEvent();
         EventBus.fire(event);
+        callback.setCanceled(event.isCanceled());
     }
 }

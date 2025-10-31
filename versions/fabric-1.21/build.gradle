@@ -1,3 +1,5 @@
+import ottermc.Joiner
+
 plugins {
 	id 'fabric-loom' version "${loom_version}"
 }
@@ -56,4 +58,15 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
 	}
+}
+
+tasks.named("build") {
+	def dependencies = ["fabric-1.21.8-patch"]
+	doLast {
+		def src = new File(project.layout.buildDirectory.getAsFile().get(), "libs" + File.separator + "omc-1.0.0.jar")
+		dependencies.each {
+			Joiner.joinJars(src, [String.join(File.separator, [project.projectDir.parent, it, "build", "libs", "omc-1.0.0.jar"])])
+		}
+	}
+	dependsOn(dependencies.collect {":versions:" + it +":build"})
 }

@@ -9,6 +9,33 @@
       "client": "vanilla-1.8.9.jar"
     },
     {
+      "type": "fabric",
+      "lastPlayed": 0,
+      "name": "Fabric 1.21.8",
+      "inherits": "1.21.8",
+      "java": 21,
+      "client": "fabric-1.21.8.jar",
+      "mainClass": "net.fabricmc.loader.impl.launch.knot.KnotClient",
+      "libraries": {
+        "org.ow2.asm:asm:9.9": "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.9/asm-9.9.jar",
+        "org.ow2.asm:asm-analysis:9.9": "https://repo1.maven.org/maven2/org/ow2/asm/asm-analysis/9.9/asm-analysis-9.9.jar",
+        "org.ow2.asm:asm-commons:9.9": "https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.9/asm-commons-9.9.jar",
+        "org.ow2.asm:asm-tree:9.9": "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.9/asm-tree-9.9.jar",
+        "org.ow2.asm:asm-util:9.9": "https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.9/asm-util-9.9.jar",
+        "net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7": "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.16.5+mixin.0.8.7/sponge-mixin-0.16.5+mixin.0.8.7.jar",
+        "net.fabricmc:intermediary:1.21.8": "https://maven.fabricmc.net/net/fabricmc/intermediary/1.21.8/intermediary-1.21.8.jar",
+        "net.fabricmc:fabric-loader:0.17.3": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.17.3/fabric-loader-0.17.3.jar"
+      },
+      "args": {
+        "mac": [
+          "-XstartOnFirstThread"
+        ],
+        "all": [
+          "-DFabricMcEmu= net.minecraft.client.main.Main "
+        ]
+      }
+    },
+    {
       "type": "vanilla",
       "lastPlayed": 0,
       "name": "Client 1.21.10",

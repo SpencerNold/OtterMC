@@ -52,20 +52,24 @@ public class Game {
             clientStorage.register(mod);
         for (MovableComponent hud : getHudManager().getMovableComponents())
             clientStorage.register(hud);
-        try {
-            load();
-        } catch (IOException e) {
-            Logger.error(e);
-        }
+        load();
         StateRegistry.setState(State.RUNNING);
     }
 
-    public void load() throws IOException {
-        clientStorage.read();
+    public void load() {
+        try {
+            clientStorage.read();
+        } catch (IOException e) {
+            Logger.error(e);
+        }
     }
 
-    public void save() throws IOException {
-        clientStorage.write();
+    public void save() {
+        try {
+            clientStorage.write();
+        } catch (IOException e) {
+            Logger.error(e);
+        }
     }
 
     private void registerKeybinds() {
@@ -105,7 +109,7 @@ public class Game {
         return client.getModuleManager();
     }
 
-    public KeybindManager  getKeyManager() {
+    public KeybindManager getKeyManager() {
         return client.getKeybindManager();
     }
 

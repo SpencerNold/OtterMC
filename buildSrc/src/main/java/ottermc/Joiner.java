@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -19,6 +16,10 @@ public class Joiner {
     private static final Map<String, Boolean> existingEntries = new HashMap<>();
 
     public static File joinJars(File src, List<String> paths) {
+        return joinJars(src, paths, Strategy.PRECEDENCE_NO_REPLACE);
+    }
+
+    public static File joinJars(File src, List<String> paths, Strategy strategy) {
         try {
             if (!src.exists())
                 return src;
@@ -26,11 +27,7 @@ public class Joiner {
             if (dst.exists())
                 dst.delete();
             JarOutputStream output = new JarOutputStream(new FileOutputStream(dst));
-            writeJar(output, src);
-            for (String s : paths) {
-                File f = new File(s);
-                writeJar(output, f);
-            }
+            strategy.join(output, src, paths);
             output.close();
             existingEntries.clear();
             return dst;
@@ -47,19 +44,32 @@ public class Joiner {
             if (Joiner.existingEntries.containsKey(entry.getName()))
                 continue;
             Joiner.existingEntries.put(entry.getName(), true);
-            entry = new JarEntry(entry.getName());
+            JarEntry e = new JarEntry(entry.getName());
             if (entry.isDirectory()) {
-                output.putNextEntry(entry);
+                output.putNextEntry(e);
                 output.closeEntry();
                 continue;
             }
             InputStream input = jar.getInputStream(entry);
             byte[] bytes = input.readAllBytes();
             input.close();
-            output.putNextEntry(entry);
+            output.putNextEntry(e);
             output.write(bytes, 0, bytes.length);
             output.closeEntry();
         }
         jar.close();
+    }
+
+    @FunctionalInterface
+    public interface Strategy {
+        Strategy PRECEDENCE_NO_REPLACE = (output, src, paths) -> {
+            writeJar(output, src);
+            for (String s : paths) {
+                File f = new File(s);
+                writeJar(output, f);
+            }
+        };
+
+        void join(JarOutputStream output, File src, List<String> paths) throws IOException;
     }
 }

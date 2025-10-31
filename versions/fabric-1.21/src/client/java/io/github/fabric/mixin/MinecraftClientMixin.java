@@ -23,14 +23,22 @@ public class MinecraftClientMixin {
         EventBus.fire(event);
     }
 
-    @Inject(at = @At("HEAD"), method = "doAttack()Z")
+    @Inject(at = @At("HEAD"), method = "doAttack()Z", cancellable = true)
     public void onDoAttack(CallbackInfoReturnable<Boolean> info) {
-        EventBus.fire(new ClickMouseListener.ClickMouseEvent());
+        ClickMouseListener.ClickMouseEvent event = new ClickMouseListener.ClickMouseEvent();
+        EventBus.fire(event);
+        if (event.isCanceled()) {
+            info.setReturnValue(false);
+            info.cancel();
+        }
     }
 
-    @Inject(at = @At("HEAD"), method = "doItemUse()V")
+    @Inject(at = @At("HEAD"), method = "doItemUse()V", cancellable = true)
     public void onDoItemUse(CallbackInfo info) {
-        EventBus.fire(new RightClickMouseListener.RightClickMouseEvent());
+        RightClickMouseListener.RightClickMouseEvent event = new RightClickMouseListener.RightClickMouseEvent();
+        EventBus.fire(event);
+        if (event.isCanceled())
+            info.cancel();
     }
 
     @Inject(at = @At("HEAD"), method = "onInitFinished(Lnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/lang/Runnable;")

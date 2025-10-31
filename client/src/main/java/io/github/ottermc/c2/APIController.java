@@ -41,7 +41,7 @@ public class APIController {
         return jsonize(module);
     }
 
-    @Route(method = Http.Method.GET, path = "/modules")
+    @Route(method = Http.Method.GET, path = "/modlist")
     public JsonArray getModules() {
         JsonArray modules = new JsonArray();
         for (Module mod : getModuleManager().getModules()) {
@@ -125,11 +125,7 @@ public class APIController {
         }
         if (module.isActive() != state)
             module.setActive(state);
-        try {
-            Game.game.save();
-        } catch (IOException e) {
-            return -1;
-        }
+        Game.game.save();
         return 0;
     }
 

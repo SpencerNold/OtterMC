@@ -13,7 +13,7 @@ function run() {
 
 function loadModules() {
     const xhr = new XMLHttpRequest()
-    xhr.open("GET", "/api/modules")
+    xhr.open("GET", "/api/modlist")
     xhr.onload = () => {
         if (xhr.status == 200) {
             const modules = JSON.parse(xhr.responseText)
@@ -29,7 +29,7 @@ function loadModules() {
         }
     }
     xhr.onerror = () => {
-        console.error("Error in GET from /api/modules")
+        console.error("Error in GET from /api/modlist")
         console.error("Status:", xhr.status)
         console.error("Status text:", xhr.statusText)
         console.error("Response URL:", xhr.responseURL)

@@ -1,8 +1,8 @@
 package io.github.ottermc.modules.setting;
 
-import io.github.ottermc.universal.UKeyboard;
 import io.github.ottermc.io.ByteBuf;
 import io.github.ottermc.modules.Setting;
+import io.github.ottermc.universal.UKeyboard;
 
 public class KeyboardSetting extends Setting<Integer> {
 

@@ -1,7 +1,6 @@
 package io.github.ottermc.render.screen.impl;
 
 import io.github.ottermc.Game;
-import io.github.ottermc.logging.Logger;
 import io.github.ottermc.render.ClientTheme;
 import io.github.ottermc.render.hud.Component;
 import io.github.ottermc.render.hud.HudManager;
@@ -10,8 +9,6 @@ import io.github.ottermc.render.screen.AbstractScreen;
 import io.github.ottermc.universal.UDrawable;
 import io.github.ottermc.universal.UKeyRegistry;
 import io.github.ottermc.universal.UKeyboard;
-
-import java.io.IOException;
 
 public class EditHudScreen extends AbstractScreen {
 
@@ -36,13 +33,14 @@ public class EditHudScreen extends AbstractScreen {
             component.enableTranslate(context);
             component.drawDummyObject(context);
             component.disableTranslate(context);
-            drawScaleHint(context, component);
+            if (c == lastClicked)
+                drawScaleHint(context, component);
             float scale = component.getScale();
             float x = component.getDefaultX() + component.getXOffset();
             float y = component.getDefaultY() + component.getYOffset();
             int width = (int) (component.getRawWidth() * scale);
             int height = (int) (component.getRawHeight() * scale);
-            UDrawable.outlineRect(context,(int) x - 2, (int) y - 2, width + 4, height + 4, lastClicked == c ? color : 0xF5E4E4E4);;
+            UDrawable.outlineRect(context, (int) x - 2, (int) y - 2, width + 4, height + 4, lastClicked == c ? color : 0xF5E4E4E4);
         }
     }
 
@@ -130,10 +128,6 @@ public class EditHudScreen extends AbstractScreen {
 
     @Override
     public void close() {
-        try {
-            Game.game.save();
-        } catch (IOException e) {
-            Logger.error(e);
-        }
+        Game.game.save();
     }
 }

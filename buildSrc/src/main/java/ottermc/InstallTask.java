@@ -20,6 +20,9 @@ public class InstallTask extends DefaultTask {
         if (!versionsDir.exists() && !versionsDir.mkdir())
             throw new GradleScriptException("failed to create plugin directory", new IOException());
 
+        File manifestSrc = getDirFile(projectDir, "client", "manifest.json");
+        File manifestDst = getDirFile(gameDir, "ottermc", "manifest.json");
+
         File wrapperSrc = getDirFile(projectDir, "wrapper", "build", "libs", "wrapper.jar");
         File wrapperDst = getDirFile(gameDir, "libraries", "io", "github", "ottermc", "wrapper", "1.0.0", "wrapper-1.0.0.jar");
 
@@ -35,17 +38,24 @@ public class InstallTask extends DefaultTask {
         File client12110Src = getDirFile(projectDir, "versions", "vanilla-1.21.10", "build", "libs", "vanilla-1.21.10-remapped-joined-safe.jar");
         File client12110Dst = getDirFile(gameDir, "ottermc", "versions", "vanilla-1.21.10.jar");
 
-        File fabric12110Src = getDirFile( projectDir,"versions", "fabric-1.21.10", "build", "libs", "omc-1.0.0.jar");
-        File fabric12110Dst = getDirFile(gameDir, "mods", "fabric-1.21.10.jar");
-        File fabricClientDst = getDirFile(projectDir, "versions", "fabric-1.21.10", "libs", "client.jar");
+        File fabric121Src = getDirFile(projectDir,"versions", "fabric-1.21", "build", "libs", "omc-1.0.0-joined.jar");
+        File fabric121Dst = getDirFile(gameDir, "mods", "omc-fabric-1.21.jar");
+        File fabric121ClientDst = getDirFile(projectDir, "versions", "fabric-1.21", "libs", "client.jar");
+        File fabric1218PatchClientDst = getDirFile(projectDir,"versions", "fabric-1.21.8-patch", "libs", "client.jar");
         try {
+            copy(manifestSrc, manifestDst);
+
             copy(wrapperSrc, wrapperDst);
             copy(windowSrc, windowDst);
             copy(clientSrc, clientDst);
+
             copy(client189Src, client189Dst);
+
             copy(client12110Src, client12110Dst);
-            copy(fabric12110Src, fabric12110Dst);
-            copy(clientSrc, fabricClientDst);
+
+            copy(fabric121Src, fabric121Dst);
+            copy(clientSrc, fabric121ClientDst);
+            copy(clientSrc, fabric1218PatchClientDst);
         } catch (IOException e) {
             throw new GradleScriptException("failed to copy wrapper", e);
         }

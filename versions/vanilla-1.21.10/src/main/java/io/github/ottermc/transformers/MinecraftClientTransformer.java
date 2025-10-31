@@ -22,13 +22,17 @@ public class MinecraftClientTransformer {
 
     @Injector(target = Target.HEAD, name = "doAttack()Z")
     public boolean onDoAttack(MinecraftClient client, Callback callback) {
-        EventBus.fire(new ClickMouseListener.ClickMouseEvent());
+        ClickMouseListener.ClickMouseEvent event = new ClickMouseListener.ClickMouseEvent();
+        EventBus.fire(event);
+        callback.setCanceled(event.isCanceled());
         return false;
     }
 
     @Injector(target = Target.HEAD, name = "doItemUse()V")
     public void onDoItemUse(MinecraftClient client, Callback callback) {
-        EventBus.fire(new RightClickMouseListener.RightClickMouseEvent());
+        RightClickMouseListener.RightClickMouseEvent event = new RightClickMouseListener.RightClickMouseEvent();
+        EventBus.fire(event);
+        callback.setCanceled(event.isCanceled());
     }
 
     @Injector(target = Target.HEAD, name = "onInitFinished(Lnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/lang/Runnable;")

@@ -42,15 +42,15 @@ public class SubClient extends AbstractSubClient {
     }
 
     private void registerBindings() {
-        UniversalLog4j.register(new Log4j());
-        UKeyboard.register(new GLFWKeyboard());
-        UDrawable.register(new ClientDrawable());
-        UGameSettings.register(new ClientGameSettings());
-        UKeyRegistry.register(new ClientKeyRegistry());
-        UMinecraft.register(new ClientMinecraft());
-        UVersion.register(new ClientVersion());
-        Mth.register(new Math());
-        UPlayer.register(new ClientPlayer());
+        Client.register(UniversalLog4j.class, new Log4j());
+        Client.register(UKeyboard.class, new GLFWKeyboard());
+        Client.register(UDrawable.class, new ClientDrawable());
+        Client.register(UGameSettings.class, new ClientGameSettings());
+        Client.register(UKeyRegistry.class, new ClientKeyRegistry());
+        Client.register(UMinecraft.class, new ClientMinecraft());
+        Client.register(UVersion.class, new ClientVersion());
+        Client.register(Mth.class, new Math());
+        Client.register(UPlayer.class, new ClientPlayer());
     }
 
     private void registerDisplays() {
