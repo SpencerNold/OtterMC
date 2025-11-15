@@ -8,6 +8,8 @@ import io.github.ottermc.modules.CategoryList;
 import io.github.ottermc.modules.CategoryRegistry;
 import io.github.ottermc.modules.Module;
 import io.github.ottermc.modules.ModuleManager;
+import io.github.ottermc.modules.impl.display.UIScheme;
+import io.github.ottermc.modules.impl.display.Waypoints;
 import io.github.ottermc.modules.impl.hud.*;
 import io.github.ottermc.modules.impl.utility.Fullbright;
 import io.github.ottermc.modules.impl.utility.Zoom;
@@ -30,12 +32,17 @@ public class Game {
     private final AbstractSubClient client;
     private final PersistentStorage clientStorage;
 
+    private boolean started = false, posted = false;
+
     public Game(AbstractSubClient client) {
         this.client = client;
         this.clientStorage = new PersistentStorage(client.getClientDirectory().getParentFile(), client.getIdentifier());
     }
 
     public void start() {
+        if (started)
+            return;
+        started = true;
         client.start();
         CategoryRegistry.register(CategoryList.values());
         StateRegistry.setState(State.START);
@@ -44,6 +51,9 @@ public class Game {
     }
 
     public void onPostInit() {
+        if (posted)
+            return;
+        posted = true;
         client.onPostInit();
         registerKeybinds();
         registerModules();
@@ -81,6 +91,9 @@ public class Game {
 
     private void registerModules() {
         ModuleManager manager = client.getModuleManager();
+        // Display
+        manager.register(new UIScheme());
+        manager.register(new Waypoints());
         // Hud
         manager.register(new ArmorStatus());
         manager.register(new ClickCounter());

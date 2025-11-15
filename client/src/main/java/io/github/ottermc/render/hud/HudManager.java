@@ -1,6 +1,7 @@
 package io.github.ottermc.render.hud;
 
 import io.github.ottermc.events.listeners.RenderGameOverlayListener;
+import io.github.ottermc.universal.UMinecraft;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -24,6 +25,8 @@ public abstract class HudManager implements RenderGameOverlayListener {
 
     @Override
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
+        if (UMinecraft.getCurrentScreen() != null)
+            return;
         for (Component c : components) {
             if (!c.isVisible())
                 continue;

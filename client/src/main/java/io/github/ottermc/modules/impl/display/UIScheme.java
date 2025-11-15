@@ -15,7 +15,7 @@ public class UIScheme extends Module {
     private final EnumSetting<Theme> themeSetting = new EnumSetting<>("Theme", Theme.class, Theme.DEFAULT);
 
     public UIScheme() {
-        super("UI Scheme", CategoryList.VISUAL);
+        super("UI Scheme", CategoryList.DISPLAY);
     }
 
     @Override

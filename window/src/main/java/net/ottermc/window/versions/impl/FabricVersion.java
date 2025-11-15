@@ -17,12 +17,15 @@ import java.util.Map;
 
 public class FabricVersion extends VanillaVersion {
 
+    public static final String TYPE = "fabric";
+
     public FabricVersion(String name, long lastPlayed) {
         super(name, lastPlayed);
     }
 
     private String mainClass;
     private File[] libraries;
+    private JsonObject librariesObjectCache;
 
     @Override
     public void start() {
@@ -38,6 +41,7 @@ public class FabricVersion extends VanillaVersion {
         JsonObject librariesObject = JsonTool.getChildObjectSafe(element, "libraries");
         if (librariesObject == null)
             return;
+        librariesObjectCache = librariesObject.deepCopy();
         List<File> libraries = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : librariesObject.entrySet()) {
             String name = entry.getKey();
@@ -63,6 +67,13 @@ public class FabricVersion extends VanillaVersion {
     }
 
     @Override
+    public void store(JsonObject object) {
+        super.store(object);
+        object.add("mainClass", new JsonPrimitive(mainClass));
+        object.add("libraries", librariesObjectCache);
+    }
+
+    @Override
     protected List<String> generateLaunchArguments(List<String> libraries) {
         // Temporary fix, this will probably be changed a wee bit in the future
         String[] array = libraries.toArray(new String[0]);
@@ -84,5 +95,10 @@ public class FabricVersion extends VanillaVersion {
         arguments.add(mainClass);
         arguments.addAll(Arrays.asList(Main.arguments));
         return arguments;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 }

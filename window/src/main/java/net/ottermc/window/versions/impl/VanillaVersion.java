@@ -17,12 +17,16 @@ import java.util.List;
 
 public class VanillaVersion extends Version {
 
+    public static final String TYPE = "vanilla";
+
     private static final Gson GSON = new Gson();
 
     protected String inheritedVersion;
     protected String javaVersion;
     protected String[] properties;
     protected String clientJar;
+
+    private JsonObject argsObjectCache;
 
     public VanillaVersion(String name, long lastPlayed) {
         super(name, lastPlayed);
@@ -59,6 +63,7 @@ public class VanillaVersion extends Version {
         JsonObject argsObject = JsonTool.getChildObjectNullOnMissing(element, "args");
         List<String> properties = new ArrayList<>();
         if (argsObject != null) {
+            argsObjectCache = argsObject.deepCopy();
             String os = FileTool.getOperatingSystemSimpleString();
             JsonArray osArray = JsonTool.getChildArrayNullOnMissing(argsObject, os);
             if (osArray != null) {
@@ -75,6 +80,14 @@ public class VanillaVersion extends Version {
         inheritedVersion = inheritsPrimitive.getAsString();
         javaVersion = String.valueOf(javaPrimitive.getAsInt());
         clientJar = clientPrimitive.getAsString();
+    }
+
+    @Override
+    public void store(JsonObject object) {
+        object.add("inherits", new JsonPrimitive(inheritedVersion));
+        object.add("java", new JsonPrimitive(javaVersion));
+        object.add("client", new JsonPrimitive(clientJar));
+        object.add("args", argsObjectCache);
     }
 
     protected List<String> generateLaunchArguments(List<String> libraries) {
@@ -115,5 +128,10 @@ public class VanillaVersion extends Version {
             Logger.error(e);
             return null;
         }
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 }

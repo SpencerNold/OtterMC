@@ -1,18 +1,12 @@
 package net.ottermc.window.versions;
 
 import com.google.gson.JsonElement;
-import net.ottermc.window.Logger;
-import net.ottermc.window.Main;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.JsonObject;
 
 public abstract class Version {
 
     private final String name;
-    private final long lastPlayed;
+    private long lastPlayed;
 
     public Version(String name, long lastPlayed) {
         this.name = name;
@@ -27,8 +21,14 @@ public abstract class Version {
         return lastPlayed;
     }
 
+    public void setLastPlayed(long lastPlayed) {
+        this.lastPlayed = lastPlayed;
+    }
+
     public abstract void start();
     public abstract void load(JsonElement element);
+    public abstract void store(JsonObject object);
+    public abstract String getType();
 
     @Override
     public String toString() {

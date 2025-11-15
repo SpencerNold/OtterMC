@@ -2,6 +2,7 @@ package net.ottermc.window;
 
 import net.ottermc.window.components.Panel;
 import net.ottermc.window.components.*;
+import net.ottermc.window.manifest.Manifest;
 import net.ottermc.window.versions.Version;
 
 import javax.swing.*;
@@ -84,7 +85,7 @@ public class LaunchFrame extends Panel {
     }
 
     private void addStaticComponents() {
-        JComboBox<Version> versionDropdown = new FancyDropdown<>(Main.versions.toArray(new Version[0]));
+        JComboBox<Version> versionDropdown = new FancyDropdown<>(Main.manifest.getVersions().toArray(new Version[0]));
         {
             int width = 218, height = 45;
             int x = (window.getWidth() / 2) - (width / 2);
@@ -98,6 +99,8 @@ public class LaunchFrame extends Panel {
             Version version = (Version) versionDropdown.getSelectedItem();
             if (version == null)
                 return;
+            version.setLastPlayed(System.currentTimeMillis());
+            Manifest.write(Main.manifest);
             window.dispose();
             version.start();
         });

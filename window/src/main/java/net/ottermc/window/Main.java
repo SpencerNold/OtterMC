@@ -1,15 +1,10 @@
 package net.ottermc.window;
 
-import net.ottermc.window.versions.impl.FabricVersion;
-import net.ottermc.window.versions.impl.VanillaVersion;
-import net.ottermc.window.versions.Version;
-import net.ottermc.window.versions.VersionLoader;
+import net.ottermc.window.manifest.Manifest;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 public class Main {
 
@@ -17,7 +12,7 @@ public class Main {
     public static String[] arguments;
     public static File gameDir;
     public static String username;
-    public static final List<Version> versions = new ArrayList<>();
+    public static Manifest manifest;
 
     public static void main(String[] args) {
         ArgumentReader reader = new ArgumentReader(args);
@@ -28,10 +23,7 @@ public class Main {
             Logger.error("no gameDir", 42);
         Main.gameDir = new File(reader.get("gameDir"));
         Main.username = reader.has("username") ? reader.get("username") : "Player";
-        VersionLoader loader = new VersionLoader();
-        loader.register("vanilla", VanillaVersion.class);
-        loader.register("fabric", FabricVersion.class);
-        loader.loadManifest();
+        Main.manifest = Manifest.read();
         Window.create();
     }
 
